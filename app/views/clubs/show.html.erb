@@ -1,0 +1,50 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Name:</b>
+  <%= @club.name %>
+</p>
+
+<p>
+  <b>Area:</b>
+  <%= @club.area_id %>
+</p>
+
+<p>
+  <b>Address:</b>
+  <%= @club.address %>
+</p>
+
+<p>
+  <b>Latitude:</b>
+  <%= @club.latitude %>
+</p>
+
+<p>
+  <b>Longitude:</b>
+  <%= @club.longitude %>
+</p>
+
+<p>
+  <b>Description:</b>
+  <%= @club.description %>
+</p>
+
+<p>
+  <b>Logo url:</b>
+  <%= @club.logo_url %>
+</p>
+
+<p>
+  <b>Telephone:</b>
+  <%= @club.telephone %>
+</p>
+
+<p>
+  <b>Active:</b>
+  <%= @club.active %>
+</p>
+
+
+<%= link_to 'Edit', edit_club_path(@club) %> |
+<%= link_to 'Back', clubs_path %>

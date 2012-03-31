@@ -1,0 +1,73 @@
+<%= form_for(@comment) do |f| %>
+  <% if @comment.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@comment.errors.count, "error") %> prohibited this comment from being saved:</h2>
+
+      <ul>
+      <% @comment.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :course_id %><br />
+    <%= f.number_field :course_id %>
+  </div>
+  <div class="field">
+    <%= f.label :user_id %><br />
+    <%= f.number_field :user_id %>
+  </div>
+  <div class="field">
+    <%= f.label :overall %><br />
+    <%= f.text_field :overall %>
+  </div>
+  <div class="field">
+    <%= f.label :view %><br />
+    <%= f.text_field :view %>
+  </div>
+  <div class="field">
+    <%= f.label :hardiness %><br />
+    <%= f.text_field :hardiness %>
+  </div>
+  <div class="field">
+    <%= f.label :design %><br />
+    <%= f.text_field :design %>
+  </div>
+  <div class="field">
+    <%= f.label :recall %><br />
+    <%= f.text_field :recall %>
+  </div>
+  <div class="field">
+    <%= f.label :maintenance %><br />
+    <%= f.text_field :maintenance %>
+  </div>
+  <div class="field">
+    <%= f.label :culture %><br />
+    <%= f.text_field :culture %>
+  </div>
+  <div class="field">
+    <%= f.label :candy %><br />
+    <%= f.text_field :candy %>
+  </div>
+  <div class="field">
+    <%= f.label :facility %><br />
+    <%= f.text_field :facility %>
+  </div>
+  <div class="field">
+    <%= f.label :service %><br />
+    <%= f.text_field :service %>
+  </div>
+  <div class="field">
+    <%= f.label :price %><br />
+    <%= f.text_field :price %>
+  </div>
+  <div class="field">
+    <%= f.label :notes %><br />
+    <%= f.text_field :notes %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

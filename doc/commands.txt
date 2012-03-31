@@ -34,21 +34,18 @@ $ unicorn
 $ bundle exec rspec spec/controllers/api_controller_spec.rb 
 
 # models
+$ rails generate scaffold Area name:string level:integer upper_area:integer
+$ rails generate scaffold Club name:string area_id:integer address:string latitude:decimal longitude:decimal description:text logo_url:string telephone:string active:boolean
+$ rails generate scaffold Course club_id:integer name:string designer:string description:text yards:integer holes:integer group_id:integer
+$ rails generate scaffold Hole course_id:integer number:integer par:integer yard_black:integer yard_gold:integer yard_blue:integer yard_white:integer yard_red:integer map_id:integer 
+$ rails generate scaffold Map lat_left_lower:decimal lon_left_lower:decimal lat_right_lower:decimal lon_right_lower:decimal lat_left_higher:decimal lon_left_higher:decimal lat_right_higher:decimal lon_right_higher:decimal dim_x:integer dim_y:integer url:string 
+$ rails generate scaffold Image title:string url:string club_id:integer course_id:integer
+$ rails generate scaffold Agent name:string telephone:string
+$ rails generate scaffold Price course_id:integer time_slot:string price:decimal agent_id:integer
+
+
 $ rails generate scaffold Device did:string model:string os:string version:string source:string token:string user_id:integer
-$ rails generate scaffold User name:string pass:string salt:string handicap:integer credit:integer
-$ rails generate scaffold Token user_id:integer source:string token:string auth_1:boolean
+$ rails generate scaffold User name:string email:string password:string salt:string sina_token:string
 
-$ rails generate scaffold Area name:string level:integer upper_area:integer active:boolean
-$ rails generate scaffold Club name:string area_id:integer address:string description:text logo_url:string designer:string courses:integer holes:integer score_users:integer score_total:decimal
-$ rails generate scaffold Course club_id:integer description:text holes:integer --map_id:integer --handicap:integer
-$ rails generate scaffold Hole course_id:integer number:integer par:integer map_id:integer yard_black:integer yard_blue:integer yard_white:integer yard_red:integer --handicap:integer
-$ rails generate scaffold Map lat_low:decimal lon_low:decimal lat_high:decimal lon_hith:decimal dim_x:integer dim_y:integer
-$ rails generate scaffold Image title:string description:text dir:string course_id:integer hole_id:integer
-
-$ rails generate scaffold Comment club_id:integer user_id:integer overall:decimal view:decimal hardiness:decimal design:decimal recall:decimal maintenance:decimal culture:decimal candy:decimal facility:decimal service:decimal price:decimal notes:string
-$ rails generate scaffold Score user_id:integer hole_id:integer score:integer ...
 $ rails generate scaffold Favorite user_id:integer course_id:integer
-$ rails generate scaffold Transaction user_id:integer action:string credit:integer 
-
-
--- $ rails generate scaffold Golfer name:string role:string(designer|player) introduction:text
+$ rails generate scaffold Comment course_id:integer user_id:integer overall:decimal view:decimal hardiness:decimal design:decimal recall:decimal maintenance:decimal culture:decimal candy:decimal facility:decimal service:decimal price:decimal notes:string

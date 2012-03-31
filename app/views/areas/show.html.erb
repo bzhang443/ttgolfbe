@@ -1,0 +1,20 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Name:</b>
+  <%= @area.name %>
+</p>
+
+<p>
+  <b>Level:</b>
+  <%= @area.level %>
+</p>
+
+<p>
+  <b>Upper area:</b>
+  <%= @area.upper_area %>
+</p>
+
+
+<%= link_to 'Edit', edit_area_path(@area) %> |
+<%= link_to 'Back', areas_path %>

@@ -1,0 +1,49 @@
+<h1>Listing comments</h1>
+
+<table>
+  <tr>
+    <th>Course</th>
+    <th>User</th>
+    <th>Overall</th>
+    <th>View</th>
+    <th>Hardiness</th>
+    <th>Design</th>
+    <th>Recall</th>
+    <th>Maintenance</th>
+    <th>Culture</th>
+    <th>Candy</th>
+    <th>Facility</th>
+    <th>Service</th>
+    <th>Price</th>
+    <th>Notes</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @comments.each do |comment| %>
+  <tr>
+    <td><%= comment.course_id %></td>
+    <td><%= comment.user_id %></td>
+    <td><%= comment.overall %></td>
+    <td><%= comment.view %></td>
+    <td><%= comment.hardiness %></td>
+    <td><%= comment.design %></td>
+    <td><%= comment.recall %></td>
+    <td><%= comment.maintenance %></td>
+    <td><%= comment.culture %></td>
+    <td><%= comment.candy %></td>
+    <td><%= comment.facility %></td>
+    <td><%= comment.service %></td>
+    <td><%= comment.price %></td>
+    <td><%= comment.notes %></td>
+    <td><%= link_to 'Show', comment %></td>
+    <td><%= link_to 'Edit', edit_comment_path(comment) %></td>
+    <td><%= link_to 'Destroy', comment, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Comment', new_comment_path %>

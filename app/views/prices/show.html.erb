@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Course:</b>
+  <%= @price.course_id %>
+</p>
+
+<p>
+  <b>Time slot:</b>
+  <%= @price.time_slot %>
+</p>
+
+<p>
+  <b>Price:</b>
+  <%= @price.price %>
+</p>
+
+<p>
+  <b>Agent:</b>
+  <%= @price.agent_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_price_path(@price) %> |
+<%= link_to 'Back', prices_path %>

@@ -9,9 +9,13 @@
 - user_name
 - os
 - version
+- registered
 - 缓存数据库
 
-产品模式下要带压缩模式参数
+产品模式下：
+客户端请求时Header中添加 Accept-Encoding: gzip
+服务器端对大于一个尺寸的应答进行压缩，并在header中标志 Content-Encoding: gzip
+客户端对压缩的内容先加压再处理
 </pre>
 
 <ul class="links">

@@ -1,0 +1,61 @@
+<%= form_for(@map) do |f| %>
+  <% if @map.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@map.errors.count, "error") %> prohibited this map from being saved:</h2>
+
+      <ul>
+      <% @map.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :lat_left_lower %><br />
+    <%= f.text_field :lat_left_lower %>
+  </div>
+  <div class="field">
+    <%= f.label :lon_left_lower %><br />
+    <%= f.text_field :lon_left_lower %>
+  </div>
+  <div class="field">
+    <%= f.label :lat_right_lower %><br />
+    <%= f.text_field :lat_right_lower %>
+  </div>
+  <div class="field">
+    <%= f.label :lon_right_lower %><br />
+    <%= f.text_field :lon_right_lower %>
+  </div>
+  <div class="field">
+    <%= f.label :lat_left_higher %><br />
+    <%= f.text_field :lat_left_higher %>
+  </div>
+  <div class="field">
+    <%= f.label :lon_left_higher %><br />
+    <%= f.text_field :lon_left_higher %>
+  </div>
+  <div class="field">
+    <%= f.label :lat_right_higher %><br />
+    <%= f.text_field :lat_right_higher %>
+  </div>
+  <div class="field">
+    <%= f.label :lon_right_higher %><br />
+    <%= f.text_field :lon_right_higher %>
+  </div>
+  <div class="field">
+    <%= f.label :dim_x %><br />
+    <%= f.number_field :dim_x %>
+  </div>
+  <div class="field">
+    <%= f.label :dim_y %><br />
+    <%= f.number_field :dim_y %>
+  </div>
+  <div class="field">
+    <%= f.label :url %><br />
+    <%= f.text_field :url %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

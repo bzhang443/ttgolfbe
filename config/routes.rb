@@ -1,4 +1,28 @@
 Ttgolfbe::Application.routes.draw do
+  resources :comments
+
+  resources :favorites
+
+  resources :users
+
+  resources :devices
+
+  resources :prices
+
+  resources :agents
+
+  resources :images
+
+  resources :maps
+
+  resources :holes
+
+  resources :courses
+
+  resources :clubs
+
+  resources :areas
+
   match 'api' => 'api#index'
 
   # The priority is based upon order of creation:

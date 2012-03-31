@@ -1,0 +1,43 @@
+<h1>Listing maps</h1>
+
+<table>
+  <tr>
+    <th>Lat left lower</th>
+    <th>Lon left lower</th>
+    <th>Lat right lower</th>
+    <th>Lon right lower</th>
+    <th>Lat left higher</th>
+    <th>Lon left higher</th>
+    <th>Lat right higher</th>
+    <th>Lon right higher</th>
+    <th>Dim x</th>
+    <th>Dim y</th>
+    <th>Url</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @maps.each do |map| %>
+  <tr>
+    <td><%= map.lat_left_lower %></td>
+    <td><%= map.lon_left_lower %></td>
+    <td><%= map.lat_right_lower %></td>
+    <td><%= map.lon_right_lower %></td>
+    <td><%= map.lat_left_higher %></td>
+    <td><%= map.lon_left_higher %></td>
+    <td><%= map.lat_right_higher %></td>
+    <td><%= map.lon_right_higher %></td>
+    <td><%= map.dim_x %></td>
+    <td><%= map.dim_y %></td>
+    <td><%= map.url %></td>
+    <td><%= link_to 'Show', map %></td>
+    <td><%= link_to 'Edit', edit_map_path(map) %></td>
+    <td><%= link_to 'Destroy', map, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Map', new_map_path %>

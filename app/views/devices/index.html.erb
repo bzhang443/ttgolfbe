@@ -1,0 +1,35 @@
+<h1>Listing devices</h1>
+
+<table>
+  <tr>
+    <th>Did</th>
+    <th>Model</th>
+    <th>Os</th>
+    <th>Version</th>
+    <th>Source</th>
+    <th>Token</th>
+    <th>User</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @devices.each do |device| %>
+  <tr>
+    <td><%= device.did %></td>
+    <td><%= device.model %></td>
+    <td><%= device.os %></td>
+    <td><%= device.version %></td>
+    <td><%= device.source %></td>
+    <td><%= device.token %></td>
+    <td><%= device.user_id %></td>
+    <td><%= link_to 'Show', device %></td>
+    <td><%= link_to 'Edit', edit_device_path(device) %></td>
+    <td><%= link_to 'Destroy', device, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Device', new_device_path %>
