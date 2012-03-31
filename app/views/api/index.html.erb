@@ -1,0 +1,402 @@
+<h1>API 说明</h1>
+<pre>
+所有返回结果是json形式，utf-8编码;
+除去sign_up接口，所有请求都有token作为参数；
+所有应答都包括status，其中0=成功，>0 失败（message解释失败原因）
+客户端数据数据库包含如下信息：
+- token
+- salt
+- user_name
+- os
+- version
+- 缓存数据库
+
+产品模式下要带压缩模式参数
+</pre>
+
+<ul class="links">
+
+<li>
+  <h3>sign_up </h3>
+  <pre>注册接口:客户端本地没有token，认为是首次使用，需要用户选择所在城市提交，系统自动为手机/用户注册
+方法：POST
+请求参数：
+  did：设备号，用IMEI或者系统提供的唯一设备标志，或者客户端生成一个UUID
+  model：手机型号，比如sumsung nexus s
+  os：设备上运行的操作系统，比如 android 4.0.3/ios 4.3
+  version: 当前客户端版本号， ex: 1.0
+  source: 客户端安装来源
+应答：
+  token: 设备上用户会话令牌，标志用户成功登录，其他所有接口都必须把token作为参数
+  salt: 用户专用信息干扰参数</pre>
+  <form action="/api/sign_up" method="POST">
+    did: <input name="did"/> model: <input name="model"/> os: <input name='os'/> version: <input name="version"/> source: <input name="source"/> <br/>
+    <input type='submit' value="测试"/>
+  </form>
+</li>
+
+<li>
+  <h3>sync_config </h3>
+  <pre>配置同步接口： 每次客户端使用时首先调用这个接口来向服务器取得最新的配置信息
+方法：POST
+请求参数：
+  token
+  os：设备上运行的操作系统，比如 android 4.0.3/ios 4.3； 仅当本地记录与系统不符时才提供
+  version: 当前客户端版本号， ex: 1.0； 仅当本地记录与系统不符时才提供
+  hot_list_version: 客户端缓存的推荐球场列表版本
+  lat_lon: 用户当前经纬度坐标, 格式： xxx.xxxxxx|yyy.yyyyyy
+应答：
+  status/message
+  force_signup: 强制注册 （当前token无效）
+  latest_version: 最新客户端版本，需要提示用户更新  
+  update_url: 更新包地址
+  update_hot_list: 需要更新推荐球场列表
+</pre>
+  <form action="/api/sync_config" method="POST">
+    token: <input name="token"/> os: <input name='os'/> version: <input name="version"/> lat_lon:<input name='lat_lon'/><br/>
+    <input type='submit' value="测试"/>
+  </form>
+</li>
+
+<li>
+  <h3>config_user</h3>
+  <pre>设置用户信息，包括用户名，密码和新浪微薄token
+方法：POST
+请求参数：
+  token
+  name: 用户名
+  pass: 加密过的密码
+  sina_token: 新浪认证通过的token
+应答：
+  status/message</pre>
+  <form action="/api/config_user" method="POST">
+    token: <input name="token"/> name: <input name="name"/> pass: <input name="pass"/> sina_token: <input name="sina_token"/><br/>
+    <input type='submit' value="测试"/>
+  </form>
+</li>
+
+<li>
+  <h3>hot_list </h3>
+  <pre>推荐球场列表接口
+方法：GET
+请求参数：
+  token
+  lat|lon
+应答：
+  status/message
+  version: 列表版本
+  list[] = {
+    id: 球场ID
+    name: 球场名称
+    pic: 球场图片URL地址
+  }</pre>
+  <form action="/api/hot_list" method="GET">
+    token: <input name="token"/> <br/>
+    <input type='submit' value="测试"/>
+  </form>
+</li>
+
+<li>
+  <h3>course_list </h3>
+  <pre>球场列表接口
+方法：GET
+请求参数：
+  token
+  lat_lon
+  by: 排列标准（default|distance|price|hardness|view）
+应答：
+  status/message
+  list[] = {
+    id: 球场ID
+    name: 球场名称
+    logo: 球场图标URL地址
+    overall|distance|price|hardness|view: 评分|距离|价格|难度|风景
+  } </pre>
+  <form action="/api/course_list" method="POST">
+    token: <input name="token"/> by: <input name='by'/><br/>
+    <input type='submit' value="测试"/>
+  </form>
+</li>
+
+<li>
+  <h3>course_info </h3>
+  <pre>球场详细信息接口
+方法：GET
+请求参数：
+  token
+  id: 球场ID
+应答：
+  status/message
+  name: 名称
+  pic: 图片URL地址
+  description: 介绍
+  designer: 设计师
+  address: 地址
+  comments {: 评分
+    overall: 总平均
+    votes: 评分人数
+    view: 风景
+    cluture: 文化
+    hardness: 难度
+    candy: 球童
+    design: 设计
+    facility: 设施
+    recall: 回味
+    service: 服务
+    maintenance: 维护
+    price: 价格
+  }
+  prices[] { ：价格，第一个是官方
+    time_type: 时间类别（平日|假日）
+    price: 价格
+    telephone: 订场电话号码
+  }
+  </pre>
+  <form action="/api/" method="POST">
+    token: <input name="token"/> <br/>
+    <input type='submit' value="测试"/>
+  </form>
+</li>
+
+<li>
+  <h3>course_info </h3>
+  <pre>球场详细信息接口
+方法：GET
+请求参数：
+  token
+  id: 球场ID
+应答：
+  status/message
+course = {
+  name: 名称
+  pic: 图片URL地址
+  description: 介绍
+  designer: 设计师
+  address: 地址
+  followed: 是否已经关注
+  comments {: 评分
+    overall: 总平均
+    votes: 评分人数
+    view: 风景
+    cluture: 文化
+    hardness: 难度
+    candy: 球童
+    design: 设计
+    facility: 设施
+    recall: 回味
+    service: 服务
+    maintenance: 维护
+    price: 价格
+  }
+  prices[] { ：价格，第一个是官方
+    time_type: 时间类别（平日|假日）
+    price: 价格
+    telephone: 订场电话号码
+  }
+}
+  </pre>
+  <form action="/api/" method="POST">
+    token: <input name="token"/> <br/>
+    <input type='submit' value="测试"/>
+  </form>
+</li>
+
+<li>
+  <h3>fairway_map </h3>
+  <pre>球道图接口
+方法：GET
+请求参数：
+  token
+  course_id
+  
+应答：
+  status/message
+  </pre>
+  <form action="/api/" method="POST">
+    token: <input name="token"/> <br/>
+    <input type='submit' value="测试"/>
+  </form>
+</li>
+
+<li>
+  <h3>course_comment </h3>
+  <pre>球场评分接口
+方法：POST
+请求参数：
+  token
+  id: 球场ID
+  votes: 评分人数
+  overall: 总平均
+  view: 风景
+  culture: 文化
+  hardness: 难度
+  candy: 球童
+  design: 设计
+  facility: 设施
+  recall: 回味
+  service: 服务
+  maintenance: 维护
+  price: 价格
+应答：
+  status/message
+ </pre>
+  <form action="/api/course_comment" method="POST">
+    token: <input name="token"/> id: <input name='id'/> overall: <input name='overall'/>
+    view: <input name='view'/> culture <input name='culture'/> hardness <input name='hardness'/> candy <input name='candy'/>
+    design: <input name='design'/> facility: <input name='facility'/> recall: <input name='recall'/> service: <input name='service'/>
+    maintenance: <input name='maintenance'/> price: <input name='price'/><br/>
+    <input type='submit' value="测试"/>
+  </form>
+</li>
+
+<li>
+  <h3>follow_course </h3>
+  <pre>关注球场接口
+方法：POST
+请求参数：
+  token
+  id: 球场ID
+  off: =yes 取消关注
+应答：
+  status/message
+  </pre>
+  <form action="/api/add_favourite" method="POST">
+    token: <input name="token"/> off: <input name='off'/> <br/>
+    <input type='submit' value="测试"/>
+  </form>
+</li>
+
+<li>
+  <h3>search_suggest </h3>
+  <pre>搜索提示接口
+方法：GET
+请求参数：
+  token
+  key: 搜索关键字
+应答：
+  status/message
+  list[]:相关搜索提示词列表</pre>
+  <form action="/api/search_suggest" method="GET">
+    token: <input name="token"/> key: <input name='key'/><br/>
+    <input type='submit' value="测试"/>
+  </form>
+</li>
+
+<li>
+  <h3>my_comments </h3>
+  <pre>我评分过的球场列表接口
+方法：GET
+请求参数：
+  token
+应答：
+  status/message
+  list[] = {
+    id: 球场ID
+    name: 球场名称
+    logo: 球场图标URL地址
+    overall: 总平均分
+    mine: 我的评分
+  } </pre>
+  <form action="/api/my_comments" method="GET">
+    token: <input name="token"/> <br/>
+    <input type='submit' value="测试"/>
+  </form>
+</li>
+
+<li>
+  <h3>my_favourites </h3>
+  <pre>我收藏的球场列表接口
+方法：GET
+请求参数：
+  token
+  lat|lon
+应答：
+  status/message
+  list[] = {
+    id: 球场ID
+    name: 球场名称
+    logo: 球场图标URL地址
+    price: 订场价格
+    overall: 用户评分
+    distance: 距离
+  } </pre>
+  <form action="/api/my_favourites" method="GET">
+    token: <input name="token"/> <br/>
+    <input type='submit' value="测试"/>
+  </form>
+</li>
+
+<li>
+  <h3>area_list </h3>
+  <pre>地区列表接口，支持两级列表
+方法：GET
+请求参数：
+  token
+  lat|lon
+应答：
+  status/message
+  version: 列表版本
+  list[] = {
+    id: 地区ID
+    name: 地区名称
+    sub[] = { :下级地区列表 
+      id: 地区ID
+      name: 地区名称
+    }
+  }</pre>
+  <form action="/api/area_list" method="GET">
+    token: <input name="token"/> <br/>
+    <input type='submit' value="测试"/>
+  </form>
+</li>
+
+<li>
+  <h3>switch_user </h3>
+  <pre>切换用户：验证用户提供的用户名和密码，如果通过则绑定当前手机到已经存在的用户账号
+方法：POST
+请求参数：
+  token
+  name: 用户名
+  password: 密码
+应答：
+  status/message
+  token: 新的token
+  salt: 用户专用信息干扰参数</pre>
+  <form action="/api/switch_user" method="POST">
+    token: <input name="token"/> name: <input name="name"/> password: <input name="password"/><br/>
+    <input type='submit' value="测试"/>
+  </form>
+</li>
+
+<li>
+  <h3>find_password </h3>
+  <pre>找回密码接口，服务器会把密码发送到用户的邮箱
+方法：POST
+请求参数：
+  token
+应答：
+  status/message
+  </pre>
+  <form action="/api/find_password" method="POST">
+    token: <input name="token"/> <br/>
+    <input type='submit' value="测试"/>
+  </form>
+</li>
+
+<!--
+<li>
+  <h3> </h3>
+  <pre>接口
+方法：POST
+请求参数：
+  token
+应答：
+  status/message
+  </pre>
+  <form action="/api/" method="POST">
+    token: <input name="token"/> <br/>
+    <input type='submit' value="测试"/>
+  </form>
+</li>
+-->
+</ul>

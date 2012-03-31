@@ -1,0 +1,54 @@
+$ mysql.server start
+$ mysql -u root -p
+> create database ttgolf character set utf8;
+> grant all on ttgolf.* to r2g@'localhost' identified by "Life's Good";
+> flush privileges;
+
+
+$ rvm use 1.9.2
+
+$ rails new ttgolfbe -d mysql --skip-test-unit
+
+# enable in Gemfile: unicorn, capistrano,
+# add to Gemfile: will_paginate, annotate, rspec-rails(must be in dev or global)
+$ bundle install # --without production
+
+# edit database.yml to set password
+$ rake db:migrate
+
+# enable rspec
+$ rails generate rspec:install
+
+$ rm public/index.html
+
+# edit README
+# edit .gitignore
+
+$ git init
+$ git add
+$ git commit -m "init project"
+
+
+$ rails generate controller Api home
+$ unicorn 
+$ bundle exec rspec spec/controllers/api_controller_spec.rb 
+
+# models
+$ rails generate scaffold Device did:string model:string os:string version:string source:string token:string user_id:integer
+$ rails generate scaffold User name:string pass:string salt:string handicap:integer credit:integer
+$ rails generate scaffold Token user_id:integer source:string token:string auth_1:boolean
+
+$ rails generate scaffold Area name:string level:integer upper_area:integer active:boolean
+$ rails generate scaffold Club name:string area_id:integer address:string description:text logo_url:string designer:string courses:integer holes:integer score_users:integer score_total:decimal
+$ rails generate scaffold Course club_id:integer description:text holes:integer --map_id:integer --handicap:integer
+$ rails generate scaffold Hole course_id:integer number:integer par:integer map_id:integer yard_black:integer yard_blue:integer yard_white:integer yard_red:integer --handicap:integer
+$ rails generate scaffold Map lat_low:decimal lon_low:decimal lat_high:decimal lon_hith:decimal dim_x:integer dim_y:integer
+$ rails generate scaffold Image title:string description:text dir:string course_id:integer hole_id:integer
+
+$ rails generate scaffold Comment club_id:integer user_id:integer overall:decimal view:decimal hardiness:decimal design:decimal recall:decimal maintenance:decimal culture:decimal candy:decimal facility:decimal service:decimal price:decimal notes:string
+$ rails generate scaffold Score user_id:integer hole_id:integer score:integer ...
+$ rails generate scaffold Favorite user_id:integer course_id:integer
+$ rails generate scaffold Transaction user_id:integer action:string credit:integer 
+
+
+-- $ rails generate scaffold Golfer name:string role:string(designer|player) introduction:text
