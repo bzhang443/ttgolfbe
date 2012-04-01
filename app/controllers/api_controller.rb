@@ -192,6 +192,15 @@ class ApiController < ApplicationController
     render json: {:status=>0, :list=>list}      
   end
   
+  def area_list
+    list = [
+      {:id=>27,:name=>'北京'}, 
+      {:id=>17, :name=>'广东', :subs=>[{:id=>50, :name=>'珠海'}, {:id=>51, :name=>'佛山'}, {:id=>66, :name=>'广州'},  {:id=>254, :name=>'深圳'},  {:id=>135, :name=>'东莞'}]},
+      {:id=>4, :name=>'上海'}
+      ]
+    render json: {:status=>0, :list=>list}
+  end
+  
 private
   def check_token
     token = params[:token]

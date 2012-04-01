@@ -186,16 +186,9 @@
     }
     comments_mine {: 我的评分
       overall: 总平均
-      view: 风景
-      cluture: 文化
-      hardness: 难度
-      candy: 球童
-      design: 设计
-      facility: 设施
-      recall: 回味
-      service: 服务
-      maintenance: 维护
-      price: 价格
+      view: 风景  cluture: 文化  hardness: 难度   candy: 球童
+      design: 设计  facility: 设施  recall: 回味
+      service: 服务  maintenance: 维护  price: 价格
     }
     prices[] { ：价格，第一个是官方
       price_workdays: 平日价格
@@ -294,7 +287,30 @@
   </form>
 </li>
 
-<li>---------------完成线----------------</li>
+<li>
+  <h3>area_list </h3>
+  <pre>地区列表接口，支持两级列表
+方法：GET
+请求参数：
+  token
+应答：
+  status/message
+  list[] = {
+    id: 地区ID
+    name: 地区名称
+    subs[] = { :下级地区列表 
+      id: 地区ID
+      name: 地区名称
+    }
+  }</pre>
+  <form action="/api/area_list" method="GET">
+    token: <input name="token"/> <br/>
+    <input type='submit' value="测试"/>
+  </form>
+</li>
+
+<li>----------------以上完成----------------</li>
+<li>---------------以下待完成----------------</li>
 
 <li>
   <h3>fairway_map </h3>
@@ -343,29 +359,6 @@
   }</pre
   <form action="/api/search" method="GET">
     token: <input name="token"/> key: <input name='key'/><br/>
-    <input type='submit' value="测试"/>
-  </form>
-</li>
-
-<li>
-  <h3>area_list </h3>
-  <pre>地区列表接口，支持两级列表
-方法：GET
-请求参数：
-  token
-应答：
-  status/message
-  version: 列表版本
-  list[] = {
-    id: 地区ID
-    name: 地区名称
-    sub[] = { :下级地区列表 
-      id: 地区ID
-      name: 地区名称
-    }
-  }</pre>
-  <form action="/api/area_list" method="GET">
-    token: <input name="token"/> <br/>
     <input type='submit' value="测试"/>
   </form>
 </li>

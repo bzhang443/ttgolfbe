@@ -12,6 +12,7 @@ Ttgolfbe::Application.routes.draw do
   post "api/add_favorite"
   get "api/my_favorites"
   get "api/my_comments"
+  get "api/area_list"
   
   resources :comments
   resources :favorites
