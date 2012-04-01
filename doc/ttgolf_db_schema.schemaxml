@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemadesigner version="6.5">
+<source>
+<database charset="utf8" collation="utf8_unicode_ci">ttgolf</database>
+</source>
+<canvas zoom="100">
+<tables>
+<table name="areas" view="colnames">
+<left>130</left>
+<top>25</top>
+<width>121</width>
+<height>165</height>
+<sql_create_table>CREATE TABLE `areas` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `level` int(11) DEFAULT NULL,
+  `upper_area` int(11) DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_areas_upper` (`upper_area`),
+  CONSTRAINT `FK_areas_upper` FOREIGN KEY (`upper_area`) REFERENCES `areas` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci</sql_create_table>
+</table>
+<table name="clubs" view="colnames">
+<left>323</left>
+<top>86</top>
+<width>121</width>
+<height>276</height>
+<sql_create_table>CREATE TABLE `clubs` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `short_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `area_id` int(11) DEFAULT NULL,
+  `address` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `latitude` decimal(9,6) DEFAULT NULL,
+  `longitude` decimal(9,6) DEFAULT NULL,
+  `description` text COLLATE utf8_unicode_ci,
+  `logo_url` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `telephone` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `active` tinyint(1) DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_club_area` (`area_id`),
+  CONSTRAINT `FK_club_area` FOREIGN KEY (`area_id`) REFERENCES `areas` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci</sql_create_table>
+</table>
+<table name="courses" view="colnames">
+<left>517</left>
+<top>306</top>
+<width>126</width>
+<height>219</height>
+<sql_create_table>CREATE TABLE `courses` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `club_id` int(11) DEFAULT NULL,
+  `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `designer` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `description` text COLLATE utf8_unicode_ci,
+  `yards` int(11) DEFAULT NULL,
+  `holes` int(11) DEFAULT NULL,
+  `group_id` int(11) DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_course_club` (`club_id`),
+  KEY `FK_course_group` (`group_id`),
+  CONSTRAINT `FK_course_group` FOREIGN KEY (`group_id`) REFERENCES `courses` (`id`),
+  CONSTRAINT `FK_course_club` FOREIGN KEY (`club_id`) REFERENCES `clubs` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci</sql_create_table>
+</table>
+<table name="devices" view="colnames">
+<left>135</left>
+<top>654</top>
+<width>107</width>
+<height>222</height>
+<sql_create_table>CREATE TABLE `devices` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `did` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `model` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `os` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `version` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `source` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `token` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_device_user` (`user_id`),
+  CONSTRAINT `FK_device_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci</sql_create_table>
+</table>
+<table name="users" view="colnames">
+<left>392</left>
+<top>595</top>
+<width>113</width>
+<height>209</height>
+<sql_create_table>CREATE TABLE `users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `email` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `password` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `salt` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `sina_token` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `active` tinyint(1) DEFAULT '1',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci</sql_create_table>
+</table>
+<table name="holes" view="colnames">
+<left>802</left>
+<top>209</top>
+<width>102</width>
+<height>267</height>
+<sql_create_table>CREATE TABLE `holes` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `course_id` int(11) DEFAULT NULL,
+  `number` int(11) DEFAULT NULL,
+  `par` int(11) DEFAULT NULL,
+  `yard_black` int(11) DEFAULT NULL,
+  `yard_gold` int(11) DEFAULT NULL,
+  `yard_blue` int(11) DEFAULT NULL,
+  `yard_white` int(11) DEFAULT NULL,
+  `yard_red` int(11) DEFAULT NULL,
+  `map_id` int(11) DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_hole_course` (`course_id`),
+  KEY `FK_hole_map` (`map_id`),
+  CONSTRAINT `FK_hole_map` FOREIGN KEY (`map_id`) REFERENCES `maps` (`id`),
+  CONSTRAINT `FK_hole_course` FOREIGN KEY (`course_id`) REFERENCES `courses` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci</sql_create_table>
+</table>
+<table name="maps" view="colnames">
+<left>1040</left>
+<top>197</top>
+<width>131</width>
+<height>296</height>
+<sql_create_table>CREATE TABLE `maps` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `lat_left_lower` decimal(9,6) DEFAULT NULL,
+  `lon_left_lower` decimal(9,6) DEFAULT NULL,
+  `lat_right_lower` decimal(9,6) DEFAULT NULL,
+  `lon_right_lower` decimal(9,6) DEFAULT NULL,
+  `lat_left_higher` decimal(9,6) DEFAULT NULL,
+  `lon_left_higher` decimal(9,6) DEFAULT NULL,
+  `lat_right_higher` decimal(9,6) DEFAULT NULL,
+  `lon_right_higher` decimal(9,6) DEFAULT NULL,
+  `dim_x` int(11) DEFAULT NULL,
+  `dim_y` int(11) DEFAULT NULL,
+  `url` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci</sql_create_table>
+</table>
+<table name="images" view="colnames">
+<left>681</left>
+<top>12</top>
+<width>102</width>
+<height>182</height>
+<sql_create_table>CREATE TABLE `images` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `url` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `club_id` int(11) DEFAULT NULL,
+  `course_id` int(11) DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_image_course` (`course_id`),
+  KEY `FK_image_club` (`club_id`),
+  CONSTRAINT `FK_image_club` FOREIGN KEY (`club_id`) REFERENCES `clubs` (`id`),
+  CONSTRAINT `FK_image_course` FOREIGN KEY (`course_id`) REFERENCES `courses` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci</sql_create_table>
+</table>
+<table name="favorites" view="colnames">
+<left>143</left>
+<top>439</top>
+<width>110</width>
+<height>133</height>
+<sql_create_table>CREATE TABLE `favorites` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) DEFAULT NULL,
+  `course_id` int(11) DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_favorite_course` (`course_id`),
+  KEY `FK_favorite_user` (`user_id`),
+  CONSTRAINT `FK_favorite_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  CONSTRAINT `FK_favorite_course` FOREIGN KEY (`course_id`) REFERENCES `courses` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci</sql_create_table>
+</table>
+<table name="comments" view="colnames">
+<left>729</left>
+<top>679</top>
+<width>124</width>
+<height>341</height>
+<sql_create_table>CREATE TABLE `comments` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `course_id` int(11) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `overall` decimal(3,1) DEFAULT NULL,
+  `view` decimal(3,1) DEFAULT NULL,
+  `hardiness` decimal(3,1) DEFAULT NULL,
+  `design` decimal(3,1) DEFAULT NULL,
+  `recall` decimal(3,1) DEFAULT NULL,
+  `maintenance` decimal(3,1) DEFAULT NULL,
+  `culture` decimal(3,1) DEFAULT NULL,
+  `candy` decimal(3,1) DEFAULT NULL,
+  `facility` decimal(3,1) DEFAULT NULL,
+  `service` decimal(3,1) DEFAULT NULL,
+  `price` decimal(3,1) DEFAULT NULL,
+  `notes` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_comment_course` (`course_id`),
+  KEY `FK_comment_user` (`user_id`),
+  CONSTRAINT `FK_comment_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  CONSTRAINT `FK_comment_course` FOREIGN KEY (`course_id`) REFERENCES `courses` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci</sql_create_table>
+</table>
+<table name="prices" view="colnames">
+<left>1000</left>
+<top>606</top>
+<width>102</width>
+<height>182</height>
+<sql_create_table>CREATE TABLE `prices` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `course_id` int(11) DEFAULT NULL,
+  `time_slot` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `price` decimal(9,2) DEFAULT NULL,
+  `agent_id` int(11) DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_price_course` (`course_id`),
+  KEY `FK_price_agent` (`agent_id`),
+  CONSTRAINT `FK_price_agent` FOREIGN KEY (`agent_id`) REFERENCES `agents` (`id`),
+  CONSTRAINT `FK_price_course` FOREIGN KEY (`course_id`) REFERENCES `courses` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci</sql_create_table>
+</table>
+<table name="agents" view="colnames">
+<left>1182</left>
+<top>623</top>
+<width>102</width>
+<height>148</height>
+<sql_create_table>CREATE TABLE `agents` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `telephone` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci</sql_create_table>
+</table>
+</tables>
+</canvas>
+</schemadesigner>

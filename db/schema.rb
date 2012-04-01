@@ -30,6 +30,7 @@ ActiveRecord::Schema.define(:version => 20120401021106) do
 
   create_table "clubs", :force => true do |t|
     t.string   "name"
+    t.string   "short_name"
     t.integer  "area_id"
     t.string   "address"
     t.decimal  "latitude",    :precision => 9, :scale => 6
@@ -40,7 +41,6 @@ ActiveRecord::Schema.define(:version => 20120401021106) do
     t.boolean  "active"
     t.datetime "created_at",                                :null => false
     t.datetime "updated_at",                                :null => false
-    t.string   "short_name"
   end
 
   create_table "comments", :force => true do |t|
@@ -147,9 +147,9 @@ ActiveRecord::Schema.define(:version => 20120401021106) do
     t.string   "password"
     t.string   "salt"
     t.string   "sina_token"
+    t.boolean  "active",     :default => true
     t.datetime "created_at",                   :null => false
     t.datetime "updated_at",                   :null => false
-    t.boolean  "active",     :default => true
   end
 
 end
