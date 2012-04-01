@@ -4,6 +4,7 @@ describe User do
   pending "add some examples to (or delete) #{__FILE__}"
 end
 
+
 # == Schema Information
 #
 # Table name: users
@@ -16,5 +17,6 @@ end
 #  sina_token :string(255)
 #  created_at :datetime        not null
 #  updated_at :datetime        not null
+#  active     :boolean(1)      default(TRUE)
 #
 

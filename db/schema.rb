@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120331095805) do
+ActiveRecord::Schema.define(:version => 20120401021106) do
 
   create_table "agents", :force => true do |t|
     t.string   "name"
@@ -40,6 +40,7 @@ ActiveRecord::Schema.define(:version => 20120331095805) do
     t.boolean  "active"
     t.datetime "created_at",                                :null => false
     t.datetime "updated_at",                                :null => false
+    t.string   "short_name"
   end
 
   create_table "comments", :force => true do |t|
@@ -146,8 +147,9 @@ ActiveRecord::Schema.define(:version => 20120331095805) do
     t.string   "password"
     t.string   "salt"
     t.string   "sina_token"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",                   :null => false
+    t.datetime "updated_at",                   :null => false
+    t.boolean  "active",     :default => true
   end
 
 end

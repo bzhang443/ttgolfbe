@@ -1,6 +1,7 @@
 class Club < ActiveRecord::Base
 end
 
+
 # == Schema Information
 #
 # Table name: clubs
@@ -17,5 +18,6 @@ end
 #  active      :boolean(1)
 #  created_at  :datetime        not null
 #  updated_at  :datetime        not null
+#  short_name  :string(255)
 #
 

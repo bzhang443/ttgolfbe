@@ -35,7 +35,7 @@ $ bundle exec rspec spec/controllers/api_controller_spec.rb
 
 # models
 $ rails generate scaffold Area name:string level:integer upper_area:integer
-$ rails generate scaffold Club name:string area_id:integer address:string latitude:decimal longitude:decimal description:text logo_url:string telephone:string active:boolean
+$ rails generate scaffold Club name:string short_name:string area_id:integer address:string latitude:decimal longitude:decimal description:text logo_url:string telephone:string active:boolean
 $ rails generate scaffold Course club_id:integer name:string designer:string description:text yards:integer holes:integer group_id:integer
 $ rails generate scaffold Hole course_id:integer number:integer par:integer yard_black:integer yard_gold:integer yard_blue:integer yard_white:integer yard_red:integer map_id:integer 
 $ rails generate scaffold Map lat_left_lower:decimal lon_left_lower:decimal lat_right_lower:decimal lon_right_lower:decimal lat_left_higher:decimal lon_left_higher:decimal lat_right_higher:decimal lon_right_higher:decimal dim_x:integer dim_y:integer url:string 
@@ -45,7 +45,11 @@ $ rails generate scaffold Price course_id:integer time_slot:string price:decimal
 
 
 $ rails generate scaffold Device did:string model:string os:string version:string source:string token:string user_id:integer
-$ rails generate scaffold User name:string email:string password:string salt:string sina_token:string
+$ rails generate scaffold User name:string email:string password:string salt:string sina_token:string active:boolean
 
 $ rails generate scaffold Favorite user_id:integer course_id:integer
 $ rails generate scaffold Comment course_id:integer user_id:integer overall:decimal view:decimal hardiness:decimal design:decimal recall:decimal maintenance:decimal culture:decimal candy:decimal facility:decimal service:decimal price:decimal notes:string
+
+# migration
+-- $ rails generate migration AddActiveToUsers active:boolean
+-- $ rails generate migration AddShortNameToClubs short_name:string

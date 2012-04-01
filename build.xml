@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+
+<project name="ttgolf" default="deploy" basedir=".">
+	<target name='init'>
+		<tstamp>
+			<format pattern="ddMMyyyy" property="date.stamp" />
+		</tstamp>
+	</target>
+	<target name='deploy' depends='init'>
+		<zip basedir="." compress="true" destfile="ttgolf-${date.stamp}.zip">
+			<exclude name="config/database.yml" />
+			<exclude name="Gemfile" />
+			<exclude name="Gemfile.lock" />
+			<exclude name="build.xml" />
+			<exclude name=".project" />
+			<exclude name=".buildpath" />
+                        <exclude name=".sass-cache/**"/>
+                        <exclude name="README" />
+			<exclude name="doc/**" />
+			<exclude name="test/**" />
+			<exclude name="log/**" />
+			<exclude name="nbproject/**" />
+			<exclude name="tmp/**" />
+			<exclude name="**/.svn/**" />
+                        <exclude name="**/.git/**" />
+                        <exclude name="**/.gitkeep" />
+			<exclude name="*.zip" />
+			<exclude name="*.tgz" />
+		</zip>
+	</target>
+</project>
