@@ -1,30 +1,24 @@
 Ttgolfbe::Application.routes.draw do
-  resources :comments
-
-  resources :favorites
-
-  resources :users
-
-  resources :devices
-
-  resources :prices
-
-  resources :agents
-
-  resources :images
-
-  resources :maps
-
-  resources :holes
-
-  resources :courses
-
-  resources :clubs
-
-  resources :areas
-
   match 'api' => 'api#index'
-
+  post "api/sign_up"
+  post "api/sync_config"
+  post "api/config_user"
+  post "api/switch_user"
+  post "api/find_password"
+  
+  resources :comments
+  resources :favorites
+  resources :users
+  resources :devices
+  resources :prices
+  resources :agents
+  resources :images
+  resources :maps
+  resources :holes
+  resources :courses
+  resources :clubs
+  resources :areas
+  
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

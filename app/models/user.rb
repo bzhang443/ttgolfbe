@@ -1,4 +1,11 @@
 class User < ActiveRecord::Base
+  has_many :devices
+  def self.secure_get(name, password)
+    u = User.find_by_name name
+    return nil unless u
+    return u if password.eql?(u.password)
+    nil
+  end
 end
 
 
