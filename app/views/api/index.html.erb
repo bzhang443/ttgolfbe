@@ -118,17 +118,16 @@
 方法：GET
 请求参数：
   token
-  lat|lon
+  lat_lon: 用户当前经纬度坐标, 格式： xxx.xxxxxx|yyy.yyyyyy
 应答：
   status/message
-  version: 列表版本
   list[] = {
     id: 球场ID
     name: 球场名称
     pic: 球场图片URL地址
   }</pre>
   <form action="/api/hot_list" method="GET">
-    token: <input name="token"/> <br/>
+    token: <input name="token"/> lat_lon:<input name='lat_lon'/><br/>
     <input type='submit' value="测试"/>
   </form>
 </li>
@@ -139,7 +138,7 @@
 方法：GET
 请求参数：
   token
-  lat_lon
+  lat_lon: 用户当前经纬度坐标, 格式： xxx.xxxxxx|yyy.yyyyyy
   by: 排列标准（default|distance|price|hardness|view）
 应答：
   status/message
@@ -149,8 +148,8 @@
     logo: 球场图标URL地址
     overall|distance|price|hardness|view: 评分|距离|价格|难度|风景
   } </pre>
-  <form action="/api/course_list" method="POST">
-    token: <input name="token"/> by: <input name='by'/><br/>
+  <form action="/api/course_list" method="GET">
+    token: <input name="token"/> lat_lon:<input name='lat_lon'/> by: <input name='by'/><br/>
     <input type='submit' value="测试"/>
   </form>
 </li>
@@ -164,105 +163,59 @@
   id: 球场ID
 应答：
   status/message
-  name: 名称
-  pic: 图片URL地址
-  description: 介绍
-  designer: 设计师
-  address: 地址
-  comments {: 评分
-    overall: 总平均
-    votes: 评分人数
-    view: 风景
-    cluture: 文化
-    hardness: 难度
-    candy: 球童
-    design: 设计
-    facility: 设施
-    recall: 回味
-    service: 服务
-    maintenance: 维护
-    price: 价格
-  }
-  prices[] { ：价格，第一个是官方
-    time_type: 时间类别（平日|假日）
-    price: 价格
-    telephone: 订场电话号码
-  }
-  </pre>
-  <form action="/api/" method="POST">
-    token: <input name="token"/> <br/>
+  course= {
+    name: 名称
+    pic: 图片URL地址
+    description: 介绍
+    designer: 设计师
+    address: 地址
+    favorite: 是否关注
+    comments {: 评分
+      overall: 总平均
+      votes: 评分人数
+      view: 风景
+      cluture: 文化
+      hardness: 难度
+      candy: 球童
+      design: 设计
+      facility: 设施
+      recall: 回味
+      service: 服务
+      maintenance: 维护
+      price: 价格
+    }
+    comments_mine {: 我的评分
+      overall: 总平均
+      view: 风景
+      cluture: 文化
+      hardness: 难度
+      candy: 球童
+      design: 设计
+      facility: 设施
+      recall: 回味
+      service: 服务
+      maintenance: 维护
+      price: 价格
+    }
+    prices[] { ：价格，第一个是官方
+      price_workdays: 平日价格
+      price_holidays: 假日价格
+      telephone: 订场电话号码
+    }
+  }</pre>
+  <form action="/api/course_info" method="GET">
+    token: <input name="token"/> id:<input name='id'/> <br/>
     <input type='submit' value="测试"/>
   </form>
 </li>
 
 <li>
-  <h3>course_info </h3>
-  <pre>球场详细信息接口
-方法：GET
-请求参数：
-  token
-  id: 球场ID
-应答：
-  status/message
-course = {
-  name: 名称
-  pic: 图片URL地址
-  description: 介绍
-  designer: 设计师
-  address: 地址
-  followed: 是否已经关注
-  comments {: 评分
-    overall: 总平均
-    votes: 评分人数
-    view: 风景
-    cluture: 文化
-    hardness: 难度
-    candy: 球童
-    design: 设计
-    facility: 设施
-    recall: 回味
-    service: 服务
-    maintenance: 维护
-    price: 价格
-  }
-  prices[] { ：价格，第一个是官方
-    time_type: 时间类别（平日|假日）
-    price: 价格
-    telephone: 订场电话号码
-  }
-}
-  </pre>
-  <form action="/api/" method="POST">
-    token: <input name="token"/> <br/>
-    <input type='submit' value="测试"/>
-  </form>
-</li>
-
-<li>
-  <h3>fairway_map </h3>
-  <pre>球道图接口
-方法：GET
-请求参数：
-  token
-  course_id
-  
-应答：
-  status/message
-  </pre>
-  <form action="/api/" method="POST">
-    token: <input name="token"/> <br/>
-    <input type='submit' value="测试"/>
-  </form>
-</li>
-
-<li>
-  <h3>course_comment </h3>
+  <h3>comment_course </h3>
   <pre>球场评分接口
 方法：POST
 请求参数：
   token
   id: 球场ID
-  votes: 评分人数
   overall: 总平均
   view: 风景
   culture: 文化
@@ -275,9 +228,8 @@ course = {
   maintenance: 维护
   price: 价格
 应答：
-  status/message
- </pre>
-  <form action="/api/course_comment" method="POST">
+  status/message </pre>
+  <form action="/api/comment_course" method="POST">
     token: <input name="token"/> id: <input name='id'/> overall: <input name='overall'/>
     view: <input name='view'/> culture <input name='culture'/> hardness <input name='hardness'/> candy <input name='candy'/>
     design: <input name='design'/> facility: <input name='facility'/> recall: <input name='recall'/> service: <input name='service'/>
@@ -287,34 +239,36 @@ course = {
 </li>
 
 <li>
-  <h3>follow_course </h3>
+  <h3>add_favorite </h3>
   <pre>关注球场接口
 方法：POST
 请求参数：
   token
   id: 球场ID
-  off: =yes 取消关注
+  off: (=yes 取消关注)
 应答：
-  status/message
-  </pre>
-  <form action="/api/add_favourite" method="POST">
-    token: <input name="token"/> off: <input name='off'/> <br/>
+  status/message</pre>
+  <form action="/api/add_favorite" method="POST">
+    token: <input name="token"/> id: <input name='id'/> off: <input name='off'/> <br/>
     <input type='submit' value="测试"/>
   </form>
 </li>
 
 <li>
-  <h3>search_suggest </h3>
-  <pre>搜索提示接口
+  <h3>my_favorites </h3>
+  <pre>我收藏的球场列表接口
 方法：GET
 请求参数：
   token
-  key: 搜索关键字
 应答：
   status/message
-  list[]:相关搜索提示词列表</pre>
-  <form action="/api/search_suggest" method="GET">
-    token: <input name="token"/> key: <input name='key'/><br/>
+  list[] = {
+    id: 球场ID
+    name: 球场名称
+    logo: 球场图标URL地址
+  } </pre>
+  <form action="/api/my_favorites" method="GET">
+    token: <input name="token"/> <br/>
     <input type='submit' value="测试"/>
   </form>
 </li>
@@ -340,25 +294,55 @@ course = {
   </form>
 </li>
 
+<li>---------------完成线----------------</li>
+
 <li>
-  <h3>my_favourites </h3>
-  <pre>我收藏的球场列表接口
+  <h3>fairway_map </h3>
+  <pre>球道图接口
 方法：GET
 请求参数：
   token
-  lat|lon
+  course_id
+应答：
+  status/message
+  </pre>
+  <form action="/api/" method="POST">
+    token: <input name="token"/> <br/>
+    <input type='submit' value="测试"/>
+  </form>
+</li>
+
+<li>
+  <h3>search_suggest </h3>
+  <pre>搜索提示接口
+方法：GET
+请求参数：
+  token
+  key: 搜索关键字
+应答：
+  status/message
+  list[]:相关搜索提示词列表</pre>
+  <form action="/api/search_suggest" method="GET">
+    token: <input name="token"/> key: <input name='key'/><br/>
+    <input type='submit' value="测试"/>
+  </form>
+</li>
+
+<li>
+  <h3>search </h3>
+  <pre>球场搜索接口
+方法：GET
+请求参数：
+  token
+  key: 搜索关键字
 应答：
   status/message
   list[] = {
-    id: 球场ID
-    name: 球场名称
-    logo: 球场图标URL地址
-    price: 订场价格
-    overall: 用户评分
-    distance: 距离
-  } </pre>
-  <form action="/api/my_favourites" method="GET">
-    token: <input name="token"/> <br/>
+　　id:球场ID
+　　name: 球场名称
+  }</pre
+  <form action="/api/search" method="GET">
+    token: <input name="token"/> key: <input name='key'/><br/>
     <input type='submit' value="测试"/>
   </form>
 </li>
@@ -369,7 +353,6 @@ course = {
 方法：GET
 请求参数：
   token
-  lat|lon
 应答：
   status/message
   version: 列表版本

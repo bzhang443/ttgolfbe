@@ -1,5 +1,16 @@
 class Comment < ActiveRecord::Base
+  belongs_to :user
+  belongs_to :course
+  
+  before_save :update_overall
+  
+private
+  def update_overall
+    self.overall = (self.view + self.hardness + self.design + self.recall + self.maintenance + self.culture + self.candy + self.facility + 
+      self.service + self.price)/10
+  end
 end
+
 
 # == Schema Information
 #
@@ -10,7 +21,7 @@ end
 #  user_id     :integer(4)
 #  overall     :decimal(3, 1)
 #  view        :decimal(3, 1)
-#  hardiness   :decimal(3, 1)
+#  hardness    :decimal(3, 1)
 #  design      :decimal(3, 1)
 #  recall      :decimal(3, 1)
 #  maintenance :decimal(3, 1)

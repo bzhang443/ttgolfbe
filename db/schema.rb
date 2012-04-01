@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120401021106) do
+ActiveRecord::Schema.define(:version => 20120401084728) do
 
   create_table "agents", :force => true do |t|
     t.string   "name"
@@ -28,6 +28,8 @@ ActiveRecord::Schema.define(:version => 20120401021106) do
     t.datetime "updated_at", :null => false
   end
 
+  add_index "areas", ["upper_area"], :name => "FK_areas_upper"
+
   create_table "clubs", :force => true do |t|
     t.string   "name"
     t.string   "short_name"
@@ -38,17 +40,19 @@ ActiveRecord::Schema.define(:version => 20120401021106) do
     t.text     "description"
     t.string   "logo_url"
     t.string   "telephone"
-    t.boolean  "active"
-    t.datetime "created_at",                                :null => false
-    t.datetime "updated_at",                                :null => false
+    t.boolean  "active",                                    :default => true
+    t.datetime "created_at",                                                  :null => false
+    t.datetime "updated_at",                                                  :null => false
   end
+
+  add_index "clubs", ["area_id"], :name => "FK_club_area"
 
   create_table "comments", :force => true do |t|
     t.integer  "course_id"
     t.integer  "user_id"
     t.decimal  "overall",     :precision => 3, :scale => 1
     t.decimal  "view",        :precision => 3, :scale => 1
-    t.decimal  "hardiness",   :precision => 3, :scale => 1
+    t.decimal  "hardness",    :precision => 3, :scale => 1
     t.decimal  "design",      :precision => 3, :scale => 1
     t.decimal  "recall",      :precision => 3, :scale => 1
     t.decimal  "maintenance", :precision => 3, :scale => 1
@@ -62,17 +66,23 @@ ActiveRecord::Schema.define(:version => 20120401021106) do
     t.datetime "updated_at",                                :null => false
   end
 
+  add_index "comments", ["course_id"], :name => "FK_comment_course"
+  add_index "comments", ["user_id"], :name => "FK_comment_user"
+
   create_table "courses", :force => true do |t|
     t.integer  "club_id"
     t.string   "name"
     t.string   "designer"
     t.text     "description"
-    t.integer  "yards"
     t.integer  "holes"
     t.integer  "group_id"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+    t.string   "main_picture"
   end
+
+  add_index "courses", ["club_id"], :name => "FK_course_club"
+  add_index "courses", ["group_id"], :name => "FK_course_group"
 
   create_table "devices", :force => true do |t|
     t.string   "did"
@@ -86,12 +96,17 @@ ActiveRecord::Schema.define(:version => 20120401021106) do
     t.datetime "updated_at", :null => false
   end
 
+  add_index "devices", ["user_id"], :name => "FK_device_user"
+
   create_table "favorites", :force => true do |t|
     t.integer  "user_id"
     t.integer  "course_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
+
+  add_index "favorites", ["course_id"], :name => "FK_favorite_course"
+  add_index "favorites", ["user_id"], :name => "FK_favorite_user"
 
   create_table "holes", :force => true do |t|
     t.integer  "course_id"
@@ -107,6 +122,9 @@ ActiveRecord::Schema.define(:version => 20120401021106) do
     t.datetime "updated_at", :null => false
   end
 
+  add_index "holes", ["course_id"], :name => "FK_hole_course"
+  add_index "holes", ["map_id"], :name => "FK_hole_map"
+
   create_table "images", :force => true do |t|
     t.string   "title"
     t.string   "url"
@@ -115,6 +133,9 @@ ActiveRecord::Schema.define(:version => 20120401021106) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
+
+  add_index "images", ["club_id"], :name => "FK_image_club"
+  add_index "images", ["course_id"], :name => "FK_image_course"
 
   create_table "maps", :force => true do |t|
     t.decimal  "lat_left_lower",   :precision => 9, :scale => 6
@@ -140,6 +161,9 @@ ActiveRecord::Schema.define(:version => 20120401021106) do
     t.datetime "created_at",                               :null => false
     t.datetime "updated_at",                               :null => false
   end
+
+  add_index "prices", ["agent_id"], :name => "FK_price_agent"
+  add_index "prices", ["course_id"], :name => "FK_price_course"
 
   create_table "users", :force => true do |t|
     t.string   "name"

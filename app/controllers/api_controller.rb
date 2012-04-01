@@ -79,6 +79,119 @@ class ApiController < ApplicationController
     render json: {:status=>0, :message=>'密码已经发送，请查收'}
   end
   
+  def hot_list
+    lat_lon = params[:lat_lon]
+    return render json: {:status=>1, :message=>'缺少参数'} if lat_lon.blank?
+    x, y = lat_lon.split('|')
+    logger.debug("hot_list got request from (#{x},#{y})")
+    
+    list = Course.find(:all, 
+        :conditions => ["courses.id in (?)", [1,2,3]]
+    ).collect { |e| 
+      {:id=>e.id, :name=>e.name || e.club.name, :pic=>e.images ? e.images[0].url : ''}
+    }
+    
+    render json: {:status=>0, :list=>list}   
+  end
+  
+  def course_list
+    lat_lon = params[:lat_lon]
+    return render json: {:status=>1, :message=>'缺少参数'} if lat_lon.blank?
+    x, y = lat_lon.split('|')
+    logger.debug("hot_list got request from (#{x},#{y})")
+
+    by = params[:by]
+    return render json: {:status=>1, :message=>'缺少参数'} if by.blank?
+    
+    list = Course.find(:all, 
+        :conditions => ["courses.id in (?)", [1,2,3]]
+    ).collect { |e| 
+      {:id=>e.id, :name=>e.name || e.club.name, :logo=>e.club.logo_url}
+    }
+    
+    render json: {:status=>0, :list=>list}  
+  end
+  
+  def course_info
+    id = params[:id]
+    return render json: {:status=>1, :message=>'缺少参数'} if id.blank?
+    course = Course.find(id)
+    return render json: {:status=>14, :message=>'球场不存在'} unless course
+    info = {:name=>course.name || course.club.name}
+    if course.images
+      info[:pic] = course.images[0].url
+    end
+    info[:description] = course.description || course.club.description
+    info[:designer] = course.designer
+    info[:address] = course.club.address
+    
+    info[:favorite] = false
+    info[:comments] = {:overall=>8.0, :votes=>23, :view=>1.0, :culture=>2.0, :hardness=>3.0, :candy=>4.0, :design=>5.0, :facility=>6.0, :recall=>7.0, :service=>8.0, :maintenance=>9.0, :price=>10.0}
+    info[:comments_mine] = {:overall=>8.0, :view=>1.0, :culture=>2.0, :hardness=>3.0, :candy=>4.0, :design=>5.0, :facility=>6.0, :recall=>7.0, :service=>8.0, :maintenance=>9.0, :price=>10.0}
+    info[:prices] = [{:price_workdays=>600, :price_holidays=>1000, :telephone=>course.club.telephone}]
+    
+    render json: {:status=>0, :course=>info}
+  end
+  
+  def comment_course
+    id = params[:id]
+    return render json: {:status=>1, :message=>'缺少参数'} if id.blank?
+    course = Course.find(id)
+    return render json: {:status=>14, :message=>'球场不存在'} unless course  
+    p = {:view=>params[:view],:culture=>params[:culture],:hardness=>params[:hardness],
+      :candy=>params[:candy],:design=>params[:design],:facility=>params[:facility],:recall=>params[:recall],
+      :service=>params[:service],:maintenance=>params[:maintenance],:price=>params[:price]}
+
+    comment = Comment.find_by_user_id_and_course_id(@device.user.id, course.id)
+    if comment
+      comment.update_attributes(p)
+    else
+      Comment.create({:course_id=>course.id, :user_id=>@device.user.id}.merge(p))
+    end
+    
+    render json: {:status=>0}
+  end
+  
+  def add_favorite
+    id = params[:id]
+    return render json: {:status=>1, :message=>'缺少参数'} if id.blank?
+    course = Course.find(id)
+    return render json: {:status=>14, :message=>'球场不存在'} unless course  
+
+    record = Favorite.find_by_user_id_and_course_id(@device.user.id, course.id)
+    if record
+      if 'yes'.eql?(params[:off])
+        record.destroy
+      end
+    else
+      unless 'yes'.eql?(params[:off])
+        Favorite.create(:user_id=>@device.user.id, :course_id=>course.id)
+      end
+    end
+    
+    render json: {:status=>0}
+  end
+  
+  def my_favorites
+    list = Favorite
+      .find_all_by_user_id(@device.user_id)
+      .collect { |e|
+        {:id=>e.course.id, :name=>e.course.name || e.course.club.name, :logo=>e.course.club.logo_url}
+      }
+      
+    render json: {:status=>0, :list=>list}  
+  end
+  
+  def my_comments
+    list = Comment
+      .find_all_by_user_id(@device.user_id)
+      .collect { |e|
+        {:id=>e.course.id, :name=>e.course.name || e.course.club.name, :logo=>e.course.club.logo_url, :mine=>e.overall, :overall=>6.7}
+      }
+      
+    render json: {:status=>0, :list=>list}      
+  end
+  
 private
   def check_token
     token = params[:token]

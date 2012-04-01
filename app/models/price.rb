@@ -1,4 +1,6 @@
 class Price < ActiveRecord::Base
+  belongs_to :agent
+  belongs_to :course
 end
 
 # == Schema Information

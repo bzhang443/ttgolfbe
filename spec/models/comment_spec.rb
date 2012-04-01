@@ -4,6 +4,7 @@ describe Comment do
   pending "add some examples to (or delete) #{__FILE__}"
 end
 
+
 # == Schema Information
 #
 # Table name: comments
@@ -13,7 +14,7 @@ end
 #  user_id     :integer(4)
 #  overall     :decimal(3, 1)
 #  view        :decimal(3, 1)
-#  hardiness   :decimal(3, 1)
+#  hardness    :decimal(3, 1)
 #  design      :decimal(3, 1)
 #  recall      :decimal(3, 1)
 #  maintenance :decimal(3, 1)

@@ -1,4 +1,6 @@
 class Image < ActiveRecord::Base
+  belongs_to :course
+  belongs_to :club
 end
 
 # == Schema Information

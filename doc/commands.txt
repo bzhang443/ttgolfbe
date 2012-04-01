@@ -51,5 +51,5 @@ $ rails generate scaffold Favorite user_id:integer course_id:integer
 $ rails generate scaffold Comment course_id:integer user_id:integer overall:decimal view:decimal hardiness:decimal design:decimal recall:decimal maintenance:decimal culture:decimal candy:decimal facility:decimal service:decimal price:decimal notes:string
 
 # migration
--- $ rails generate migration AddActiveToUsers active:boolean
+$ rails generate migration SetDefaultActiveToClubs
 -- $ rails generate migration AddShortNameToClubs short_name:string

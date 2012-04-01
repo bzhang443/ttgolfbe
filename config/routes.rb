@@ -5,6 +5,13 @@ Ttgolfbe::Application.routes.draw do
   post "api/config_user"
   post "api/switch_user"
   post "api/find_password"
+  get "api/hot_list"
+  get "api/course_list"
+  get "api/course_info"
+  post "api/comment_course"
+  post "api/add_favorite"
+  get "api/my_favorites"
+  get "api/my_comments"
   
   resources :comments
   resources :favorites

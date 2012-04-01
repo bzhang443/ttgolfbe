@@ -9,6 +9,7 @@ class User < ActiveRecord::Base
 end
 
 
+
 # == Schema Information
 #
 # Table name: users
@@ -19,8 +20,8 @@ end
 #  password   :string(255)
 #  salt       :string(255)
 #  sina_token :string(255)
+#  active     :boolean(1)      default(TRUE)
 #  created_at :datetime        not null
 #  updated_at :datetime        not null
-#  active     :boolean(1)      default(TRUE)
 #
 

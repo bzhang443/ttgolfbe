@@ -1,4 +1,5 @@
 class Map < ActiveRecord::Base
+  has_one :hole
 end
 
 # == Schema Information
