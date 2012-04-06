@@ -2,7 +2,7 @@ class HolesController < ApplicationController
   # GET /holes
   # GET /holes.json
   def index
-    @holes = Hole.all
+    @holes = Hole.paginate(:page => params[:page])
 
     respond_to do |format|
       format.html # index.html.erb

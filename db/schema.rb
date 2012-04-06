@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120401084728) do
+ActiveRecord::Schema.define(:version => 20120406060424) do
 
   create_table "agents", :force => true do |t|
     t.string   "name"
@@ -74,7 +74,7 @@ ActiveRecord::Schema.define(:version => 20120401084728) do
     t.string   "name"
     t.string   "designer"
     t.text     "description"
-    t.integer  "holes"
+    t.integer  "hole_count"
     t.integer  "group_id"
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false

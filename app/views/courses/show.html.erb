@@ -2,13 +2,15 @@
 
 <p>
   <b>Club:</b>
-  <%= @course.club_id %>
+  <%= link_to @course.club.name, club_path(@course.club) %>
 </p>
 
+<% unless @course.name.eql?(@course.club.name) %>
 <p>
   <b>Name:</b>
   <%= @course.name %>
 </p>
+<% end %>
 
 <p>
   <b>Designer:</b>
@@ -21,20 +23,30 @@
 </p>
 
 <p>
-  <b>Yards:</b>
-  <%= @course.yards %>
-</p>
-
-<p>
   <b>Holes:</b>
-  <%= @course.holes %>
+<% if @course.hole_count.eql? @course.holes.count 
+  @course.holes.each do |hole| %> 
+  <%= link_to hole.number, hole_path(hole) %>
+<% end  else %>
+  <b><%=@course.hole_count%> recorded, but <%=@course.holes.count%> collected</b> 
+<% end %>
 </p>
 
+<% if @course.group_id %>
 <p>
   <b>Group:</b>
   <%= @course.group_id %>
 </p>
+<% end %>
 
+<% if @course.images %>
+<p>
+  <b>Images:</b>
+  <% @course.images.each do |image| %>
+    <%= image_tag image.url, :alt=>'img' %>
+  <% end %>
+</p>
+<% end %>
 
 <%= link_to 'Edit', edit_course_path(@course) %> |
 <%= link_to 'Back', courses_path %>

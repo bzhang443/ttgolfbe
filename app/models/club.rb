@@ -1,5 +1,6 @@
 class Club < ActiveRecord::Base
   belongs_to :area
+  has_many :courses
 end
 
 

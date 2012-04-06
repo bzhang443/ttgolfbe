@@ -1,5 +1,7 @@
 Ttgolfbe::Application.routes.draw do
+  match 'oss' => "oss#home"
   match 'api' => 'api#index'
+  
   post "api/sign_up"
   post "api/sync_config"
   post "api/config_user"

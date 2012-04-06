@@ -1,14 +1,11 @@
-<h1>Listing courses</h1>
+<h1>球道列表</h1>
 
 <table>
   <tr>
-    <th>Club</th>
-    <th>Name</th>
-    <th>Designer</th>
-    <th>Description</th>
-    <th>Yards</th>
+    <th>名称</th>
+    <th>设计师</th>
+    <th>介绍</th>
     <th>Holes</th>
-    <th>Group</th>
     <th></th>
     <th></th>
     <th></th>
@@ -16,20 +13,17 @@
 
 <% @courses.each do |course| %>
   <tr>
-    <td><%= course.club_id %></td>
     <td><%= course.name %></td>
     <td><%= course.designer %></td>
-    <td><%= course.description %></td>
-    <td><%= course.yards %></td>
-    <td><%= course.holes %></td>
-    <td><%= course.group_id %></td>
+    <td><%= boolean_tag course.description %></td>
+    <td><%= course.hole_count %></td>
     <td><%= link_to 'Show', course %></td>
     <td><%= link_to 'Edit', edit_course_path(course) %></td>
     <td><%= link_to 'Destroy', course, confirm: 'Are you sure?', method: :delete %></td>
   </tr>
 <% end %>
 </table>
-
+<%= will_paginate @courses %>
 <br />
 
 <%= link_to 'New Course', new_course_path %>

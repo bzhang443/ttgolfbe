@@ -1,16 +1,14 @@
-<h1>Listing clubs</h1>
+<h1>球会列表</h1>
 
 <table>
   <tr>
-    <th>Name</th>
-    <th>Area</th>
-    <th>Address</th>
-    <th>Latitude</th>
-    <th>Longitude</th>
-    <th>Description</th>
-    <th>Logo url</th>
-    <th>Telephone</th>
-    <th>Active</th>
+    <th>名称</th>
+    <th>地区</th>
+    <th>地址</th>
+    <th>坐标</th>
+    <th>介绍</th>
+    <th>图标</th>
+    <th>电话</th>
     <th></th>
     <th></th>
     <th></th>
@@ -19,21 +17,19 @@
 <% @clubs.each do |club| %>
   <tr>
     <td><%= club.name %></td>
-    <td><%= club.area_id %></td>
-    <td><%= club.address %></td>
-    <td><%= club.latitude %></td>
-    <td><%= club.longitude %></td>
-    <td><%= club.description %></td>
-    <td><%= club.logo_url %></td>
-    <td><%= club.telephone %></td>
-    <td><%= club.active %></td>
+    <td><%= club.area.name %></td>
+    <td><%= boolean_tag club.address %></td>
+    <td><%= boolean_tag club.latitude && club.longitude %></td>
+    <td><%= boolean_tag club.description %></td>
+    <td><%= boolean_tag club.logo_url %></td>
+    <td><%= boolean_tag club.telephone %></td>
     <td><%= link_to 'Show', club %></td>
     <td><%= link_to 'Edit', edit_club_path(club) %></td>
     <td><%= link_to 'Destroy', club, confirm: 'Are you sure?', method: :delete %></td>
   </tr>
 <% end %>
 </table>
-
+<%= will_paginate @clubs %>
 <br />
 
 <%= link_to 'New Club', new_club_path %>

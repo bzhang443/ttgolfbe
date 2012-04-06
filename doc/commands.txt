@@ -52,4 +52,9 @@ $ rails generate scaffold Comment course_id:integer user_id:integer overall:deci
 
 # migration
 $ rails generate migration SetDefaultActiveToClubs
--- $ rails generate migration AddShortNameToClubs short_name:string
+$ rails generate migration AddShortNameToClubs short_name:string
+
+# Add OSS in
+$ rails generate controller Oss home
+
+$ rails generate migration RenameHolesToHoleCountInCourses

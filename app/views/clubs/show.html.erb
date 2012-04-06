@@ -7,7 +7,7 @@
 
 <p>
   <b>Area:</b>
-  <%= @club.area_id %>
+  <%= @club.area.name %>
 </p>
 
 <p>
@@ -31,8 +31,8 @@
 </p>
 
 <p>
-  <b>Logo url:</b>
-  <%= @club.logo_url %>
+  <b>Logo:</b>
+  <%= url2img @club.logo_url %>
 </p>
 
 <p>
@@ -42,9 +42,20 @@
 
 <p>
   <b>Active:</b>
-  <%= @club.active %>
+  <%= boolean_tag @club.active %>
 </p>
 
+
+<p>
+<% if @club.courses 
+  @club.courses.each do |course| 
+%>
+<%= link_to "球道", course %> &nbsp;
+<% end 
+else %>
+没有球道信息
+<%  end %>
+</p>
 
 <%= link_to 'Edit', edit_club_path(@club) %> |
 <%= link_to 'Back', clubs_path %>

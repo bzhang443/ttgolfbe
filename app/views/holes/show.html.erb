@@ -2,7 +2,7 @@
 
 <p>
   <b>Course:</b>
-  <%= @hole.course_id %>
+  <%= link_to @hole.course.name || @hole.course.club.name, course_path(@hole.course) %>
 </p>
 
 <p>
@@ -42,7 +42,7 @@
 
 <p>
   <b>Map:</b>
-  <%= @hole.map_id %>
+  <%= url2img @hole.map.url%>
 </p>
 
 
