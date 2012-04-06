@@ -14,7 +14,7 @@
 
 <p>
   <b>类型:</b>
-  <%= @course.type %>
+  <%= @course.course_type %>
 </p>
 <!--
 <p>
@@ -54,4 +54,5 @@
 <% end %>
 
 <%= link_to 'Edit', edit_course_path(@course) %> |
-<%= link_to 'Back', courses_path %>
+<%= link_to 'Back', courses_path %> |
+<%= link_to 'Home', root_path %>

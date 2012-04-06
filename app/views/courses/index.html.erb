@@ -2,28 +2,28 @@
 
 <table>
   <tr>
+    <th></th>
     <th>名称</th>
     <th>类型</th>
     <th>介绍</th>
     <th>Holes</th>
     <th></th>
     <th></th>
-    <th></th>
   </tr>
 
 <% @courses.each do |course| %>
   <tr>
+    <td><%= course.id %></td>
     <td><%= course.name %></td>
-    <td><%= course.type %></td>
+    <td><%= course.course_type %></td>
     <td><%= boolean_tag course.description %></td>
     <td><%= course.hole_count %></td>
     <td><%= link_to 'Show', course %></td>
     <td><%= link_to 'Edit', edit_course_path(course) %></td>
-    <td><%= link_to 'Destroy', course, confirm: 'Are you sure?', method: :delete %></td>
   </tr>
 <% end %>
 </table>
 <%= will_paginate @courses %>
 <br />
 
-<%= link_to 'New Course', new_course_path %>
+<%= link_to 'Home', root_path %>

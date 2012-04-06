@@ -2,6 +2,7 @@
 
 <table>
   <tr>
+    <th></th>
     <th>名称</th>
     <th>短名</th>
     <th>地区</th>
@@ -12,11 +13,11 @@
     <th>电话</th>
     <th></th>
     <th></th>
-    <th></th>
   </tr>
 
 <% @clubs.each do |club| %>
   <tr>
+    <td><%= club.id %></td>
     <td><%= club.name %></td>
     <td><%= boolean_tag club.short_name %></td>
     <td><%= area_chain(club.area) %></td>
@@ -27,11 +28,10 @@
     <td><%= boolean_tag club.telephone %></td>
     <td><%= link_to 'Show', club %></td>
     <td><%= link_to 'Edit', edit_club_path(club) %></td>
-    <td><%= link_to 'Destroy', club, confirm: 'Are you sure?', method: :delete %></td>
   </tr>
 <% end %>
 </table>
 <%= will_paginate @clubs %>
 <br />
 
-<%= link_to 'New Club', new_club_path %>
+<%= link_to 'Home', root_path %>

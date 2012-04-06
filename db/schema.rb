@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120406101048) do
+ActiveRecord::Schema.define(:version => 20120406104203) do
 
   create_table "admins", :force => true do |t|
     t.string   "email",                                 :default => "", :null => false
@@ -90,7 +90,7 @@ ActiveRecord::Schema.define(:version => 20120406101048) do
   create_table "courses", :force => true do |t|
     t.integer  "club_id"
     t.string   "name"
-    t.string   "type"
+    t.string   "course_type"
     t.string   "designer"
     t.text     "description"
     t.integer  "hole_count"
