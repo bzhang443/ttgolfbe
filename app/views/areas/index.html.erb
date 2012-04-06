@@ -15,7 +15,7 @@
     <td><%= area.id %></td>
     <td><%= area.name %></td>
     <td><%= area.level %></td>
-    <td><%= area.upper.name %></td>
+    <td><%= area.upper_area ? area.upper.name : '' %></td>
     <td><%= link_to 'Show', area %></td>
     <td><%= link_to 'Edit', edit_area_path(area) %></td>
   </tr>
