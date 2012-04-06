@@ -13,6 +13,12 @@ module OssHelper
     end
   end
   
+  def alert_tag(value)
+    if value
+      image_tag "/images/alert.png", :alt=>"!"
+    end
+  end
+  
   def area_chain(area)
     if (area.upper)
       area.upper.name + '/' + area.name

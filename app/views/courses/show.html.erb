@@ -31,7 +31,7 @@
   <b>Holes:</b>
 <% if @course.hole_count.eql? @course.holes.count 
   @course.holes.each do |hole| %> 
-  <%= link_to hole.number, hole_path(hole) %>
+  <%= link_to image_tag(hole.map.url), hole_path(hole) %>
 <% end  else %>
   <b><%=@course.hole_count%> recorded, but <%=@course.holes.count%> collected</b> 
 <% end %>

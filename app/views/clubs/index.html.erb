@@ -3,6 +3,7 @@
 <table>
   <tr>
     <th></th>
+    <th></th>
     <th>名称</th>
     <th>短名</th>
     <th>地区</th>
@@ -17,6 +18,7 @@
 
 <% @clubs.each do |club| %>
   <tr>
+    <td><%= alert_tag club.comments  %></td>
     <td><%= club.id %></td>
     <td><%= club.name %></td>
     <td><%= boolean_tag club.short_name %></td>
@@ -25,7 +27,7 @@
     <td><%= boolean_tag club.latitude && club.longitude %></td>
     <!--<td><%= boolean_tag club.description %></td>-->
     <td><%= boolean_tag club.logo_url %></td>
-    <td><%= boolean_tag club.telephone %></td>
+    <td><%= boolean_tag club.telephone %></td>    
     <td><%= link_to 'Show', club %></td>
     <td><%= link_to 'Edit', edit_club_path(club) %></td>
   </tr>
