@@ -19,7 +19,7 @@
   <tr>
     <td><%= club.name %></td>
     <td><%= boolean_tag club.short_name %></td>
-    <td><%= club.area.name %></td>
+    <td><%= area_chain(club.area) %></td>
     <td><%= boolean_tag club.address %></td>
     <td><%= boolean_tag club.latitude && club.longitude %></td>
     <td><%= boolean_tag club.description %></td>

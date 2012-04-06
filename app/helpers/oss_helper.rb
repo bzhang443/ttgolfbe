@@ -11,5 +11,13 @@ module OssHelper
     else
       image_tag "/images/false.png", :alt=>"No"
     end
-  end  
+  end
+  
+  def area_chain(area)
+    if (area.upper)
+      area.upper.name + '/' + area.name
+    else
+      area.name
+    end
+  end
 end
