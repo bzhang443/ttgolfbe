@@ -1,4 +1,8 @@
 Ttgolfbe::Application.routes.draw do
+  devise_for :admins
+
+  root :to => "oss#home"
+  
   match 'oss' => "oss#home"
   match 'api' => 'api#index'
   

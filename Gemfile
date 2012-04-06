@@ -9,6 +9,8 @@ gem 'mysql2'
 
 gem 'jquery-rails'
 gem 'will_paginate'
+gem 'devise'
+
 #gem 'delayed_job_active_record'
 
 # To use ActiveModel has_secure_password
