@@ -3,7 +3,7 @@
 <table>
   <tr>
     <th>名称</th>
-    <th>设计师</th>
+    <th>类型</th>
     <th>介绍</th>
     <th>Holes</th>
     <th></th>
@@ -14,7 +14,7 @@
 <% @courses.each do |course| %>
   <tr>
     <td><%= course.name %></td>
-    <td><%= course.designer %></td>
+    <td><%= course.type %></td>
     <td><%= boolean_tag course.description %></td>
     <td><%= course.hole_count %></td>
     <td><%= link_to 'Show', course %></td>
