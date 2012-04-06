@@ -2,6 +2,7 @@
 
 <table>
   <tr>
+    <th></th>
     <th>Name</th>
     <th>Level</th>
     <th>Upper area</th>
@@ -12,6 +13,7 @@
 
 <% @areas.each do |area| %>
   <tr>
+    <td><%= area.id %></td>
     <td><%= area.name %></td>
     <td><%= area.level %></td>
     <td><%= area.upper_area %></td>
