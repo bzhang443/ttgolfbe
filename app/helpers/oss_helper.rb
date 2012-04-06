@@ -1,7 +1,7 @@
 module OssHelper
   def url2img (url)
-    if url
-      image_tag url, :alt=>url
+    unless url.blank?
+      image_tag url, :alt=>url||''
     end    
   end
   
