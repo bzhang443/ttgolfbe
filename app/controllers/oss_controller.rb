@@ -24,11 +24,9 @@ class OssController < ApplicationController
   end
   
   def club_list
-    
+    @list = []
     area = params[:area]
-    if area.blank?
-      @list = Club.all
-    else
+    unless area.blank?
       @list = Club.find(:all, 
         :joins => :area,
         :conditions => ["area_id=? or areas.upper_area=?", area, area]
