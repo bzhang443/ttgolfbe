@@ -28,7 +28,7 @@
 </p>
 
 <p>
-  <b>Holes:</b>
+  <b>Holes:</b><br/>
 <% if @course.hole_count.eql? @course.holes.count 
   @course.holes.each do |hole| %> 
   <%= link_to image_tag(hole.map.url), hole_path(hole) %>
