@@ -4,6 +4,10 @@ Ttgolfbe::Application.routes.draw do
   root :to => "oss#home"
   
   match 'oss' => "oss#home"
+  get 'oss/area_list'
+  get 'oss/club_list' 
+  
+  
   match 'api' => 'api#index'
   
   post "api/sign_up"

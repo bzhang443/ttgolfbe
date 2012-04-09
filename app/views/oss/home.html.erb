@@ -1,13 +1,12 @@
-                         <% if admin_signed_in? %>
-                            Welcome <%= current_admin.email %>
-                            <%= link_to "Sign out", destroy_admin_session_path, method: :delete %>
-                          <% else %>
-                            <%= link_to "Sign in", new_admin_session_path %>  
-                          <% end %>  
+<% if admin_signed_in? %>
+  Welcome <%= current_admin.email.split('@')[0] %> &nbsp; &nbsp;
+  <%= link_to "Sign out", destroy_admin_session_path, method: :delete %>
+<% else %>
+  <%= link_to "Sign in", new_admin_session_path %>  
+<% end %>  
 
 <h1>OSS</h1>
 <ul>
   <li><%= link_to '球会列表', clubs_path %></li>
-  <li><%= link_to '球道列表', courses_path %></li>
-  <li><%= link_to '地区列表', areas_path %></li>
+  <li><%= link_to '地区列表', '/oss/area_list' %></li>
 </ul>

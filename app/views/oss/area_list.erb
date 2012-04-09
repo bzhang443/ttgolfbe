@@ -1,0 +1,26 @@
+<h1>球场地区分布</h1>
+
+<table>
+  <tr>
+
+    <th>地区</th>
+    <th>数量</th>
+  </tr>
+<% @list.each do |k, v| %>
+  <tr>
+
+    <td><b><%= v[:name] %></b></td>
+    <td><%= link_to v[:count], "/oss/club_list?area=#{k}" %></td>
+  </tr>
+  <% if v[:subs].size > 0 
+        v[:subs].each do |s|
+  %>
+  <tr>
+
+    <td> - <%= s[:name] %></td>
+    <td><%= link_to s[:count], "/oss/club_list?area=#{s[:id]}" %></td>  
+  </tr>
+  <%  end; end %>
+<% end %>
+</table>
+  
