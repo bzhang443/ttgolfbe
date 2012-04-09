@@ -1,10 +1,15 @@
+<% if notice %>
+<p class="notice"><%= notice %></p>
+<% end %>
+<% if alert %>
+<p class="alert"><%= alert %></p>
+<% end %>
 <% if admin_signed_in? %>
   Welcome <%= current_admin.email.split('@')[0] %> &nbsp; &nbsp;
   <%= link_to "Sign out", destroy_admin_session_path, method: :delete %>
 <% else %>
   <%= link_to "Sign in", new_admin_session_path %>  
 <% end %>  
-
 <h1>OSS</h1>
 <ul>
   <li><%= link_to '球会列表', clubs_path %></li>
