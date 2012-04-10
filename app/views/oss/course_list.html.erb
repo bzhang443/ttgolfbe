@@ -1,0 +1,32 @@
+<h1>球场列表 - <%= area_chain(@area) %></h1>
+
+<table>
+  <tr>
+    <th></th>
+    <th>名称</th>
+    <th>短名</th>
+    <th>球洞</th>
+    <th>地址</th>
+    <th>坐标</th>
+    <th>介绍</th>
+    <th>图标</th>
+    <th>电话</th>
+  </tr>
+
+<% @list.each do |c| %>
+  <tr>
+    <td><%= alert_tag c.club.comments  %></td>
+    <td><%= link_to c.name||c.club.name, oss_course_info_path(:id=>c.id) %></td>
+    <td><%= c.club.short_name %></td>
+    <td><%= c.hole_count %></td>
+    <td><%= boolean_tag c.club.address %></td>
+    <td><%= boolean_tag c.club.latitude && c.club.longitude %></td>
+    <td><%= boolean_tag c.club.description %></td>
+    <td><%= boolean_tag c.club.logo_url %></td>
+    <td><%= boolean_tag c.club.telephone %></td>    
+  </tr>
+<% end %>
+</table>
+<br />
+
+<%= link_to 'Back', oss_area_list_path %>

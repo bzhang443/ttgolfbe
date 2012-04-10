@@ -23,14 +23,19 @@ class OssController < ApplicationController
     logger.debug @list
   end
   
-  def club_list
+  def course_list
     @list = []
     area = params[:area]
     unless area.blank?
-      @list = Club.find(:all, 
-        :joins => :area,
-        :conditions => ["area_id=? or areas.upper_area=?", area, area]
+      @list = Course.find(:all, 
+        :joins => "join clubs on courses.club_id = clubs.id join areas on clubs.area_id=areas.id",
+        :conditions => ["clubs.area_id=? or areas.upper_area=?", area, area]
       )
+      @area = Area.find(area)
     end
+  end
+  
+  def course_info
+    @course = Course.find(params[:id])
   end
 end

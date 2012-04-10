@@ -1,0 +1,43 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <table>
+    <tr>
+      <td>
+        <% unless @course.name.eql?(@course.club.name) %>
+          <b>Name:</b> <%= @course.name %>
+        <% end %>
+        <b>球会:</b> <%= link_to @course.club.name, @course.club %> <br/>
+        <b>短名:</b> <%= @course.club.short_name %> <br/>
+        <b>类型:</b> <%= @course.course_type %> <br/>
+        <b>地址:</b> <%= @course.club.address %> <br/>
+        <b>电话:</b> <%= @course.club.telephone %>    
+      </td>
+      <td>
+        <%= url2img @course.club.logo_url %>
+      </td>
+    </tr>
+  </table>
+  <%= @course.description || @course.club.description %> <br/>
+  <b>Holes:</b> <%= @course.hole_count %> <br/>
+<% if @course.hole_count.eql? @course.holes.count 
+  @course.holes.each do |hole| %> 
+  <%= link_to image_tag(hole.map.url), hole_path(hole) %>
+<% end  else %>
+  <b><%=@course.hole_count%> recorded, but <%=@course.holes.count%> collected</b> 
+<% end %>
+</p>
+
+<% if @course.group_id %>
+  <b>Group:</b> <%= @course.group_id %> <br/>
+<% end %>
+
+<% if @course.images %>
+  <b>Images:</b>
+  <% @course.images.each do |image| %>
+    <%= image_tag image.url, :alt=>'img' %>
+  <% end %>
+<% end %>
+</p>
+
+<%= link_to 'Home', root_path %>

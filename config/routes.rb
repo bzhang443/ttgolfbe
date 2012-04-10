@@ -5,7 +5,8 @@ Ttgolfbe::Application.routes.draw do
   
   match 'oss' => "oss#home"
   get 'oss/area_list'
-  get 'oss/club_list' 
+  get 'oss/course_list' 
+  get 'oss/course_info' 
   
   
   match 'api' => 'api#index'

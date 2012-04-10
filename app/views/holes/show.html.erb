@@ -1,47 +1,29 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <b>Course:</b>
-  <%= link_to @hole.course.name || @hole.course.club.name, course_path(@hole.course) %>
-</p>
+  <b>Course:</b>  <%= link_to @hole.course.name || @hole.course.club.name, course_path(@hole.course) %><br/>
 
-<p>
-  <b>Number:</b>
-  <%= @hole.number %>
-</p>
+  <b>Number:</b>  <%= @hole.number %> <br/>
 
-<p>
-  <b>Par:</b>
-  <%= @hole.par %>
-</p>
+<table>
+  <tr>
+    <th>Par</th>
+    <th>红</th>
+    <th>白</th>
+    <th>蓝</th>
+    <th>黄</th>
+    <th>黑</th>
+  </tr>
+  <tr>
+    <td><%= @hole.par %></td>
+    <td><%= @hole.yard_red %></td>
+    <td><%= @hole.yard_white %></td>
+    <td><%= @hole.yard_blue %></td>
+    <td><%= @hole.yard_gold %></td>
+    <td><%= @hole.yard_black %></td>
+  </tr>
+</table><br/>
 
-<p>
-  <b>Yard black:</b>
-  <%= @hole.yard_black %>
-</p>
-
-<p>
-  <b>Yard gold:</b>
-  <%= @hole.yard_gold %>
-</p>
-
-<p>
-  <b>Yard blue:</b>
-  <%= @hole.yard_blue %>
-</p>
-
-<p>
-  <b>Yard white:</b>
-  <%= @hole.yard_white %>
-</p>
-
-<p>
-  <b>Yard red:</b>
-  <%= @hole.yard_red %>
-</p>
-
-<p>
-  <b>Map:</b>
   <%= url2img @hole.map.url%>
 </p>
 

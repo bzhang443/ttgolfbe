@@ -3,19 +3,19 @@
 <table>
   <tr>
     <th>地区</th>
-    <th>数量</th>
+    <th>球场数量</th>
   </tr>
 <% @list.each do |k, v| %>
   <tr>
     <td><b><%= v[:name] %></b></td>
-    <td><%= link_to v[:count], oss_club_list_path(:area=>k) %></td>
+    <td><%= link_to v[:count], oss_course_list_path(:area=>k) %></td>
   </tr>
   <% if v[:subs].size > 0 
         v[:subs].each do |s|
   %>
   <tr>
     <td> &nbsp; - <%= s[:name] %></td>
-    <td><%= link_to s[:count], oss_club_list_path(:area=>s[:id]) %></td>  
+    <td><%= link_to s[:count], oss_course_list_path(:area=>s[:id]) %></td>  
   </tr>
   <%  end; end %>
 <% end %>

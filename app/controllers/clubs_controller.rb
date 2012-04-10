@@ -4,7 +4,8 @@ class ClubsController < ApplicationController
   # GET /clubs
   # GET /clubs.json
   def index
-    @clubs = Club.paginate(:page => params[:page])
+    # @clubs = Club.paginate(:page => params[:page])
+    @clubs = Club.all
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @clubs }
