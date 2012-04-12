@@ -12,8 +12,10 @@ class ApiController < ApplicationController
     return render json: {:status=>1, :message=>'缺少参数'} if did.blank? || model.blank? || os.blank?  || source.blank?
     
     device = Device.find_or_create(did, model, os, version, source)
+    ret = {:status => 0, :token => device.token}
+    ret[:user_name] = device.user.name if device.user.name
     
-    render json: {:status => 0, :token => device.token}
+    render json: ret
   end
 
   def sync_config

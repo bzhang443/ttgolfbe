@@ -3,11 +3,12 @@
 所有返回结果是json形式，utf-8编码;
 除去sign_up接口，所有请求都有token作为参数；
 所有应答都包括status，其中0=成功，>0 失败（message解释失败原因）
-客户端数据数据库包含如下信息：
-- token: 用户令牌
+手机客户端数据库包含如下信息：
+- token: 通信会话令牌，标志手机在系统中成功注册过，其他所有接口都必须把token作为参数
 - user_name: 用户名，没有表示用户没有设置过
-- os: 设备上安装的操作系统和版本号 
-- sina_token :新浪认证令牌，没有表示没有绑定新浪微博
+- os: 手机上安装的操作系统和版本号 
+- sina_token: 新浪认证令牌，没有表示没有绑定新浪微博
+- area_id: 用户选择的地区ID，没有表示按照“附近”
 - 缓存数据库
 
 产品模式下：
@@ -22,7 +23,7 @@
 
 <li>
   <h3>sign_up </h3>
-  <pre>注册接口:客户端本地没有token，认为是首次使用，系统自动为手机/用户注册
+  <pre>注册接口:客户端本地没有token，认为是首次使用，系统自动为手机注册
 方法：POST
 请求参数：
   did：设备号，用IMEI或者系统提供的唯一设备标志，或者客户端生成一个UUID
@@ -31,7 +32,8 @@
   version: 当前客户端版本号， ex: 1.0
   source: 客户端安装来源
 应答：
-  token: 设备上用户会话令牌，标志用户成功登录，其他所有接口都必须把token作为参数</pre>
+  token
+  user_name: 如果用户设置过</pre>
   <form action="/api/sign_up" method="POST">
     did: <input name="did"/> model: <input name="model"/> os: <input name='os'/> version: <input name="version"/> source: <input name="source"/> <br/>
     <input type='submit' value="测试"/>

@@ -5,6 +5,7 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: clubs
@@ -22,5 +23,6 @@ end
 #  active      :boolean(1)      default(TRUE)
 #  created_at  :datetime        not null
 #  updated_at  :datetime        not null
+#  comments    :text
 #
 
