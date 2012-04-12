@@ -1,8 +1,11 @@
 <% c = @data['course'] %>
 <%= c['name'] %> <br/>
-<%= image_tag c['pic'] %> <br/>
+<% c['pics'].each do |p| %>
+<%= image_tag p %> 
+<% end %>
+<br/>
 <b>
-类型: <%= c['course_type']||'山地' %>  设计师:  <%= c['designer']||'David M.Dale' %> <br/>
+类型: <%= c['type']||'山地' %>  设计师:  <%= c['designer']||'David M.Dale' %> <br/>
 </b>
 <%= c['description'][0..100] %> <br/>
 综合: <%= c['comments']['overall'] %>(<%= c['comments']['votes'] %>人评分)<br/>

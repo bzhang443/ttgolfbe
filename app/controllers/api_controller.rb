@@ -42,12 +42,13 @@ class ApiController < ApplicationController
     course = Course.find(id)
     return render json: {:status=>14, :message=>'球场不存在'} unless course
     info = {:name=>course.name || course.club.name}
-    if course.images
-      info[:pic] = course.images[0].url
-    end
+    info[:pics] = course.images.collect { |i| i.url }
+
     info[:description] = course.description || course.club.description
-    info[:designer] = course.designer
+    info[:designer] = course.designer ||'David M.Dale'
+    info[:type] = course.course_type || '山地'
     info[:address] = course.club.address
+    info[:lat_lon] = "#{course.club.latitude}|#{course.club.longitude}"
     
     info[:favorite] = false
     info[:comments] = {:overall=>8.0, :votes=>23, :view=>1.0, :culture=>2.0, :hardness=>3.0, :candy=>4.0, :design=>5.0, :facility=>6.0, :recall=>7.0, :service=>8.0, :maintenance=>9.0, :price=>10.0}
