@@ -25,11 +25,10 @@ class ApiController < ApplicationController
   def course_list
     return render json: {:status=>1, :message=>'缺少参数'} if params[:lat_lon].blank? && params[:area_id].blank?
     
-    courses = Course.find(:all, :conditions => ["courses.id in (?)", [1,2,3]])
-    hot = courses.collect { |e| 
+    hot = Course.find(:all, :conditions => ["courses.id in (?)", [9,8,7]]).collect { |e| 
       {:id=>e.id, :name=>e.name || e.club.name, :pic=>e.images ? e.images[0].url : ''}
     }
-    list = courses.collect { |e| 
+    list = Course.find(:all, :conditions => ["courses.id in (?)", [1,3,5,7,11,12,15,20]]).collect { |e| 
       {:id=>e.id, :name=>e.name || e.club.name, :logo=>e.club.logo_url, :lat_lon=>"#{e.club.latitude}|#{e.club.longitude}",
         :overall=>rand_rank, :price=>rand_rank, :hardness=>rand_rank, :view=>rand_rank}
     }   
@@ -208,6 +207,6 @@ private
   end  
   
   def rand_rank
-    "#{rand(9)}.#{rand(9)}"
+    "#{5+rand(5)}.#{rand(9)}"
   end
 end
