@@ -1,0 +1,26 @@
+<% c = @data['course'] %>
+<%= c['name'] %> <br/>
+<%= image_tag c['pic'] %> <br/>
+<b>
+类型: <%= c['course_type']||'山地' %>  设计师:  <%= c['designer']||'David M.Dale' %> <br/>
+</b>
+<%= c['description'][0..100] %> <br/>
+综合: <%= c['comments']['overall'] %>(<%= c['comments']['votes'] %>人评分)<br/>
+风景: <%= c['comments']['view'] %>  &nbsp;&nbsp; 难度: <%= c['comments']['hardness'] %><br/>
+维护: <%= c['comments']['maintenance'] %>  &nbsp;&nbsp; 价格: <%= c['comments']['price'] %><br/>
+<%=link_to '地图', ''%>&nbsp;&nbsp;
+<%=link_to '关注', ''%>&nbsp;&nbsp;
+<%=link_to '评分', ''%>&nbsp;&nbsp;
+<%=link_to '球道图', ''%><br/>
+<table>
+  <tr>
+    <th>平日价格</th><th>假日价格</th><th>致电订场</th>
+  </tr>
+  <% c['prices'].each do |p| %>
+  <tr>
+    <td><%=p['price_workdays']%></td>
+    <td><%=p['price_holidays']%></td>
+    <td><%=p['telephone']%></td>
+  </tr>
+  <% end %>
+</table>
