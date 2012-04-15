@@ -105,16 +105,9 @@ class ApiController < ApplicationController
     hole = Hole.find(id)
     return render json: {:status=>14, :message=>'球洞不存在'} unless hole
     
-    render json: {:status=>0, :url=> hole.map.url}
-    
-    #render :content_type => 'application/octet-stream', :text => Proc.new {|response, output|
-    #  # do something that reads data and writes it to output
-    #}
-
-    #send_file '/path/to.jpeg', :type => 'image/jpeg', :disposition => 'inline'
-    #uri = URI.parse(hole.map.url)
-    #data = Net::HTTP.get(uri)
-    #send_data data, :type => 'image/jpeg', :disposition => 'inline'
+    # render json: {:status=>0, :url=> hole.map.url}
+    data = Net::HTTP.get(URI.parse(hole.map.url))
+    send_data data, :type => 'image/jpeg', :disposition => 'inline'
   end
   
   def comment_course

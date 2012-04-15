@@ -26,9 +26,7 @@
       <% end %>
     </td>
     <td> 
-      <div id="map_<%=c['id']%>">
-        <%= link_to 'Load', client_fairway_map_path('id'=>c['id']), :remote=>true %>
-      </div> 
+      <%= image_tag api_fairway_map_path('id'=>c['id'], 'token'=>@token) %>
     </td>
   </tr>
   <% end %>
