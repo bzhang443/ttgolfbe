@@ -1,0 +1,35 @@
+<% d = @data['list'] %>
+<table>
+  <tr>
+    <th>Number</th><th>Info</th><th>Map</th>
+  </tr>
+  <% d.each do |c|%>
+  <tr>
+    <td><%= c['number'] %></td>
+    <td>
+      Par: <%= c['par'] %> <br/>
+      Yards: <br/>
+      - 红: <%= c['yards']['red'] %> <br/>
+      - 白: <%= c['yards']['white'] %> <br/>
+      - 蓝: <%= c['yards']['blue'] %> <br/>
+      - 金: <%= c['yards']['gold'] %> <br/>
+      - 黑: <%= c['yards']['black'] %> <br/>
+      <% if c['corners'] %>
+      坐标: <br/>
+      - 左下: <%= c['corners']['left_lower'] %> <br/>
+      - 右下: <%= c['corners']['right_lower'] %> <br/>
+      - 左上: <%= c['corners']['left_upper'] %> <br/>
+      - 右上: <%= c['corners']['right_upper'] %> <br/>
+      <% end %>
+      <% if c['dim'] %>
+      图片尺寸: <%= c['dim'] %>
+      <% end %>
+    </td>
+    <td> 
+      <div id="map_<%=c['id']%>">
+        <%= link_to 'Load', client_fairway_map_path('id'=>c['id']), :remote=>true %>
+      </div> 
+    </td>
+  </tr>
+  <% end %>
+</table>

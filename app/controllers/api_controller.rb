@@ -1,4 +1,6 @@
 # encoding: utf-8
+require 'net/http'
+
 class ApiController < ApplicationController
   before_filter :check_token, :except => [:index, :sign_up]
   
@@ -41,21 +43,78 @@ class ApiController < ApplicationController
     return render json: {:status=>1, :message=>'缺少参数'} if id.blank?
     course = Course.find(id)
     return render json: {:status=>14, :message=>'球场不存在'} unless course
-    info = {:name=>course.name || course.club.name}
+    info = {:id => course.id, :name => course.name || course.club.name}
     info[:pics] = course.images.collect { |i| i.url }
 
     info[:description] = course.description || course.club.description
     info[:designer] = course.designer ||'David M.Dale'
     info[:type] = course.course_type || '山地'
-    info[:address] = course.club.address
     info[:lat_lon] = "#{course.club.latitude}|#{course.club.longitude}"
     
     info[:favorite] = false
     info[:comments] = {:overall=>8.0, :votes=>23, :view=>1.0, :culture=>2.0, :hardness=>3.0, :candy=>4.0, :design=>5.0, :facility=>6.0, :recall=>7.0, :service=>8.0, :maintenance=>9.0, :price=>10.0}
     info[:comments_mine] = {:overall=>8.0, :view=>1.0, :culture=>2.0, :hardness=>3.0, :candy=>4.0, :design=>5.0, :facility=>6.0, :recall=>7.0, :service=>8.0, :maintenance=>9.0, :price=>10.0}
-    info[:prices] = [{:price_workdays=>600, :price_holidays=>1000, :telephone=>course.club.telephone}]
-    
+    info[:prices] = [{:workdays=>600, :holidays=>1000, :telephone=>course.club.telephone}]
+    info[:holes] = [1,2,3,4,5]
     render json: {:status=>0, :course=>info}
+  end
+  
+  def fairway_list
+    id = params[:id]
+    return render json: {:status=>1, :message=>'缺少参数'} if id.blank?    
+    course = Course.find(id)
+    return render json: {:status=>14, :message=>'球场不存在'} unless course  
+    
+    holes = []
+    Hole.find(:all,
+      :include => 'map',
+      :conditions => ['course_id = ?', id],
+      :order => 'number'
+    ).each { |e|
+      hole = {:id => e.id, :number => e.number, :par=> e.par}
+      yards = {}
+      yards['red'] = e.yard_red unless e.yard_red.blank?
+      yards['white'] = e.yard_white unless e.yard_white.blank?
+      yards['blue'] = e.yard_blue unless e.yard_blue.blank?
+      yards['gold'] = e.yard_gold unless e.yard_gold.blank?
+      yards['black'] = e.yard_black unless e.yard_black.blank?
+      hole['yards'] = yards
+      map = e.map
+      if map
+        if map.lat_left_lower
+          corners = {}
+          corners[:left_lower]  = "#{map.lat_left_lower}|#{map.lon_left_lower}"
+          corners[:right_lower] = "#{map.lat_right_lower}|#{map.lon_right_lower}"
+          corners[:left_upper]  = "#{map.lat_left_higher}|#{map.lon_left_higher}"
+          corners[:right_upper] = "#{map.lat_right_higher}|#{map.lon_right_higher}"
+          hole[:corners] = corners
+        end
+        if map.dim_x
+          hole[:dim] = "#{map.dim_x}|#{map.dim_y}"
+        end
+      end
+      holes << hole
+    }  
+    
+    render json: {:status=>0, :list=>holes}
+  end
+  
+  def fairway_map
+    id = params[:id]
+    return render json: {:status=>1, :message=>'缺少参数'} if id.blank?    
+    hole = Hole.find(id)
+    return render json: {:status=>14, :message=>'球洞不存在'} unless hole
+    
+    render json: {:status=>0, :url=> hole.map.url}
+    
+    #render :content_type => 'application/octet-stream', :text => Proc.new {|response, output|
+    #  # do something that reads data and writes it to output
+    #}
+
+    #send_file '/path/to.jpeg', :type => 'image/jpeg', :disposition => 'inline'
+    #uri = URI.parse(hole.map.url)
+    #data = Net::HTTP.get(uri)
+    #send_data data, :type => 'image/jpeg', :disposition => 'inline'
   end
   
   def comment_course
@@ -98,8 +157,7 @@ class ApiController < ApplicationController
   end
   
   def my_favorites
-    list = Favorite
-      .find_all_by_user_id(@device.user_id)
+    list = Favorite.find_all_by_user_id(@device.user_id)
       .collect { |e|
         {:id=>e.course.id, :name=>e.course.name || e.course.club.name, :logo=>e.course.club.logo_url}
       }
@@ -108,8 +166,7 @@ class ApiController < ApplicationController
   end
   
   def my_comments
-    list = Comment
-      .find_all_by_user_id(@device.user_id)
+    list = Comment.find_all_by_user_id(@device.user_id)
       .collect { |e|
         {:id=>e.course.id, :name=>e.course.name || e.course.club.name, :logo=>e.course.club.logo_url, :mine=>e.overall, :overall=>6.7}
       }
@@ -119,9 +176,9 @@ class ApiController < ApplicationController
   
   def area_list
     list = [
-      {:id=>27,:name=>'北京'}, 
-      {:id=>17, :name=>'广东', :subs=>[{:id=>50, :name=>'珠海'}, {:id=>51, :name=>'佛山'}, {:id=>66, :name=>'广州'},  {:id=>254, :name=>'深圳'},  {:id=>135, :name=>'东莞'}]},
-      {:id=>4, :name=>'上海'}
+      {:id=>27, :name=>'北京', :courses=> 67}, 
+      {:id=>17, :name=>'广东', :courses=> 70, :subs=>[{:id=>50, :name=>'珠海', :courses=> 8}, {:id=>51, :name=>'佛山', :courses=> 12}, {:id=>66, :name=>'广州', :courses=> 20},  {:id=>254, :name=>'深圳', :courses=> 9},  {:id=>135, :name=>'东莞', :courses=> 5}]},
+      {:id=>4, :name=>'上海', :courses=> 32}
       ]
     render json: {:status=>0, :list=>list}
   end

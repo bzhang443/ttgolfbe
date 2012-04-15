@@ -10,6 +10,7 @@ gem 'mysql2'
 gem 'jquery-rails'
 gem 'will_paginate'
 gem 'devise'
+# gem 'bson'
 
 #gem 'delayed_job_active_record'
 

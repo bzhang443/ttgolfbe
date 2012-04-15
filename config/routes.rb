@@ -2,7 +2,9 @@ Ttgolfbe::Application.routes.draw do
   match 'client' => "client#home"
   get 'client/course_list'
   get 'client/course_info'
-
+  get 'client/fairway_list'
+  get 'client/fairway_map'
+  
   devise_for :admins
 
   root :to => "oss#home"
@@ -10,11 +12,9 @@ Ttgolfbe::Application.routes.draw do
   match 'oss' => "oss#home"
   get 'oss/area_list'
   get 'oss/course_list' 
-  get 'oss/course_info' 
-  
+  get 'oss/course_info'
   
   match 'api' => 'api#index'
-  
   post "api/sign_up"
   post "api/sync_config"
   post "api/config_user"
@@ -28,6 +28,8 @@ Ttgolfbe::Application.routes.draw do
   get "api/my_favorites"
   get "api/my_comments"
   get "api/area_list"
+  get "api/fairway_list"
+  get "api/fairway_map"
   
   resources :comments
   resources :favorites

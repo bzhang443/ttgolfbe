@@ -22,4 +22,17 @@ class ClientController < ApplicationController
     @data = JSON(res)
   end
   
+  def fairway_list
+    uri = URI.parse(APIBASE + "fairway_list?token=#{TOKEN}&id=#{params[:id]}")
+    res = Net::HTTP.get(uri)
+    @data = JSON(res)
+  end  
+  
+  def fairway_map
+    uri = URI.parse(APIBASE + "fairway_map?token=#{TOKEN}&id=#{params[:id]}")
+    res = Net::HTTP.get(uri)
+    @data = JSON(res)
+    @data['id'] = params[:id]
+    render :layout=>false 
+  end  
 end

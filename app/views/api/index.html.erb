@@ -1,6 +1,6 @@
 <h1>API 说明</h1>
 <pre>
-所有返回结果是json形式，utf-8编码;
+除去fairway_map接口，所有返回结果是json形式，utf-8编码; fairway_map返回球道图的二进制流
 除去sign_up接口，所有请求都有token作为参数；
 所有应答都包括status，其中0=成功，>0 失败（message解释失败原因）
 手机客户端数据库包含如下信息：
@@ -58,6 +58,7 @@
     force_quit: 显示message后强制退出
     latest_version: 最新版本
     update_url: 更新包地址
+    course_list_cache_expire: 球场列表缓存时间，以秒为单位，默认3600
     server_time: 服务器端时间
   }</pre>
   <form action="/api/sync_config" method="POST">
@@ -68,7 +69,7 @@
 
 <li>
   <h3>course_list </h3>
-  <pre>球场列表，本地缓存，时效1小时，超时重新请求，如果响应中没有数据表示本地版本继续有效，缓存续约1小时
+  <pre>球场列表，本地缓存，时效在sync_config中配置，超时重新请求，如果响应中没有数据表示本地版本继续有效，缓存续约
 方法：GET
 请求参数：
   token
@@ -114,9 +115,8 @@
     description: 介绍
     designer: 设计师
     type: 类型
-    address: 地址
     lat_lon: 坐标
-    favorite: 是否关注
+    favorite: 是否关注过
     comments {: 评分
       overall: 总平均
       votes: 评分人数
@@ -131,20 +131,58 @@
       maintenance: 维护
       price: 价格
     }
-    comments_mine {: 我的评分
+    comments_mine {: 我的评分, 没有表示尚未评分
       overall: 总平均
-      view: 风景  cluture: 文化  hardness: 难度   candy: 球童
-      design: 设计  facility: 设施  recall: 回味
-      service: 服务  maintenance: 维护  price: 价格
+      view|cluture|hardness|candy|design|facility|recall|service|maintenance|price: 风景|文化|难度|球童|设计|设施|回味|服务|维护|价格
     }
-    prices[] { ：价格，第一个是官方
-      price_workdays: 平日价格
-      price_holidays: 假日价格
+    prices[] { : 价格，第一个是官方
+      workday: 平日价格
+      holiday: 假日价格
       telephone: 订场电话号码
     }
   }</pre>
   <form action="/api/course_info" method="GET">
     token: <input name="token"/> id:<input name='id'/> <br/>
+    <input type='submit' value="测试"/>
+  </form>
+</li>
+
+<li>
+  <h3>fairway_list </h3>
+  <pre>球道图列表
+方法：GET
+请求参数：
+  token
+  id: 球场ID
+应答：
+  status/message
+  holes[] {: 球道图列表，按照球洞号码顺序排列，请求球道图时球道ID作为fairway_map的ID参数
+    id: 球道ID
+    lat_lons { :图片四角经纬坐标，格式： xxx.xxxxxx|yyy.yyyyyy，如果没有表示球道图未经测量
+      left_lower: 左下角
+      right_lower: 右下下角
+      left_upper: 左上角
+      right_upper: 右上角
+    }
+    dim: 图片尺寸， x|y
+  } </pre>
+  <form action="/api/faireay_list" method="GET">
+    token: <input name="token"/> ID: <input name='id'/> <br/>
+    <input type='submit' value="测试"/>
+  </form>
+</li>
+
+<li>
+  <h3>fairway_map </h3>
+  <pre>球道图接口
+方法：GET
+请求参数：
+  token
+  id: 球道ID
+应答：
+  球道图的二进制流</pre>
+  <form action="/api/faireay_map" method="GET">
+    token: <input name="token"/> ID: <input name='id'/> <br/>
     <input type='submit' value="测试"/>
   </form>
 </li>
@@ -237,7 +275,8 @@
 
 <li>
   <h3>area_list </h3>
-  <pre>地区列表接口，支持两级列表
+  <pre>球场分布地区列表，只返回有球场的地区，只支持两级列表；客户端在显示地区列表时，自动增加“附近”作为第一个选项；
+用户改变地区选择后，要调用course_list接口更新球场信息
 方法：GET
 请求参数：
   token
@@ -246,9 +285,11 @@
   list[] = {
     id: 地区ID
     name: 地区名称
+    courses: 球场数量
     subs[] = { :下级地区列表 
       id: 地区ID
       name: 地区名称
+      courses: 球场数量
     }
   }</pre>
   <form action="/api/area_list" method="GET">
@@ -310,21 +351,6 @@
 <li>----------------以上完成----------------</li>
 <li>---------------以下待完成----------------</li>
 
-<li>
-  <h3>fairway_map </h3>
-  <pre>球道图接口
-方法：GET
-请求参数：
-  token
-  course_id
-应答：
-  status/message
-  </pre>
-  <form action="/api/" method="POST">
-    token: <input name="token"/> <br/>
-    <input type='submit' value="测试"/>
-  </form>
-</li>
 
 <li>
   <h3>search_suggest </h3>
