@@ -4,6 +4,7 @@ Ttgolfbe::Application.routes.draw do
   get 'client/course_info'
   get 'client/fairway_list'
   get 'client/fairway_map'
+  get 'client/course_map'
   
   devise_for :admins
 
