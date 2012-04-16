@@ -234,6 +234,51 @@ class ApiController < ApplicationController
     render json: {:status=>0, :message=>'密码已经发送，请查收'}
   end  
   
+  def search_suggest
+    key = params[:key]
+    return render json: {:status=>1, :message=>'缺少参数'} if key.blank?
+    list = ["北京#{key}", "#{key}国际", "#{key}高尔夫"]
+    render json: {:status=>0, :list=>list} 
+  end
+  
+  def key_search
+    key = params[:key]
+    return render json: {:status=>1, :message=>'缺少参数'} if key.blank?
+    list = Club.find(:all, 
+      :conditions=>['name like ?', "%#{key}%"],
+      :limit=>16
+    ).collect{ |e|
+      {:id=>e.id, :name=>e.name}
+    }
+    render json: {:status=>0, :list=>list}     
+  end
+  
+  KM1 = 0.01
+  def map_search
+    return render json: {:status=>1, :message=>'缺少参数'} if params[:center].blank? || params[:radius].blank?
+    center = params[:center]
+    centx = center.split('|')[0].to_f
+    centy = center.split('|')[1].to_f
+    radius = params[:radius].to_i
+    r = radius * KM1
+    list = Club.find(:all, 
+      :conditions=>['latitude between ? and ? and longitude between ? and ?', centx-r, centx+r, centy-r, centy+r],
+      :limit=>16
+    ).collect{ |e|
+      {:id=>e.id, :name=>e.short_name, :lat_lon=>"#{e.latitude}|#{e.longitude}"}
+    }
+    if list.size<1 && radius<100
+      r = 100 * KM1
+      list = Club.find(:all, 
+        :conditions=>['latitude between ? and ? and longitude between ? and ?', centx-r, centx+r, centy-r, centy+r],
+        :limit=>16
+      ).collect{ |e|
+        {:id=>e.id, :name=>e.short_name, :lat_lon=>"#{e.latitude}|#{e.longitude}" }
+      }
+    end
+    render json: {:status=>0, :list=>list} 
+  end
+  
   def hot_list
     lat_lon = params[:lat_lon]
     return render json: {:status=>1, :message=>'缺少参数'} if lat_lon.blank?

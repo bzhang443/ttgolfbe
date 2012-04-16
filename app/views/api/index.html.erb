@@ -348,13 +348,9 @@
   </form>
 </li>
 
-<li>----------------以上完成----------------</li>
-<li>---------------以下待完成----------------</li>
-
-
 <li>
   <h3>search_suggest </h3>
-  <pre>搜索提示接口
+  <pre>根据用户输入，提示可能的搜索关键字
 方法：GET
 请求参数：
   token
@@ -369,8 +365,8 @@
 </li>
 
 <li>
-  <h3>search </h3>
-  <pre>球场搜索接口
+  <h3>key_search </h3>
+  <pre>球场搜索-关键字
 方法：GET
 请求参数：
   token
@@ -380,32 +376,34 @@
   list[] = {
 　　id:球场ID
 　　name: 球场名称
-  }</pre
-  <form action="/api/search" method="GET">
+  }</pre>
+  <form action="/api/key_search" method="GET">
     token: <input name="token"/> key: <input name='key'/><br/>
     <input type='submit' value="测试"/>
   </form>
 </li>
 
 <li>
-  <h3><strike>废除 hot_list </strike></h3>
-  <pre>推荐球场列表接口，合并到course_list中
+  <h3>map_search </h3>
+  <pre>球场搜索-地图
 方法：GET
 请求参数：
   token
-  lat_lon: 用户当前经纬度坐标, 格式： xxx.xxxxxx|yyy.yyyyyy
+  center: 地图中心坐标（xxx.xxxxxx|yyy.yyyyyy）
+  radius: 搜索半径(单位：公里)
 应答：
   status/message
   list[] = {
-    id: 球场ID
-    name: 球场名称
-    pic: 球场图片URL地址
+　　id:球场ID
+   lat_lon: 球场坐标
+　　name: 球场名称（短名）
   }</pre>
-  <form action="/api/hot_list" method="GET">
-    token: <input name="token"/> lat_lon:<input name='lat_lon'/><br/>
+  <form action="/api/map_search" method="GET">
+    token: <input name="token"/> center: <input name='center'/> radius: <input name='radius'/> <br/>
     <input type='submit' value="测试"/>
   </form>
 </li>
+
 
 <!--
 <li>

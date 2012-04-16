@@ -29,6 +29,14 @@ class ClientController < ApplicationController
     render :layout=>false, :locals=>{:lat=>lat, :lon=>lon, :name=>params['name']}
   end
   
+  def course_comments
+    
+  end
+  
+  def comment_course
+    
+  end
+  
   def fairway_list
     uri = URI.parse(APIBASE + "fairway_list?token=#{TOKEN}&id=#{params[:id]}")
     res = Net::HTTP.get(uri)

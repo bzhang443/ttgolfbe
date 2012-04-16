@@ -31,6 +31,9 @@ Ttgolfbe::Application.routes.draw do
   get "api/area_list"
   get "api/fairway_list"
   get "api/fairway_map"
+  get 'api/search_suggest'
+  get 'api/key_search'
+  get 'api/map_search'
   
   resources :comments
   resources :favorites
