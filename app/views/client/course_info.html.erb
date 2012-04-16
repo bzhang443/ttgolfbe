@@ -11,7 +11,7 @@
 综合: <%= c['comments']['overall'] %>(<%= c['comments']['votes'] %>人评分)<br/>
 风景: <%= c['comments']['view'] %>  &nbsp;&nbsp; 难度: <%= c['comments']['hardness'] %><br/>
 维护: <%= c['comments']['maintenance'] %>  &nbsp;&nbsp; 价格: <%= c['comments']['price'] %><br/>
-<% unless c['lat_lon'].blank? %>
+<% unless c['lat_lon'].blank? || c['lat_lon']=='|' %>
 <%=link_to '地图', client_course_map_path(:name=>c['name'], :lat_lon=>c['lat_lon'])%>&nbsp;&nbsp;
 <% end %>
 <%=link_to '关注', ''%>&nbsp;&nbsp;
