@@ -89,10 +89,11 @@
     name: 球场名称
     logo: 球场图标URL地址
     lat_lon: 球场经纬度坐标, 格式： xxx.xxxxxx|yyy.yyyyyy
-    overall: 评分
-    price: 价格
-    hardness: 难度
-    view: 风景
+    overall: 总平均分
+    price: 价格指数
+    hardness: 难度指数
+    view: 风景指数
+    cost: 价格（以元为单位）
   } </pre>
   <form action="/api/course_list" method="GET">
     token: <input name="token"/> lat_lon:<input name='lat_lon'/> area_id: <input name='area_id'/>version: <input name='version'/><br/>
@@ -166,7 +167,7 @@
     }
     dim: 图片尺寸， x|y
   } </pre>
-  <form action="/api/faireay_list" method="GET">
+  <form action="/api/fairway_list" method="GET">
     token: <input name="token"/> ID: <input name='id'/> <br/>
     <input type='submit' value="测试"/>
   </form>
@@ -181,7 +182,7 @@
   id: 球道ID
 应答：
   球道图的二进制流(image/jpeg)</pre>
-  <form action="/api/faireay_map" method="GET">
+  <form action="/api/fairway_map" method="GET">
     token: <input name="token"/> ID: <input name='id'/> <br/>
     <input type='submit' value="测试"/>
   </form>

@@ -1,11 +1,5 @@
 Ttgolfbe::Application.routes.draw do
-  match 'client' => "client#home"
-  get 'client/course_list'
-  get 'client/course_info'
-  get 'client/fairway_list'
-  get 'client/fairway_map'
-  get 'client/course_map'
-  
+
   devise_for :admins
 
   root :to => "oss#home"
