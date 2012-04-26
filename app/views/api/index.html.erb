@@ -166,6 +166,14 @@
       right_upper: 右上角
     }
     dim: 图片尺寸， x|y
+    pois { : 各个测量点在图上的相对左上角坐标，格式是 x|y
+      green_center: 果岭中心
+      tee_red: 红Tee
+      tee_white: 白Tee
+      tee_blue: 蓝Tee
+      tee_gold: 金Tee
+      tee_black: 黑Tee
+    }
   } </pre>
   <form action="/api/fairway_list" method="GET">
     token: <input name="token"/> ID: <input name='id'/> <br/>
@@ -246,6 +254,8 @@
     id: 球场ID
     name: 球场名称
     logo: 球场图标URL地址
+    overall: 总平均分
+    cost: 价格
   } </pre>
   <form action="/api/my_favorites" method="GET">
     token: <input name="token"/> <br/>

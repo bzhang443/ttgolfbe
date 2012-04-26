@@ -27,7 +27,7 @@ class ApiController < ApplicationController
   def course_list
     return render json: {:status=>1, :message=>'缺少参数'} if params[:lat_lon].blank? && params[:area_id].blank?
     
-    hot = Course.find(:all, :conditions => ["courses.id in (?)", [104,538,1139]]).collect { |e| 
+    hot = Course.find(:all, :conditions => ["courses.id in (?)", [1134,538,1139]]).collect { |e| 
       {:id=>e.id, :name=>e.name || e.club.name, :pic=>e.images ? e.images[0].url : ''}
     }
     list = Course.find(:all, :conditions => ["courses.id in (?)", [1133,1165,104,538,1139,1184]]).collect { |e| 
@@ -82,15 +82,25 @@ class ApiController < ApplicationController
       map = e.map
       if map
         if map.lat_left_lower
-          corners = {}
-          corners[:left_lower]  = "#{map.lat_left_lower}|#{map.lon_left_lower}"
-          corners[:right_lower] = "#{map.lat_right_lower}|#{map.lon_right_lower}"
-          corners[:left_upper]  = "#{map.lat_left_higher}|#{map.lon_left_higher}"
-          corners[:right_upper] = "#{map.lat_right_higher}|#{map.lon_right_higher}"
-          hole[:corners] = corners
+          hole[:corners] = {
+            :left_lower  => "#{map.lat_left_lower}|#{map.lon_left_lower}",
+            :right_lower => "#{map.lat_right_lower}|#{map.lon_right_lower}",
+            :left_upper  => "#{map.lat_left_higher}|#{map.lon_left_higher}",
+            :right_upper => "#{map.lat_right_higher}|#{map.lon_right_higher}"
+          }
         end
         if map.dim_x
           hole[:dim] = "#{map.dim_x}|#{map.dim_y}"
+        end
+        if map.position_green_center
+          hole[:pois] = {
+            :green_center => map.position_green_center, 
+            :tee_red      => map.position_tee_red, 
+            :tee_white    => map.position_tee_white, 
+            :tee_blue     => map.position_tee_blue, 
+            :tee_gold     => map.position_tee_gold, 
+            :tee_black    => map.position_tee_black              
+          }
         end
       end
       holes << hole
@@ -152,7 +162,7 @@ class ApiController < ApplicationController
   def my_favorites
     list = Favorite.find_all_by_user_id(@device.user_id)
       .collect { |e|
-        {:id=>e.course.id, :name=>e.course.name || e.course.club.name, :logo=>e.course.club.logo_url}
+        {:id=>e.course.id, :name=>e.course.name || e.course.club.name, :logo=>e.course.club.logo_url, :overall=>rand_rank, :cost=>rand_cost}
       }
       
     render json: {:status=>0, :list=>list}  
@@ -161,7 +171,7 @@ class ApiController < ApplicationController
   def my_comments
     list = Comment.find_all_by_user_id(@device.user_id)
       .collect { |e|
-        {:id=>e.course.id, :name=>e.course.name || e.course.club.name, :logo=>e.course.club.logo_url, :mine=>e.overall, :overall=>6.7}
+        {:id=>e.course.id, :name=>e.course.name || e.course.club.name, :logo=>e.course.club.logo_url, :mine=>e.overall, :overall=>rand_rank}
       }
       
     render json: {:status=>0, :list=>list}      
@@ -304,7 +314,6 @@ private
   
   def rand_rank
     5 + rand(5) + rand(9)/10.0
-    #"#{5+rand(5)}.#{rand(9)}"
   end
   
   def rand_cost
