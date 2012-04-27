@@ -27,7 +27,7 @@ class ApiController < ApplicationController
   def course_list
     return render json: {:status=>1, :message=>'缺少参数'} if params[:lat_lon].blank? && params[:area_id].blank?
     
-    hot = Course.find(:all, :conditions => ["courses.id in (?)", [1134,538,1139]]).collect { |e| 
+    hot = Course.find(:all, :conditions => ["courses.id in (?)", [538,1134,1139]]).collect { |e| 
       {:id=>e.id, :name=>e.name || e.club.name, :pic=>e.images ? e.images[0].url : ''}
     }
     list = Course.find(:all, :conditions => ["courses.id in (?)", [1133,1165,104,538,1139,1184]]).collect { |e| 

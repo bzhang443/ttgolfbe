@@ -1,5 +1,7 @@
 Ttgolfbe::Application.routes.draw do
 
+  get "callback/sina"
+
   devise_for :admins
 
   root :to => "oss#home"

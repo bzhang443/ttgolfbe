@@ -59,5 +59,6 @@ $ rails generate controller Oss home
 
 $ rails generate migration RenameHolesToHoleCountInCourses
 
-$ rails generate controller Client home
+#$ rails generate controller Client home
 
+$ rails generate controller Callback sina
