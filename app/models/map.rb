@@ -3,6 +3,16 @@ class Map < ActiveRecord::Base
 end
 
 
+# 
+# update maps 
+# set position_green_center = '55,80',
+#  position_tee_red = '106,548', 
+#  position_tee_white = '112,596',
+#  position_tee_blue = '118,633',
+#  position_tee_gold = '129,667',
+#  position_tee_black = '132,699'
+# where id=76;
+
 # == Schema Information
 #
 # Table name: maps
@@ -19,22 +29,13 @@ end
 #  dim_x                 :integer(4)
 #  dim_y                 :integer(4)
 #  url                   :string(255)
+#  created_at            :datetime        not null
+#  updated_at            :datetime        not null
 #  position_tee_red      :string(255)
 #  position_tee_white    :string(255)
 #  position_tee_blue     :string(255)
 #  position_tee_gold     :string(255)
 #  position_tee_black    :string(255)
 #  position_green_center :string(255)
-#  created_at            :datetime        not null
-#  updated_at            :datetime        not null
 #
 
-# 
-# update maps 
-# set position_green_center = '55,80',
-#  position_tee_red = '106,548', 
-#  position_tee_white = '112,596',
-#  position_tee_blue = '118,633',
-#  position_tee_gold = '129,667',
-#  position_tee_black = '132,699'
-# where id=76;

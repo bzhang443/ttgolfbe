@@ -30,6 +30,7 @@ Ttgolfbe::Application.routes.draw do
   get 'api/search_suggest'
   get 'api/key_search'
   get 'api/map_search'
+  post 'api/sina_share'
   
   resources :comments
   resources :favorites

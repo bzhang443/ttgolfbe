@@ -1,5 +1,8 @@
 # encoding: utf-8
+
 require 'net/http'
+require 'net/https'
+require 'uri'
 
 class ApiController < ApplicationController
   before_filter :check_token, :except => [:index, :sign_up]
@@ -19,7 +22,11 @@ class ApiController < ApplicationController
     atts[:version] = params[:version] unless params[:version].blank?
     @device.update_attributes(atts) unless atts.empty?
     
-    config = {:server_time => Time.now.to_i}
+    config = {:server_time => Time.now.to_i, 
+      :sina_callback=>'http://125.35.87.198:8015/callback/sina',
+      :sina_client_id=>'95122059'
+    }
+    config[:sina_expires] = @device.user.sina_expires if @device.user.sina_expires && (Time.now.localtime < @device.user.sina_expires)
     
     render json: {:status => 0, :config => config}
   end
@@ -302,6 +309,25 @@ class ApiController < ApplicationController
     }
     
     render json: {:status=>0, :list=>list}   
+  end
+  
+  def sina_share
+    action, message = params[:action], params[:message]
+    return render json: {:status=>31, :message=>'用户没有授权'} unless @device.user.sina_token
+    return render json: {:status=>32, :message=>'用户授权时效'} unless Time.now.localtime <= @device.user.sina_expires
+    
+    uri = URI.parse('https://api.weibo.com/2/statuses/update.json')
+    req = Net::HTTP::Post.new(uri.path)
+    req.form_data = {
+      :access_token=>@device.user.sina_token, 
+      :status => message || '我安装了天天高尔夫'
+    }
+    https = Net::HTTP.new(uri.host, 443)
+    https.use_ssl = true
+    res = https.start {|http| http.request(req) }
+    logger.debug(res.body)
+    
+    render json: {:status=>0}
   end
   
 private

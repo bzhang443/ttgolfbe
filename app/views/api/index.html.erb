@@ -9,7 +9,9 @@
 - os: 最后向服务器提供的手机上安装的操作系统和版本号，如果当前操作系统版本不同，需要在sync_config时提供此参数并更新；
 - app_version: 最后向服务器提供的版本号，如果当前应用版本号不同，需要在sync_config时提供此参数并更新；
 - course_list_version: 本地球场列表版本号，没有表示本地没有数据
-- sina_token: 新浪认证令牌，没有表示没有绑定新浪微博
+- sina_expires: 新浪认证的有效期
+- sina_callback: 新浪认证使用的服务器回调地址，来自sync_config
+- sina_client_id: 本应用在新浪的注册ID，来自sync_config
 - area_id: 用户选择的地区ID，没有表示按照“附近”
 - 缓存数据库
 
@@ -60,6 +62,9 @@
     update_url: 更新包地址
     course_list_cache_expire: 球场列表缓存时间，以秒为单位，默认3600
     server_time: 服务器端时间
+    sina_expires: 新浪认证的有效期
+    sina_callback: 新浪认证使用的服务器回调地址
+    sina_client_id: 本应用在新浪的注册ID
   }</pre>
   <form action="/api/sync_config" method="POST">
     token: <input name="token"/> os: <input name='os'/> version: <input name="version"/> lat_lon:<input name='lat_lon'/><br/>
@@ -415,6 +420,42 @@
   </form>
 </li>
 
+<li>
+  <h3>https://api.weibo.com/oauth2/authorize</h3>
+  <pre>新浪认证接口
+方法：GET
+请求参数：
+  client_id: 使用sina_client_id, 从sync_config获得
+  response_type: =code, 常数
+  redirect_uri: 使用sina_callback, 从sync_config获得
+  state: token
+应答：
+  status/message
+  expires: 授权时效时间，从当前时间起的秒数</pre>
+  <form action="https://api.weibo.com/oauth2/authorize" method="GET">
+    token: <input name="state"/> <br/>
+    <input name='client_id' value='95122059' type='hidden'/>
+    <input name='response_type' value='code' type='hidden'/>
+    <input name='redirect_uri' value='http://125.35.87.198:8015/callback/sina' type='hidden'/>
+    <input type='submit' value="测试"/>
+  </form>
+</li>
+
+<li>
+  <h3>sina_share</h3>
+  <pre>新浪分享接口
+方法：POST
+请求参数：
+  token
+  action: 分享的动作, install | ....
+  message: 分享内容（如果为空则使用默认模板）
+应答：
+  status/message</pre>
+  <form action="/api/sina_share" method="POST">
+    token: <input name="token"/> action: <input name='action' value='install'/> message: <input name='message'/> <br/>
+    <input type='submit' value="测试"/>
+  </form>
+</li>
 
 <!--
 <li>
