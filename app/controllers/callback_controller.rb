@@ -42,7 +42,7 @@ class CallbackController < ApplicationController
     }
     device.user.update_attributes(attrs)
     
-    render json: {:status => 0, :expires_in=>attrs[:sina_expires]}
+    render json: {:status => 0, :expires=>data['expires_in']}
   end
   
 end
