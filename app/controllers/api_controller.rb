@@ -13,6 +13,8 @@ class ApiController < ApplicationController
     render :layout=>'api'
   end
 
+  SINA_CALLBACK = 'http://125.35.87.198:8015/callback/sina'
+  SINA_CLIENT_ID = '95122059'
   def sync_config
     lat_lon = params[:lat_lon]
     return render json: {:status=>1, :message=>'缺少参数'} if lat_lon.blank?
@@ -23,8 +25,8 @@ class ApiController < ApplicationController
     @device.update_attributes(atts) unless atts.empty?
     
     config = {:server_time => Time.now.to_i, 
-      :sina_callback=>'http://125.35.87.198:8015/callback/sina',
-      :sina_client_id=>'95122059'
+      :sina_callback=>SINA_CALLBACK,
+      :sina_client_id=>SINA_CLIENT_ID
     }
     config[:sina_expires] = @device.user.sina_expires if @device.user.sina_expires && (Time.now.localtime < @device.user.sina_expires)
     
@@ -57,12 +59,30 @@ class ApiController < ApplicationController
     info[:designer] = course.designer ||'David M.Dale'
     info[:type] = course.course_type || '山地'
     info[:lat_lon] = "#{course.club.latitude}|#{course.club.longitude}"
+    info[:favorite] = true if Favorite.find_by_course_id_and_user_id(course.id, @device.user.id)
     
-    info[:favorite] = false
-    info[:comments] = {:overall=>8.0, :votes=>23, :view=>1.0, :culture=>2.0, :hardness=>3.0, :candy=>4.0, :design=>5.0, :facility=>6.0, :recall=>7.0, :service=>8.0, :maintenance=>9.0, :price=>10.0}
-    info[:comments_mine] = {:overall=>8.0, :view=>1.0, :culture=>2.0, :hardness=>3.0, :candy=>4.0, :design=>5.0, :facility=>6.0, :recall=>7.0, :service=>8.0, :maintenance=>9.0, :price=>10.0}
+    comments = Comment.connection.select_one("select count(*) as 'votes', avg(overall) as 'overall', 
+                 avg(view) as 'view', avg(culture) as 'culture', avg(hardness) as 'hardness', avg(candy) as 'candy', avg(design) as 'design', 
+                 avg(facility) as 'facility', avg(recall) as 'recall', avg(service) as 'service', avg(maintenance) as 'maintenance', avg(price) as 'price'
+               from comments
+               where course_id=#{course.id}")
+    if (comments['votes']>0)
+      info[:comments] = {:overall=>comments['overall'].to_f, :votes=>comments['votes'], 
+        :view=>comments['view'].to_f, :culture=>comments['culture'].to_f, :hardness=>comments['hardness'].to_f, :candy=>comments['candy'].to_f, :design=>comments['design'].to_f, 
+        :facility=>comments['facility'].to_f, :recall=>comments['recall'].to_f, :service=>comments['service'].to_f, :maintenance=>comments['maintenance'].to_f, :price=>comments['price'].to_f
+      } 
+    else
+      info[:comments] = {:overall=>0, :votes=>0}
+    end
+    comments = Comment.find_by_course_id_and_user_id(course.id, @device.user.id)
+    if (comments)
+      info[:comments_mine] = {
+        :overall=>comments.overall.to_f, :view=>comments.view.to_f, :culture=>comments.culture.to_f, :hardness=>comments.hardness.to_f, :candy=>comments.candy.to_f, 
+        :design=>comments.design.to_f, :facility=>comments.facility.to_f, :recall=>comments.recall.to_f, :service=>comments.service.to_f, :maintenance=>comments.maintenance.to_f, :price=>comments.price.to_f
+      }
+    end
+    
     info[:prices] = [{:workdays=>600, :holidays=>1000, :telephone=>course.club.telephone}]
-    info[:holes] = [1,2,3,4,5]
     render json: {:status=>0, :course=>info}
   end
   
