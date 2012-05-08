@@ -316,18 +316,19 @@
 
 <li>
   <h3>config_user</h3>
-  <pre>设置手机的用户信息，包括用户名，邮箱，密码和新浪微薄token
+  <pre>设置手机的用户信息，包括用户名，邮箱，密码
 方法：POST
 请求参数：
   token
   name: 用户名
   email: 邮箱
   pass: 密码
-  sina_token: 新浪认证通过的token
+  default_tee: 默认Tee台 （black|gold|blue|white|red）
 应答：
   status/message</pre>
   <form action="/api/config_user" method="POST">
-    token: <input name="token"/> name: <input name="name"/> email: <input name="email"/>　pass: <input name="pass"/> sina_token: <input name="sina_token"/><br/>
+    token: <input name="token"/> name: <input name="name"/> email: <input name="email"/>　pass: <input name="pass"/> 
+    default_tee: <%= select_tag :default_tee, options_for_select([['黑','black'], ['金','gold'], ['蓝','blue'], ['白','white'], ['红','red']], 'blue') %><br/>
     <input type='submit' value="测试"/>
   </form>
 </li>
@@ -360,6 +361,23 @@
   status/message</pre>
   <form action="/api/find_password" method="POST">
     token: <input name="token"/> email: <input name='email'/> <br/>
+    <input type='submit' value="测试"/>
+  </form>
+</li>
+
+<li>
+  <h3>reset_password </h3>
+  <pre>重置密码接口
+方法：POST
+请求参数：
+  token
+  pass: 当前密码
+  new_pass: 新密码
+应答：
+  status/message
+  token: 新的token</pre>
+  <form action="/api/reset_password" method="POST">
+    token: <input name="token"/> pass: <input name='pass'/> new_pass: <input name='new_pass'/><br/>
     <input type='submit' value="测试"/>
   </form>
 </li>

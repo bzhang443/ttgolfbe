@@ -136,15 +136,28 @@ class ApiController < ApplicationController
     render json: {:status=>0, :list=>holes}
   end
   
+  CACHE = {
+      'http://zhy.wa3.cn:8080/GolfManage/cut_images/20120430172330913.jpg'=>'/home/rolea/ttgolfbe/map/1133_01.png',
+      'http://zhy.wa3.cn:8080/GolfManage/cut_images/20120430172609.jpg'=>'/home/rolea/ttgolfbe/map/1133_02.png',
+      'http://zhy.wa3.cn:8080/GolfManage/cut_images/20120430172800.jpg'=>'/home/rolea/ttgolfbe/map/1133_03.png',
+      'http://zhy.wa3.cn:8080/GolfManage/cut_images/20120430172921844.jpg'=>'/home/rolea/ttgolfbe/map/1133_04.png',
+      'http://zhy.wa3.cn:8080/GolfManage/cut_images/20120430173127.jpg'=>'/home/rolea/ttgolfbe/map/1133_05.png'
+    }
   def fairway_map
     id = params[:id]
     return render json: {:status=>1, :message=>'缺少参数'} if id.blank?    
     hole = Hole.find(id)
     return render json: {:status=>14, :message=>'球洞不存在'} unless hole
-    
-    # render json: {:status=>0, :url=> hole.map.url}
-    data = Net::HTTP.get(URI.parse(hole.map.url))
-    send_data data, :type => 'image/jpeg', :disposition => 'inline'
+    type = 'image/jpeg'
+    if hole.map.url.ends_with?('.png')
+      type = 'image/png'
+    end
+    if CACHE[hole.map.url]
+      send_file CACHE[hole.map.url], :type => type, :disposition => 'inline'
+    else
+      data = Net::HTTP.get(URI.parse(hole.map.url))
+      send_data data, :type => type, :disposition => 'inline'      
+    end
   end
   
   def comment_course
@@ -224,23 +237,27 @@ class ApiController < ApplicationController
     render json: ret
   end
   
+  # TODO: set default_tee
+  #       set password????
   def config_user
     atts = {}
     u = @device.user
     unless params[:name].blank?
-      unless u.name.eql?(params[:name])
-        return render json: {:status=>11, :message=>'用户名已存在'} if User.find_by_name params[:name]
-      end
+      return render json: {:status=>11, :message=>'用户名已经设置，不能修改'} if u.name
+      return render json: {:status=>12, :message=>'用户名已存在'} if User.find_by_name params[:name]
       atts[:name] = params[:name]
     end
     unless params[:email].blank?
       unless u.email.eql?(params[:email])
-        return render json: {:status=>12, :message=>'邮箱已经注册过'} if User.find_by_email params[:email]
+        return render json: {:status=>13, :message=>'邮箱已经注册过'} if User.find_by_email params[:email]
       end
       atts[:email] = params[:email]
     end    
-    atts[:password] = params[:pass] unless params[:pass].blank?
-    atts[:sina_token] = params[:sina_token] unless params[:sina_token].blank?
+    unless params[:pass].blank?
+      return render json: {:status=>14, :message=>'密码已经设置'} if u.password
+      atts[:password] = params[:pass] 
+    end
+    
     u.update_attributes(atts)    
     
     ret = {:status=>0}
@@ -262,6 +279,16 @@ class ApiController < ApplicationController
     render json: {:status=>0, :token=>@device.token}
   end
 
+  def reset_password
+    pass, new_pass = params[:pass], params[:new_pass]
+    return render json: {:status=>1, :message=>'缺少参数'} if pass.blank? || new_pass.blank?
+    user = User.secure_get(@device.user.name, pass)
+    return render json: {:status=>12, :message=>'用户验证错误'} unless user 
+    @device.user.update_attribute(:password, new_pass)
+    @device.update_token
+    render json: {:status=>0, :token=>@device.token}
+  end
+  
   def find_password
     email = params[:email]
     return render json: {:status=>1, :message=>'缺少参数'} if email.blank?
@@ -293,9 +320,9 @@ class ApiController < ApplicationController
   KM1 = 0.01
   def map_search
     return render json: {:status=>1, :message=>'缺少参数'} if params[:center].blank? || params[:radius].blank?
-    center = params[:center]
-    centx = center.split('|')[0].to_f
-    centy = center.split('|')[1].to_f
+    center = params[:center].split('|')
+    centx = center[0].to_f
+    centy = center[1].to_f
     radius = params[:radius].to_i
     r = radius * KM1
     list = Club.find(:all, 

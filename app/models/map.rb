@@ -5,12 +5,12 @@ end
 
 # 
 # update maps 
-# set position_green_center = '55,80',
-#  position_tee_red = '106,548', 
-#  position_tee_white = '112,596',
-#  position_tee_blue = '118,633',
-#  position_tee_gold = '129,667',
-#  position_tee_black = '132,699'
+# set position_green_center = '55|80',
+#  position_tee_red = '106|548', 
+#  position_tee_white = '112|596',
+#  position_tee_blue = '118|633',
+#  position_tee_gold = '129|667',
+#  position_tee_black = '132|699'
 # where id=76;
 
 # == Schema Information
