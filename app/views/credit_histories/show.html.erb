@@ -1,0 +1,30 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>User:</b>
+  <%= @credit_history.user_id %>
+</p>
+
+<p>
+  <b>Action:</b>
+  <%= @credit_history.action %>
+</p>
+
+<p>
+  <b>Offset:</b>
+  <%= @credit_history.offset %>
+</p>
+
+<p>
+  <b>Course:</b>
+  <%= @credit_history.course_id %>
+</p>
+
+<p>
+  <b>Club:</b>
+  <%= @credit_history.club_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_credit_history_path(@credit_history) %> |
+<%= link_to 'Back', credit_histories_path %>

@@ -1,14 +1,22 @@
 class User < ActiveRecord::Base
   has_many :devices
+  has_many :credit_histories
+  
   def self.secure_get(name, password)
     u = User.find_by_name name
     return nil unless u
     return u if password.eql?(u.password)
     nil
   end
+  
+  def add_credit(action, offset, options)
+    his = CreditHistory.create({:user_id=>self.id, :action=>action, :offset=>offset}.merge(options))
+    his.save
+    self.credit += offset
+    self.save
+  end
+  
 end
-
-
 
 
 # == Schema Information
@@ -26,5 +34,7 @@ end
 #  updated_at   :datetime        not null
 #  sina_expires :datetime
 #  sina_uid     :string(255)
+#  credit       :integer(4)      default(0)
+#  tee          :string(255)
 #
 

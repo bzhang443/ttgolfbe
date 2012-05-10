@@ -1,5 +1,7 @@
 Ttgolfbe::Application.routes.draw do
 
+  resources :credit_histories
+
   get "callback/sina"
 
   devise_for :admins

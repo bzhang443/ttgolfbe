@@ -1,0 +1,31 @@
+<h1>Listing credit_histories</h1>
+
+<table>
+  <tr>
+    <th>User</th>
+    <th>Action</th>
+    <th>Offset</th>
+    <th>Course</th>
+    <th>Club</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @credit_histories.each do |credit_history| %>
+  <tr>
+    <td><%= credit_history.user_id %></td>
+    <td><%= credit_history.action %></td>
+    <td><%= credit_history.offset %></td>
+    <td><%= credit_history.course_id %></td>
+    <td><%= credit_history.club_id %></td>
+    <td><%= link_to 'Show', credit_history %></td>
+    <td><%= link_to 'Edit', edit_credit_history_path(credit_history) %></td>
+    <td><%= link_to 'Destroy', credit_history, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Credit history', new_credit_history_path %>

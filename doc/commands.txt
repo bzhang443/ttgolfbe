@@ -62,3 +62,6 @@ $ rails generate migration RenameHolesToHoleCountInCourses
 #$ rails generate controller Client home
 
 $ rails generate controller Callback sina
+
+$ rails generate migration AddCreditAndTeeToUsers credit:integer tee:string
+$ rails generate scaffold CreditHistory user_id:integer action:string offset:integer course_id:integer club_id:integer 

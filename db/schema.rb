@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120428071009) do
+ActiveRecord::Schema.define(:version => 20120510115938) do
 
   create_table "admins", :force => true do |t|
     t.string   "email",                                 :default => "", :null => false
@@ -105,6 +105,16 @@ ActiveRecord::Schema.define(:version => 20120428071009) do
 
   add_index "courses", ["club_id"], :name => "FK_course_club"
   add_index "courses", ["group_id"], :name => "FK_course_group"
+
+  create_table "credit_histories", :force => true do |t|
+    t.integer  "user_id"
+    t.string   "action"
+    t.integer  "offset"
+    t.integer  "course_id"
+    t.integer  "club_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "devices", :force => true do |t|
     t.string   "did"
@@ -212,6 +222,8 @@ ActiveRecord::Schema.define(:version => 20120428071009) do
     t.datetime "updated_at",                     :null => false
     t.datetime "sina_expires"
     t.string   "sina_uid"
+    t.integer  "credit",       :default => 0
+    t.string   "tee"
   end
 
 end

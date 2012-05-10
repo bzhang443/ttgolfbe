@@ -160,6 +160,8 @@ class ApiController < ApplicationController
     end
   end
   
+  CREDIT_COMMENT_COURSE = 10
+  CREDIT_COMMENT_COURSE_FIRST = 10
   def comment_course
     id = params[:id]
     return render json: {:status=>1, :message=>'缺少参数'} if id.blank?
@@ -173,7 +175,10 @@ class ApiController < ApplicationController
     if comment
       comment.update_attributes(p)
     else
+      first = Comment.count(:conditions => ["course_id=?", course.id]) == 0
       Comment.create({:course_id=>course.id, :user_id=>@device.user.id}.merge(p))
+      @device.user.add_credit("对#{course.name || course.club.name}球场评分", CREDIT_COMMENT_COURSE, :course_id=>course.id)
+      @device.user.add_credit("第一个对#{course.name || course.club.name}球场评分", CREDIT_COMMENT_COURSE, :course_id=>course.id) if first
     end
     
     render json: {:status=>0}

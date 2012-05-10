@@ -7,6 +7,7 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: users
@@ -22,5 +23,7 @@ end
 #  updated_at   :datetime        not null
 #  sina_expires :datetime
 #  sina_uid     :string(255)
+#  credit       :integer(4)      default(0)
+#  tee          :string(255)
 #
 
