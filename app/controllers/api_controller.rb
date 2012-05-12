@@ -86,11 +86,13 @@ class ApiController < ApplicationController
     render json: {:status=>0, :course=>info}
   end
   
+  CREDIT_DOWNLOAD_COURSE_MAP = -10
   def fairway_list
     id = params[:id]
     return render json: {:status=>1, :message=>'缺少参数'} if id.blank?    
     course = Course.find(id)
     return render json: {:status=>14, :message=>'球场不存在'} unless course  
+    return render json: {:status=>15, :message=>'积分不足'} unless @device.user.credit+CREDIT_DOWNLOAD_COURSE_MAP >= 0
     
     holes = []
     Hole.find(:all,
@@ -133,6 +135,8 @@ class ApiController < ApplicationController
       holes << hole
     }  
     
+    @device.user.add_credit("下载球道图", CREDIT_DOWNLOAD_COURSE_MAP, :course_id=>course.id)
+   
     render json: {:status=>0, :list=>holes}
   end
   
@@ -161,7 +165,7 @@ class ApiController < ApplicationController
   end
   
   CREDIT_COMMENT_COURSE = 10
-  CREDIT_COMMENT_COURSE_FIRST = 10
+  CREDIT_COMMENT_COURSE_FIRST = 20
   def comment_course
     id = params[:id]
     return render json: {:status=>1, :message=>'缺少参数'} if id.blank?
@@ -177,11 +181,24 @@ class ApiController < ApplicationController
     else
       first = Comment.count(:conditions => ["course_id=?", course.id]) == 0
       Comment.create({:course_id=>course.id, :user_id=>@device.user.id}.merge(p))
-      @device.user.add_credit("对#{course.name || course.club.name}球场评分", CREDIT_COMMENT_COURSE, :course_id=>course.id)
-      @device.user.add_credit("第一个对#{course.name || course.club.name}球场评分", CREDIT_COMMENT_COURSE, :course_id=>course.id) if first
+      if first
+        @device.user.add_credit("第一个对球场评分", CREDIT_COMMENT_COURSE, :course_id=>course.id) 
+      else
+        @device.user.add_credit("球场评分", CREDIT_COMMENT_COURSE, :course_id=>course.id)
+      end
     end
     
     render json: {:status=>0}
+  end
+  
+  def credit_history
+    list = CreditHistory.find_all_by_user_id(@device.user_id, :order=>'created_at desc')
+      .collect { |e|
+        { :date => e.created_at.to_date.to_s(:db), 
+        :course_id => e.course_id||'',  :course_name => e.course_id ? e.course.name||e.course.club.name : '',
+        :action => e.action, :credit => e.offset }
+      }
+    render json: {:status=>0, :credit=>@device.user.credit, :list=>list}
   end
   
   def add_favorite

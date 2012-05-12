@@ -34,6 +34,7 @@ Ttgolfbe::Application.routes.draw do
   get 'api/map_search'
   post 'api/sina_share'
   post 'api/reset_password'
+  get 'api/credit_history'
   
   resources :comments
   resources :favorites

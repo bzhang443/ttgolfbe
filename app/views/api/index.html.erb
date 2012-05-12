@@ -20,6 +20,8 @@
 服务器端对大于一个尺寸的应答进行压缩，并在header中标志 Content-Encoding: gzip
 客户端对压缩的内容先加压再处理
 
+帮助页面: /help.html
+
 <%= @token %>
 </pre>
 
@@ -284,6 +286,28 @@
     mine: 我的评分
   } </pre>
   <form action="/api/my_comments" method="GET">
+    token: <input name="token"/> <br/>
+    <input type='submit' value="测试"/>
+  </form>
+</li>
+
+<li>
+  <h3>credit_history </h3>
+  <pre>获取积分历史记录，按照时间倒序排列 (还没有支持翻页，只有前50条记录)
+方法：GET
+请求参数：
+  token
+应答：
+  status/message
+  credit: 当前积分
+  list[] = {
+    date: 发生日期
+    course_id: 球场ID
+    course_name: 球场名称
+    action: 操作
+    credit: 增加/减少的积分数额
+  } </pre>
+  <form action="/api/credit_history" method="GET">
     token: <input name="token"/> <br/>
     <input type='submit' value="测试"/>
   </form>
