@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120513061354) do
+ActiveRecord::Schema.define(:version => 20120513113839) do
 
   create_table "admins", :force => true do |t|
     t.string   "email",                                 :default => "", :null => false
@@ -354,6 +354,7 @@ ActiveRecord::Schema.define(:version => 20120513061354) do
     t.string   "sina_uid"
     t.integer  "credit",       :default => 0
     t.string   "tee"
+    t.string   "score_mode"
   end
 
 end

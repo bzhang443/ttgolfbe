@@ -6,6 +6,9 @@
 手机客户端数据库包含如下信息：
 - token: 通信会话令牌，标志手机在系统中成功注册过，其他所有接口都必须把token作为参数
 - user_name: 用户名，没有表示用户没有设置过
+- default_tee:
+- score_mode:
+
 - os: 最后向服务器提供的手机上安装的操作系统和版本号，如果当前操作系统版本不同，需要在sync_config时提供此参数并更新；
 - app_version: 最后向服务器提供的版本号，如果当前应用版本号不同，需要在sync_config时提供此参数并更新；
 - course_list_version: 本地球场列表版本号，没有表示本地没有数据
@@ -326,11 +329,13 @@
   email: 邮箱
   pass: 密码
   default_tee: 默认Tee台 （black|gold|blue|white|red）
+  score_mode: 记分卡模式 (simple|detail)
 应答：
   status/message</pre>
   <form action="/api/config_user" method="POST">
     token: <input name="token"/> name: <input name="name"/> email: <input name="email"/>　pass: <input name="pass"/> 
-    default_tee: <%= tee_box_tag(:default_tee) %> <br/>
+    default_tee: <%= tee_box_tag(:default_tee) %> 
+    score_mode: <%= select_tag :score_mode, options_for_select(score_mode) %> <br/>
     <input type='submit' value="测试"/>
   </form>
 </li>

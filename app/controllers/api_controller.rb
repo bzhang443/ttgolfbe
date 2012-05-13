@@ -279,6 +279,9 @@ class ApiController < ApplicationController
       return render json: {:status=>14, :message=>'密码已经设置'} if u.password
       atts[:password] = params[:pass] 
     end
+
+    atts[:score_mode] = params[:score_mode] unless params[:score_mode].blank?
+    atts[:tee] = params[:default_tee] unless params[:default_tee].blank?
     
     u.update_attributes(atts)    
     

@@ -20,6 +20,7 @@ class User < ActiveRecord::Base
 end
 
 
+
 # == Schema Information
 #
 # Table name: users
@@ -37,5 +38,6 @@ end
 #  sina_uid     :string(255)
 #  credit       :integer(4)      default(0)
 #  tee          :string(255)
+#  score_mode   :string(255)
 #
 

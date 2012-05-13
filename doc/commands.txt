@@ -89,3 +89,6 @@ $ rails generate scaffold ScoreCard \
     hole16_id:integer score16:integer putts16:integer t_club16:string fairway16:string sand16:integer pty16:integer \
     hole17_id:integer score17:integer putts17:integer t_club17:string fairway17:string sand17:integer pty17:integer \
     hole18_id:integer score18:integer putts18:integer t_club18:string fairway18:string sand18:integer pty18:integer
+
+$ rails generate migration AddScoreModeToUsers score_mode:string
+
