@@ -92,7 +92,7 @@ class ApiController < ApplicationController
     return render json: {:status=>1, :message=>'缺少参数'} if id.blank?    
     course = Course.find(id)
     return render json: {:status=>14, :message=>'球场不存在'} unless course  
-    return render json: {:status=>15, :message=>'积分不足'} unless @device.user.credit+CREDIT_DOWNLOAD_COURSE_MAP >= 0
+    # return render json: {:status=>15, :message=>'积分不足'} unless @device.user.credit+CREDIT_DOWNLOAD_COURSE_MAP >= 0
     
     holes = []
     Hole.find(:all,
@@ -397,6 +397,87 @@ class ApiController < ApplicationController
     logger.debug(res.body)
     
     render json: {:status=>0}
+  end
+  
+  def my_scorecards
+    list = ScoreCard.find(:all, :conditions=>['user_id=?', @device.user.id], :order=>'created_at desc').collect { |e|
+      {:id=>e.id, :date=>e.created_at.to_date.to_s(:db), :course_id=>e.course_id, :course_name=>e.course.name||e.course.club.name, :score=>e.score}
+    }
+    render json: {:status=>0, :list=>list}  
+  end
+  
+  def scorecard_info
+    return render json: {:status=>1, :message=>'缺少参数'} if params[:id].blank?    
+    card = ScoreCard.find(params[:id])
+    return render json: {:status=>14, :message=>'记分卡不存在'} unless card
+    items = []
+    (1..18).each { |e|
+      hole = card.send("hole#{e}")
+      next unless hole
+      item = {}
+      item[:hole] = hole.id
+      item[:par] = hole.par
+      item[:score] = card.send("score#{e}")
+      putts = card.send("putts#{e}")
+      item[:putts] = putts if putts
+      fairway = card.send("fairway#{e}")
+      item[:fairway] = fairway unless fairway.blank?
+      sand = card.send("sand#{e}")
+      item[:sand] = sand if sand
+      pty = card.send("pty#{e}")
+      item[:penalty] = pty if pty
+      
+      items.push item
+    }
+    
+    render json: {:status=>0, :date=>card.created_at.to_date.to_s(:db), 
+      :course_id=>card.course_id, :course_name=>card.course.name||card.course.club.name, 
+      :tee_box=>card.tee_box, :items=>items }
+    
+  end
+  
+  def save_scorecard
+    return render json: {:status=>1, :message=>'缺少参数'} if params[:course_id].blank? 
+    course = Course.find(params[:course_id])
+    return render json: {:status=>14, :message=>'球场不存在'} unless course
+    
+    c = ScoreCard.new
+    c.user = @device.user
+    c.course_id = course.id
+    c.tee_box = params[:tee_box]
+    c.start_hole = params[:start_hole]
+    c.course2_id = params[:course2_id] unless params[:course2_id].blank?
+    score = 0
+    (1..18).each { |i|
+      next if params["hole#{i}_id"].blank?
+      c.send("hole#{i}_id=", params["hole#{i}_id"].to_i)
+      unless params["score#{i}"].blank?
+        p = params["score#{i}"].to_i
+        score += p
+        c.send("score#{i}=", p)
+      end
+      unless params["putts#{i}"].blank?
+        p = params["putts#{i}"].to_i
+        c.send("putts#{i}=", p)
+      end
+      c.send("t_club#{i}=", params["t_club#{i}"]) unless params["t_club#{i}"].blank?
+      c.send("fairway#{i}=", params["fairway#{i}"]) unless params["fairway#{i}"].blank?
+      unless params["sand#{i}"].blank?
+        p = params["sand#{i}"].to_i
+        c.send("sand#{i}=", p)
+      end
+      unless params["penalty#{i}"].blank?
+        p = params["penalty#{i}"].to_i
+        c.send("penalty#{i}=", p)
+      end
+    }
+    c.score = score
+    
+    if c.save
+      render json: {:status=>0}
+    else
+      render json: {:status=>20, :message=>'保存失败'}
+    end
   end
   
 private

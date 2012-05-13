@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
   has_many :devices
   has_many :credit_histories
+  has_many :score_cards
   
   def self.secure_get(name, password)
     u = User.find_by_name name

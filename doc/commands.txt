@@ -65,3 +65,27 @@ $ rails generate controller Callback sina
 
 $ rails generate migration AddCreditAndTeeToUsers credit:integer tee:string
 $ rails generate scaffold CreditHistory user_id:integer action:string offset:integer course_id:integer club_id:integer 
+
+#$ rails generate scaffold ScoreCard user_id:integer course_id:integer tee_box:string course2_id:integer 
+#$ rails generate scaffold ScoreCardItem score_card_id:integer hole_id:integer score:integer putts:integer t_club:string fairway:string sand:integer penalty:integer 
+
+$ rails generate scaffold ScoreCard \
+    user_id:integer course_id:integer tee_box:string course2_id:integer start_hole:integer score:integer \
+    hole1_id:integer score1:integer putts1:integer t_club1:string fairway1:string sand1:integer pty1:integer \
+    hole2_id:integer score2:integer putts2:integer t_club2:string fairway2:string sand2:integer pty2:integer \
+    hole3_id:integer score3:integer putts3:integer t_club3:string fairway3:string sand3:integer pty3:integer \
+    hole4_id:integer score4:integer putts4:integer t_club4:string fairway4:string sand4:integer pty4:integer \
+    hole5_id:integer score5:integer putts5:integer t_club5:string fairway5:string sand5:integer pty5:integer \
+    hole6_id:integer score6:integer putts6:integer t_club6:string fairway6:string sand6:integer pty6:integer \
+    hole7_id:integer score7:integer putts7:integer t_club7:string fairway7:string sand7:integer pty7:integer \
+    hole8_id:integer score8:integer putts8:integer t_club8:string fairway8:string sand8:integer pty8:integer \
+    hole9_id:integer score9:integer putts9:integer t_club9:string fairway9:string sand9:integer pty9:integer \
+    hole10_id:integer score10:integer putts10:integer t_club10:string fairway10:string sand10:integer pty10:integer \
+    hole11_id:integer score11:integer putts11:integer t_club11:string fairway11:string sand11:integer pty11:integer \
+    hole12_id:integer score12:integer putts12:integer t_club12:string fairway12:string sand12:integer pty12:integer \
+    hole13_id:integer score13:integer putts13:integer t_club13:string fairway13:string sand13:integer pty13:integer \
+    hole14_id:integer score14:integer putts14:integer t_club14:string fairway14:string sand14:integer pty14:integer \
+    hole15_id:integer score15:integer putts15:integer t_club15:string fairway15:string sand15:integer pty15:integer \
+    hole16_id:integer score16:integer putts16:integer t_club16:string fairway16:string sand16:integer pty16:integer \
+    hole17_id:integer score17:integer putts17:integer t_club17:string fairway17:string sand17:integer pty17:integer \
+    hole18_id:integer score18:integer putts18:integer t_club18:string fairway18:string sand18:integer pty18:integer

@@ -292,28 +292,6 @@
 </li>
 
 <li>
-  <h3>credit_history </h3>
-  <pre>获取积分历史记录，按照时间倒序排列 (还没有支持翻页，只有前50条记录)
-方法：GET
-请求参数：
-  token
-应答：
-  status/message
-  credit: 当前积分
-  list[] = {
-    date: 发生日期
-    course_id: 球场ID
-    course_name: 球场名称
-    action: 操作
-    credit: 增加/减少的积分数额
-  } </pre>
-  <form action="/api/credit_history" method="GET">
-    token: <input name="token"/> <br/>
-    <input type='submit' value="测试"/>
-  </form>
-</li>
-
-<li>
   <h3>area_list </h3>
   <pre>球场分布地区列表，只返回有球场的地区，只支持两级列表；客户端在显示地区列表时，自动增加“附近”作为第一个选项；
 用户改变地区选择后，要调用course_list接口更新球场信息
@@ -352,7 +330,7 @@
   status/message</pre>
   <form action="/api/config_user" method="POST">
     token: <input name="token"/> name: <input name="name"/> email: <input name="email"/>　pass: <input name="pass"/> 
-    default_tee: <%= select_tag :default_tee, options_for_select([['黑','black'], ['金','gold'], ['蓝','blue'], ['白','white'], ['红','red']], 'blue') %><br/>
+    default_tee: <%= tee_box_tag(:default_tee) %> <br/>
     <input type='submit' value="测试"/>
   </form>
 </li>
@@ -499,6 +477,127 @@
   </form>
 </li>
 
+<li>
+  <h3>my_scorecards </h3>
+  <pre>我的记分卡列表接口(暂不支持分页)
+方法：GET
+请求参数：
+  token
+应答：
+  status/message
+  list[] = {
+    id: 记分卡ID
+    date: 上传日期
+    course_id: 球场ID
+    course_name: 球场名称
+    score: 杆数
+  }</pre>
+  <form action="/api/my_scorecards" method="GET">
+    token: <input name="token"/> <br/>
+    <input type='submit' value="测试"/>
+  </form>
+</li>
+
+<li>
+  <h3>scorecard_info </h3>
+  <pre>接口
+方法：GET
+请求参数：
+  token
+  id: 记分卡ID
+应答: 
+  status/message
+  date: 上传日期
+  course_id: 球场ID
+  course_name: 球场名称
+  tee_box: 开球台
+  items[] = { 
+    hole: 球洞编号
+    par: 标准杆
+    score: 击球
+    putts: 推杆
+    fairway: 球道命中
+    sand: 沙地救球
+    penlty: 罚杆
+  }</pre>
+  <form action="/api/scorecard_info" method="GET">
+    token: <input name="token"/> id: <input name='id'/> <br/>
+    <input type='submit' value="测试"/>
+  </form>
+</li>
+
+<li>
+  <h3>save_scorecard</h3>
+  <pre>保存一个球洞的计分
+方法：POST
+请求参数：
+  token
+  course_id: 球场ID
+  start_hole: 开球洞号码（1或者10, 仅当course右18洞使用）
+  course2_id: （可选）第二球场ID
+  tee_box: 发球台
+
+  hole[i]_id: 球洞ID, i=1..18
+  score[i]: 击球 (0-18)
+  putts[i]: 推杆 (0-17)
+  t_club[i]: 发球杆 (1W, 3W, 5W, 1Hy, 2Hy, 3i, 4i, 5i, 6i, 7i, 8i, 9i, Pw, Gw, Sw, Lw)
+  fairway[i]: 球道命中 (long, left, hit, right, short)
+  sand[i]: 沙地救球 (0-(score-putts-1))
+  penlty[i]: 罚杆 (0-(sand-1))
+应答：
+  status/message </pre>
+  <form action="/api/save_scorecard" method="POST">
+    token: <input name="token"/> course_id:<input name='course_id'/> tee_box: <%= tee_box_tag(:tee_box) %> <br/>
+    start_hole: <%= select_tag 'start_hole', options_for_select(start_hole) %> course2_id:<input name='course2_id'/> 
+<table>
+  <tr>
+    <th>Hole_ID</th>
+    <th>Score</th>
+    <th>Putts</th>
+    <th>T-Club</th>
+    <th>Fairway</th>
+    <th>Sand</th>
+    <th>Penalty</th>
+  </tr>
+  <% (1..18).each do |i| %>
+  <tr>
+    <td><%= number_field_tag "hole#{i}_id" %></td>
+    <td><%= number_field_tag "score#{i}", nil, :in => 1...18 %></td>
+    <td><%= number_field_tag "putts#{i}", nil, :in => 1...17 %></td>
+    <td><%= select_tag "t_club#{i}", options_for_select(t_clubs) %></td>
+    <td><%= select_tag "fairway#{i}", options_for_select(fairways)  %></td>
+    <td><%= number_field_tag "sand#{i}" %></td>
+    <td><%= number_field_tag "pty#{i}" %></td>
+  </tr>
+  <% end %>
+</table>
+    <input type='submit' value="测试"/>
+  </form>
+</li>
+
+<!--
+<li>
+  <h3><strike>credit_history </strike></h3>
+  <pre>获取积分历史记录，按照时间倒序排列 (还没有支持翻页，只有前50条记录)
+方法：GET
+请求参数：
+  token
+应答：
+  status/message
+  credit: 当前积分
+  list[] = {
+    date: 发生日期
+    course_id: 球场ID
+    course_name: 球场名称
+    action: 操作
+    credit: 增加/减少的积分数额
+  } </pre>
+  <form action="/api/credit_history" method="GET">
+    token: <input name="token"/> <br/>
+    <input type='submit' value="测试"/>
+  </form>
+</li>
+-->
 <!--
 <li>
   <h3> </h3>

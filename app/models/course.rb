@@ -2,6 +2,7 @@ class Course < ActiveRecord::Base
   belongs_to :club
   has_many :images
   has_many :holes
+  has_many :score_cards
 end
 
 

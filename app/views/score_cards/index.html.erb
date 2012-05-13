@@ -1,0 +1,285 @@
+<h1>Listing score_cards</h1>
+
+<table>
+  <tr>
+    <th>User</th>
+    <th>Course</th>
+    <th>Tee box</th>
+    <th>Course2</th>
+    <th>Start hole</th>
+    <th>Score</th>
+    <th>Hole1</th>
+    <th>Score1</th>
+    <th>Putts1</th>
+    <th>T club1</th>
+    <th>Fairway1</th>
+    <th>Sand1</th>
+    <th>Pty1</th>
+    <th>Hole2</th>
+    <th>Score2</th>
+    <th>Putts2</th>
+    <th>T club2</th>
+    <th>Fairway2</th>
+    <th>Sand2</th>
+    <th>Pty2</th>
+    <th>Hole3</th>
+    <th>Score3</th>
+    <th>Putts3</th>
+    <th>T club3</th>
+    <th>Fairway3</th>
+    <th>Sand3</th>
+    <th>Pty3</th>
+    <th>Hole4</th>
+    <th>Score4</th>
+    <th>Putts4</th>
+    <th>T club4</th>
+    <th>Fairway4</th>
+    <th>Sand4</th>
+    <th>Pty4</th>
+    <th>Hole5</th>
+    <th>Score5</th>
+    <th>Putts5</th>
+    <th>T club5</th>
+    <th>Fairway5</th>
+    <th>Sand5</th>
+    <th>Pty5</th>
+    <th>Hole6</th>
+    <th>Score6</th>
+    <th>Putts6</th>
+    <th>T club6</th>
+    <th>Fairway6</th>
+    <th>Sand6</th>
+    <th>Pty6</th>
+    <th>Hole7</th>
+    <th>Score7</th>
+    <th>Putts7</th>
+    <th>T club7</th>
+    <th>Fairway7</th>
+    <th>Sand7</th>
+    <th>Pty7</th>
+    <th>Hole8</th>
+    <th>Score8</th>
+    <th>Putts8</th>
+    <th>T club8</th>
+    <th>Fairway8</th>
+    <th>Sand8</th>
+    <th>Pty8</th>
+    <th>Hole9</th>
+    <th>Score9</th>
+    <th>Putts9</th>
+    <th>T club9</th>
+    <th>Fairway9</th>
+    <th>Sand9</th>
+    <th>Pty9</th>
+    <th>Hole10</th>
+    <th>Score10</th>
+    <th>Putts10</th>
+    <th>T club10</th>
+    <th>Fairway10</th>
+    <th>Sand10</th>
+    <th>Pty10</th>
+    <th>Hole11</th>
+    <th>Score11</th>
+    <th>Putts11</th>
+    <th>T club11</th>
+    <th>Fairway11</th>
+    <th>Sand11</th>
+    <th>Pty11</th>
+    <th>Hole12</th>
+    <th>Score12</th>
+    <th>Putts12</th>
+    <th>T club12</th>
+    <th>Fairway12</th>
+    <th>Sand12</th>
+    <th>Pty12</th>
+    <th>Hole13</th>
+    <th>Score13</th>
+    <th>Putts13</th>
+    <th>T club13</th>
+    <th>Fairway13</th>
+    <th>Sand13</th>
+    <th>Pty13</th>
+    <th>Hole14</th>
+    <th>Score14</th>
+    <th>Putts14</th>
+    <th>T club14</th>
+    <th>Fairway14</th>
+    <th>Sand14</th>
+    <th>Pty14</th>
+    <th>Hole15</th>
+    <th>Score15</th>
+    <th>Putts15</th>
+    <th>T club15</th>
+    <th>Fairway15</th>
+    <th>Sand15</th>
+    <th>Pty15</th>
+    <th>Hole16</th>
+    <th>Score16</th>
+    <th>Putts16</th>
+    <th>T club16</th>
+    <th>Fairway16</th>
+    <th>Sand16</th>
+    <th>Pty16</th>
+    <th>Hole17</th>
+    <th>Score17</th>
+    <th>Putts17</th>
+    <th>T club17</th>
+    <th>Fairway17</th>
+    <th>Sand17</th>
+    <th>Pty17</th>
+    <th>Hole18</th>
+    <th>Score18</th>
+    <th>Putts18</th>
+    <th>T club18</th>
+    <th>Fairway18</th>
+    <th>Sand18</th>
+    <th>Pty18</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @score_cards.each do |score_card| %>
+  <tr>
+    <td><%= score_card.user_id %></td>
+    <td><%= score_card.course_id %></td>
+    <td><%= score_card.tee_box %></td>
+    <td><%= score_card.course2_id %></td>
+    <td><%= score_card.start_hole %></td>
+    <td><%= score_card.score %></td>
+    <td><%= score_card.hole1_id %></td>
+    <td><%= score_card.score1 %></td>
+    <td><%= score_card.putts1 %></td>
+    <td><%= score_card.t_club1 %></td>
+    <td><%= score_card.fairway1 %></td>
+    <td><%= score_card.sand1 %></td>
+    <td><%= score_card.pty1 %></td>
+    <td><%= score_card.hole2_id %></td>
+    <td><%= score_card.score2 %></td>
+    <td><%= score_card.putts2 %></td>
+    <td><%= score_card.t_club2 %></td>
+    <td><%= score_card.fairway2 %></td>
+    <td><%= score_card.sand2 %></td>
+    <td><%= score_card.pty2 %></td>
+    <td><%= score_card.hole3_id %></td>
+    <td><%= score_card.score3 %></td>
+    <td><%= score_card.putts3 %></td>
+    <td><%= score_card.t_club3 %></td>
+    <td><%= score_card.fairway3 %></td>
+    <td><%= score_card.sand3 %></td>
+    <td><%= score_card.pty3 %></td>
+    <td><%= score_card.hole4_id %></td>
+    <td><%= score_card.score4 %></td>
+    <td><%= score_card.putts4 %></td>
+    <td><%= score_card.t_club4 %></td>
+    <td><%= score_card.fairway4 %></td>
+    <td><%= score_card.sand4 %></td>
+    <td><%= score_card.pty4 %></td>
+    <td><%= score_card.hole5_id %></td>
+    <td><%= score_card.score5 %></td>
+    <td><%= score_card.putts5 %></td>
+    <td><%= score_card.t_club5 %></td>
+    <td><%= score_card.fairway5 %></td>
+    <td><%= score_card.sand5 %></td>
+    <td><%= score_card.pty5 %></td>
+    <td><%= score_card.hole6_id %></td>
+    <td><%= score_card.score6 %></td>
+    <td><%= score_card.putts6 %></td>
+    <td><%= score_card.t_club6 %></td>
+    <td><%= score_card.fairway6 %></td>
+    <td><%= score_card.sand6 %></td>
+    <td><%= score_card.pty6 %></td>
+    <td><%= score_card.hole7_id %></td>
+    <td><%= score_card.score7 %></td>
+    <td><%= score_card.putts7 %></td>
+    <td><%= score_card.t_club7 %></td>
+    <td><%= score_card.fairway7 %></td>
+    <td><%= score_card.sand7 %></td>
+    <td><%= score_card.pty7 %></td>
+    <td><%= score_card.hole8_id %></td>
+    <td><%= score_card.score8 %></td>
+    <td><%= score_card.putts8 %></td>
+    <td><%= score_card.t_club8 %></td>
+    <td><%= score_card.fairway8 %></td>
+    <td><%= score_card.sand8 %></td>
+    <td><%= score_card.pty8 %></td>
+    <td><%= score_card.hole9_id %></td>
+    <td><%= score_card.score9 %></td>
+    <td><%= score_card.putts9 %></td>
+    <td><%= score_card.t_club9 %></td>
+    <td><%= score_card.fairway9 %></td>
+    <td><%= score_card.sand9 %></td>
+    <td><%= score_card.pty9 %></td>
+    <td><%= score_card.hole10_id %></td>
+    <td><%= score_card.score10 %></td>
+    <td><%= score_card.putts10 %></td>
+    <td><%= score_card.t_club10 %></td>
+    <td><%= score_card.fairway10 %></td>
+    <td><%= score_card.sand10 %></td>
+    <td><%= score_card.pty10 %></td>
+    <td><%= score_card.hole11_id %></td>
+    <td><%= score_card.score11 %></td>
+    <td><%= score_card.putts11 %></td>
+    <td><%= score_card.t_club11 %></td>
+    <td><%= score_card.fairway11 %></td>
+    <td><%= score_card.sand11 %></td>
+    <td><%= score_card.pty11 %></td>
+    <td><%= score_card.hole12_id %></td>
+    <td><%= score_card.score12 %></td>
+    <td><%= score_card.putts12 %></td>
+    <td><%= score_card.t_club12 %></td>
+    <td><%= score_card.fairway12 %></td>
+    <td><%= score_card.sand12 %></td>
+    <td><%= score_card.pty12 %></td>
+    <td><%= score_card.hole13_id %></td>
+    <td><%= score_card.score13 %></td>
+    <td><%= score_card.putts13 %></td>
+    <td><%= score_card.t_club13 %></td>
+    <td><%= score_card.fairway13 %></td>
+    <td><%= score_card.sand13 %></td>
+    <td><%= score_card.pty13 %></td>
+    <td><%= score_card.hole14_id %></td>
+    <td><%= score_card.score14 %></td>
+    <td><%= score_card.putts14 %></td>
+    <td><%= score_card.t_club14 %></td>
+    <td><%= score_card.fairway14 %></td>
+    <td><%= score_card.sand14 %></td>
+    <td><%= score_card.pty14 %></td>
+    <td><%= score_card.hole15_id %></td>
+    <td><%= score_card.score15 %></td>
+    <td><%= score_card.putts15 %></td>
+    <td><%= score_card.t_club15 %></td>
+    <td><%= score_card.fairway15 %></td>
+    <td><%= score_card.sand15 %></td>
+    <td><%= score_card.pty15 %></td>
+    <td><%= score_card.hole16_id %></td>
+    <td><%= score_card.score16 %></td>
+    <td><%= score_card.putts16 %></td>
+    <td><%= score_card.t_club16 %></td>
+    <td><%= score_card.fairway16 %></td>
+    <td><%= score_card.sand16 %></td>
+    <td><%= score_card.pty16 %></td>
+    <td><%= score_card.hole17_id %></td>
+    <td><%= score_card.score17 %></td>
+    <td><%= score_card.putts17 %></td>
+    <td><%= score_card.t_club17 %></td>
+    <td><%= score_card.fairway17 %></td>
+    <td><%= score_card.sand17 %></td>
+    <td><%= score_card.pty17 %></td>
+    <td><%= score_card.hole18_id %></td>
+    <td><%= score_card.score18 %></td>
+    <td><%= score_card.putts18 %></td>
+    <td><%= score_card.t_club18 %></td>
+    <td><%= score_card.fairway18 %></td>
+    <td><%= score_card.sand18 %></td>
+    <td><%= score_card.pty18 %></td>
+    <td><%= link_to 'Show', score_card %></td>
+    <td><%= link_to 'Edit', edit_score_card_path(score_card) %></td>
+    <td><%= link_to 'Destroy', score_card, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Score card', new_score_card_path %>

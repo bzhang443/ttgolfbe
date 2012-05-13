@@ -1,0 +1,58 @@
+<%= form_for(@score_card) do |f| %>
+  <% if @score_card.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@score_card.errors.count, "error") %> prohibited this score_card from being saved:</h2>
+
+      <ul>
+      <% @score_card.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :user_id %>
+    <%= f.number_field :user_id %>
+    <%= f.label :score %>
+    <%= f.number_field :score %>
+  </div>
+  <div class="field">
+    <%= f.label :course_id %>
+    <%= f.number_field :course_id %>
+    <%= f.label :tee_box %>
+    <%= f.text_field :tee_box %>
+  </div>
+  <div class="field">
+    <%= f.label :course2_id %>
+    <%= f.number_field :course2_id %>
+    <%= f.label :start_hole %>
+    <%= f.number_field :start_hole %>
+  </div>
+<table>
+  <tr>
+    <th>Hole_ID</th>
+    <th>Score</th>
+    <th>Putts</th>
+    <th>T-Club</th>
+    <th>Fairway</th>
+    <th>Sand</th>
+    <th>Penalty</th>
+  </tr>
+  <% (1..18).each do |i| %>
+  <tr>
+    <td><%= f.number_field "hole#{i}_id" %></td>
+    <td><%= f.number_field "score#{i}" %></td>
+    <td><%= f.number_field "putts#{i}" %></td>
+    <td><%= select_tag "t_club#{i}", options_for_select(t_clubs) %></td>
+    <td><%= select_tag "fairway#{i}", options_for_select(fairways)  %></td>
+    <td><%= f.number_field "sand#{i}" %></td>
+    <td><%= f.number_field "pty#{i}" %></td>
+  </tr>
+  <% end %>
+</table>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

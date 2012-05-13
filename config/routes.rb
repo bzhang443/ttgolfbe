@@ -1,9 +1,5 @@
 Ttgolfbe::Application.routes.draw do
 
-  resources :credit_histories
-
-  get "callback/sina"
-
   devise_for :admins
 
   root :to => "oss#home"
@@ -35,6 +31,11 @@ Ttgolfbe::Application.routes.draw do
   post 'api/sina_share'
   post 'api/reset_password'
   get 'api/credit_history'
+  get 'api/my_scorecards'
+  get 'api/scorecard_info'
+  post 'api/save_scorecard'
+
+  get "callback/sina"
   
   resources :comments
   resources :favorites
@@ -48,6 +49,8 @@ Ttgolfbe::Application.routes.draw do
   resources :courses
   resources :clubs
   resources :areas
+  resources :credit_histories  
+  resources :score_cards
   
   # The priority is based upon order of creation:
   # first created -> highest priority.

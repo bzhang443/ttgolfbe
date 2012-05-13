@@ -1,0 +1,678 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>User:</b>
+  <%= @score_card.user_id %>
+  <b>Score:</b>
+  <%= @score_card.score %>
+<br/>
+  <b>Course:</b>
+  <%= @score_card.course_id %>
+  <b>Tee box:</b>
+  <%= @score_card.tee_box %>
+<br/>
+  <b>Course2:</b>
+  <%= @score_card.course2_id %>
+  <b>Start hole:</b>
+  <%= @score_card.start_hole %>
+</p>
+
+
+<table>
+  <tr>
+    <th>Hole_ID</th>
+    <th>Score</th>
+    <th>Putts</th>
+    <th>T-Club</th>
+    <th>Fairway</th>
+    <th>Sand</th>
+    <th>Penalty</th>
+  </tr>
+  <% (1..18).each do |i| %>
+  <tr>
+    <td><%= @score_card.send "hole#{i}_id" %></td>
+    <td><%= @score_card.send "score#{i}" %></td>
+    <td><%= @score_card.send "putts#{i}" %></td>
+    <td><%= @score_card.send "t_club#{i}" %></td>
+    <td><%= @score_card.send "fairway#{i}" %></td>
+    <td><%= @score_card.send "sand#{i}" %></td>
+    <td><%= @score_card.send "pty#{i}" %></td>
+  </tr>
+  <% end %>
+</table>
+
+
+<!--
+<p>
+  <b>Hole1:</b>
+  <%= @score_card.hole1_id %>
+</p>
+
+<p>
+  <b>Score1:</b>
+  <%= @score_card.score1 %>
+</p>
+
+<p>
+  <b>Putts1:</b>
+  <%= @score_card.putts1 %>
+</p>
+
+<p>
+  <b>T club1:</b>
+  <%= @score_card.t_club1 %>
+</p>
+
+<p>
+  <b>Fairway1:</b>
+  <%= @score_card.fairway1 %>
+</p>
+
+<p>
+  <b>Sand1:</b>
+  <%= @score_card.sand1 %>
+</p>
+
+<p>
+  <b>Pty1:</b>
+  <%= @score_card.pty1 %>
+</p>
+
+<p>
+  <b>Hole2:</b>
+  <%= @score_card.hole2_id %>
+</p>
+
+<p>
+  <b>Score2:</b>
+  <%= @score_card.score2 %>
+</p>
+
+<p>
+  <b>Putts2:</b>
+  <%= @score_card.putts2 %>
+</p>
+
+<p>
+  <b>T club2:</b>
+  <%= @score_card.t_club2 %>
+</p>
+
+<p>
+  <b>Fairway2:</b>
+  <%= @score_card.fairway2 %>
+</p>
+
+<p>
+  <b>Sand2:</b>
+  <%= @score_card.sand2 %>
+</p>
+
+<p>
+  <b>Pty2:</b>
+  <%= @score_card.pty2 %>
+</p>
+
+<p>
+  <b>Hole3:</b>
+  <%= @score_card.hole3_id %>
+</p>
+
+<p>
+  <b>Score3:</b>
+  <%= @score_card.score3 %>
+</p>
+
+<p>
+  <b>Putts3:</b>
+  <%= @score_card.putts3 %>
+</p>
+
+<p>
+  <b>T club3:</b>
+  <%= @score_card.t_club3 %>
+</p>
+
+<p>
+  <b>Fairway3:</b>
+  <%= @score_card.fairway3 %>
+</p>
+
+<p>
+  <b>Sand3:</b>
+  <%= @score_card.sand3 %>
+</p>
+
+<p>
+  <b>Pty3:</b>
+  <%= @score_card.pty3 %>
+</p>
+
+<p>
+  <b>Hole4:</b>
+  <%= @score_card.hole4_id %>
+</p>
+
+<p>
+  <b>Score4:</b>
+  <%= @score_card.score4 %>
+</p>
+
+<p>
+  <b>Putts4:</b>
+  <%= @score_card.putts4 %>
+</p>
+
+<p>
+  <b>T club4:</b>
+  <%= @score_card.t_club4 %>
+</p>
+
+<p>
+  <b>Fairway4:</b>
+  <%= @score_card.fairway4 %>
+</p>
+
+<p>
+  <b>Sand4:</b>
+  <%= @score_card.sand4 %>
+</p>
+
+<p>
+  <b>Pty4:</b>
+  <%= @score_card.pty4 %>
+</p>
+
+<p>
+  <b>Hole5:</b>
+  <%= @score_card.hole5_id %>
+</p>
+
+<p>
+  <b>Score5:</b>
+  <%= @score_card.score5 %>
+</p>
+
+<p>
+  <b>Putts5:</b>
+  <%= @score_card.putts5 %>
+</p>
+
+<p>
+  <b>T club5:</b>
+  <%= @score_card.t_club5 %>
+</p>
+
+<p>
+  <b>Fairway5:</b>
+  <%= @score_card.fairway5 %>
+</p>
+
+<p>
+  <b>Sand5:</b>
+  <%= @score_card.sand5 %>
+</p>
+
+<p>
+  <b>Pty5:</b>
+  <%= @score_card.pty5 %>
+</p>
+
+<p>
+  <b>Hole6:</b>
+  <%= @score_card.hole6_id %>
+</p>
+
+<p>
+  <b>Score6:</b>
+  <%= @score_card.score6 %>
+</p>
+
+<p>
+  <b>Putts6:</b>
+  <%= @score_card.putts6 %>
+</p>
+
+<p>
+  <b>T club6:</b>
+  <%= @score_card.t_club6 %>
+</p>
+
+<p>
+  <b>Fairway6:</b>
+  <%= @score_card.fairway6 %>
+</p>
+
+<p>
+  <b>Sand6:</b>
+  <%= @score_card.sand6 %>
+</p>
+
+<p>
+  <b>Pty6:</b>
+  <%= @score_card.pty6 %>
+</p>
+
+<p>
+  <b>Hole7:</b>
+  <%= @score_card.hole7_id %>
+</p>
+
+<p>
+  <b>Score7:</b>
+  <%= @score_card.score7 %>
+</p>
+
+<p>
+  <b>Putts7:</b>
+  <%= @score_card.putts7 %>
+</p>
+
+<p>
+  <b>T club7:</b>
+  <%= @score_card.t_club7 %>
+</p>
+
+<p>
+  <b>Fairway7:</b>
+  <%= @score_card.fairway7 %>
+</p>
+
+<p>
+  <b>Sand7:</b>
+  <%= @score_card.sand7 %>
+</p>
+
+<p>
+  <b>Pty7:</b>
+  <%= @score_card.pty7 %>
+</p>
+
+<p>
+  <b>Hole8:</b>
+  <%= @score_card.hole8_id %>
+</p>
+
+<p>
+  <b>Score8:</b>
+  <%= @score_card.score8 %>
+</p>
+
+<p>
+  <b>Putts8:</b>
+  <%= @score_card.putts8 %>
+</p>
+
+<p>
+  <b>T club8:</b>
+  <%= @score_card.t_club8 %>
+</p>
+
+<p>
+  <b>Fairway8:</b>
+  <%= @score_card.fairway8 %>
+</p>
+
+<p>
+  <b>Sand8:</b>
+  <%= @score_card.sand8 %>
+</p>
+
+<p>
+  <b>Pty8:</b>
+  <%= @score_card.pty8 %>
+</p>
+
+<p>
+  <b>Hole9:</b>
+  <%= @score_card.hole9_id %>
+</p>
+
+<p>
+  <b>Score9:</b>
+  <%= @score_card.score9 %>
+</p>
+
+<p>
+  <b>Putts9:</b>
+  <%= @score_card.putts9 %>
+</p>
+
+<p>
+  <b>T club9:</b>
+  <%= @score_card.t_club9 %>
+</p>
+
+<p>
+  <b>Fairway9:</b>
+  <%= @score_card.fairway9 %>
+</p>
+
+<p>
+  <b>Sand9:</b>
+  <%= @score_card.sand9 %>
+</p>
+
+<p>
+  <b>Pty9:</b>
+  <%= @score_card.pty9 %>
+</p>
+
+<p>
+  <b>Hole10:</b>
+  <%= @score_card.hole10_id %>
+</p>
+
+<p>
+  <b>Score10:</b>
+  <%= @score_card.score10 %>
+</p>
+
+<p>
+  <b>Putts10:</b>
+  <%= @score_card.putts10 %>
+</p>
+
+<p>
+  <b>T club10:</b>
+  <%= @score_card.t_club10 %>
+</p>
+
+<p>
+  <b>Fairway10:</b>
+  <%= @score_card.fairway10 %>
+</p>
+
+<p>
+  <b>Sand10:</b>
+  <%= @score_card.sand10 %>
+</p>
+
+<p>
+  <b>Pty10:</b>
+  <%= @score_card.pty10 %>
+</p>
+
+<p>
+  <b>Hole11:</b>
+  <%= @score_card.hole11_id %>
+</p>
+
+<p>
+  <b>Score11:</b>
+  <%= @score_card.score11 %>
+</p>
+
+<p>
+  <b>Putts11:</b>
+  <%= @score_card.putts11 %>
+</p>
+
+<p>
+  <b>T club11:</b>
+  <%= @score_card.t_club11 %>
+</p>
+
+<p>
+  <b>Fairway11:</b>
+  <%= @score_card.fairway11 %>
+</p>
+
+<p>
+  <b>Sand11:</b>
+  <%= @score_card.sand11 %>
+</p>
+
+<p>
+  <b>Pty11:</b>
+  <%= @score_card.pty11 %>
+</p>
+
+<p>
+  <b>Hole12:</b>
+  <%= @score_card.hole12_id %>
+</p>
+
+<p>
+  <b>Score12:</b>
+  <%= @score_card.score12 %>
+</p>
+
+<p>
+  <b>Putts12:</b>
+  <%= @score_card.putts12 %>
+</p>
+
+<p>
+  <b>T club12:</b>
+  <%= @score_card.t_club12 %>
+</p>
+
+<p>
+  <b>Fairway12:</b>
+  <%= @score_card.fairway12 %>
+</p>
+
+<p>
+  <b>Sand12:</b>
+  <%= @score_card.sand12 %>
+</p>
+
+<p>
+  <b>Pty12:</b>
+  <%= @score_card.pty12 %>
+</p>
+
+<p>
+  <b>Hole13:</b>
+  <%= @score_card.hole13_id %>
+</p>
+
+<p>
+  <b>Score13:</b>
+  <%= @score_card.score13 %>
+</p>
+
+<p>
+  <b>Putts13:</b>
+  <%= @score_card.putts13 %>
+</p>
+
+<p>
+  <b>T club13:</b>
+  <%= @score_card.t_club13 %>
+</p>
+
+<p>
+  <b>Fairway13:</b>
+  <%= @score_card.fairway13 %>
+</p>
+
+<p>
+  <b>Sand13:</b>
+  <%= @score_card.sand13 %>
+</p>
+
+<p>
+  <b>Pty13:</b>
+  <%= @score_card.pty13 %>
+</p>
+
+<p>
+  <b>Hole14:</b>
+  <%= @score_card.hole14_id %>
+</p>
+
+<p>
+  <b>Score14:</b>
+  <%= @score_card.score14 %>
+</p>
+
+<p>
+  <b>Putts14:</b>
+  <%= @score_card.putts14 %>
+</p>
+
+<p>
+  <b>T club14:</b>
+  <%= @score_card.t_club14 %>
+</p>
+
+<p>
+  <b>Fairway14:</b>
+  <%= @score_card.fairway14 %>
+</p>
+
+<p>
+  <b>Sand14:</b>
+  <%= @score_card.sand14 %>
+</p>
+
+<p>
+  <b>Pty14:</b>
+  <%= @score_card.pty14 %>
+</p>
+
+<p>
+  <b>Hole15:</b>
+  <%= @score_card.hole15_id %>
+</p>
+
+<p>
+  <b>Score15:</b>
+  <%= @score_card.score15 %>
+</p>
+
+<p>
+  <b>Putts15:</b>
+  <%= @score_card.putts15 %>
+</p>
+
+<p>
+  <b>T club15:</b>
+  <%= @score_card.t_club15 %>
+</p>
+
+<p>
+  <b>Fairway15:</b>
+  <%= @score_card.fairway15 %>
+</p>
+
+<p>
+  <b>Sand15:</b>
+  <%= @score_card.sand15 %>
+</p>
+
+<p>
+  <b>Pty15:</b>
+  <%= @score_card.pty15 %>
+</p>
+
+<p>
+  <b>Hole16:</b>
+  <%= @score_card.hole16_id %>
+</p>
+
+<p>
+  <b>Score16:</b>
+  <%= @score_card.score16 %>
+</p>
+
+<p>
+  <b>Putts16:</b>
+  <%= @score_card.putts16 %>
+</p>
+
+<p>
+  <b>T club16:</b>
+  <%= @score_card.t_club16 %>
+</p>
+
+<p>
+  <b>Fairway16:</b>
+  <%= @score_card.fairway16 %>
+</p>
+
+<p>
+  <b>Sand16:</b>
+  <%= @score_card.sand16 %>
+</p>
+
+<p>
+  <b>Pty16:</b>
+  <%= @score_card.pty16 %>
+</p>
+
+<p>
+  <b>Hole17:</b>
+  <%= @score_card.hole17_id %>
+</p>
+
+<p>
+  <b>Score17:</b>
+  <%= @score_card.score17 %>
+</p>
+
+<p>
+  <b>Putts17:</b>
+  <%= @score_card.putts17 %>
+</p>
+
+<p>
+  <b>T club17:</b>
+  <%= @score_card.t_club17 %>
+</p>
+
+<p>
+  <b>Fairway17:</b>
+  <%= @score_card.fairway17 %>
+</p>
+
+<p>
+  <b>Sand17:</b>
+  <%= @score_card.sand17 %>
+</p>
+
+<p>
+  <b>Pty17:</b>
+  <%= @score_card.pty17 %>
+</p>
+
+<p>
+  <b>Hole18:</b>
+  <%= @score_card.hole18_id %>
+</p>
+
+<p>
+  <b>Score18:</b>
+  <%= @score_card.score18 %>
+</p>
+
+<p>
+  <b>Putts18:</b>
+  <%= @score_card.putts18 %>
+</p>
+
+<p>
+  <b>T club18:</b>
+  <%= @score_card.t_club18 %>
+</p>
+
+<p>
+  <b>Fairway18:</b>
+  <%= @score_card.fairway18 %>
+</p>
+
+<p>
+  <b>Sand18:</b>
+  <%= @score_card.sand18 %>
+</p>
+
+<p>
+  <b>Pty18:</b>
+  <%= @score_card.pty18 %>
+</p>
+-->
+
+<%= link_to 'Edit', edit_score_card_path(@score_card) %> |
+<%= link_to 'Back', score_cards_path %>
