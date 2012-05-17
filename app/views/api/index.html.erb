@@ -5,25 +5,30 @@
 所有应答都包括status，其中0=成功，>0 失败（message解释失败原因）
 手机客户端数据库包含如下信息：
 - token: 通信会话令牌，标志手机在系统中成功注册过，其他所有接口都必须把token作为参数
+
 - user_name: 用户名，没有表示用户没有设置过
-- default_tee:
-- score_mode:
+- default_tee: 用户默认发球台
+- score_mode:　用户默认记分模式
+- sina_expires: 新浪认证的有效期
+- area_id: 用户选择的地区ID，没有表示按照“附近”
 
 - os: 最后向服务器提供的手机上安装的操作系统和版本号，如果当前操作系统版本不同，需要在sync_config时提供此参数并更新；
 - app_version: 最后向服务器提供的版本号，如果当前应用版本号不同，需要在sync_config时提供此参数并更新；
-- course_list_version: 本地球场列表版本号，没有表示本地没有数据
-- sina_expires: 新浪认证的有效期
-- sina_callback: 新浪认证使用的服务器回调地址，来自sync_config
-- sina_client_id: 本应用在新浪的注册ID，来自sync_config
-- area_id: 用户选择的地区ID，没有表示按照“附近”
-- 缓存数据库
+
+缓存数据库，依赖版本号控制
+- course_list :本地球场列表
+- fairway_map :球道图信息
+- course_images: 球场图片
 
 产品模式下：
 客户端请求时Header中添加 Accept-Encoding: gzip
 服务器端对大于一个尺寸的应答进行压缩，并在header中标志 Content-Encoding: gzip
 客户端对压缩的内容先加压再处理
 
-帮助页面: /help.html
+系统常数: 如果不同则通过sync_config修改
+- help_page     : /help.html
+- sina_client_id: 95122059
+- sina_callback : http://125.35.87.198:8015/callback/sina
 
 <%= @token %>
 </pre>
@@ -58,6 +63,7 @@
   os：设备上运行的操作系统，比如 android 4.0.3/ios 4.3； 仅当本地记录与系统不符时才提供
   version: 当前客户端版本号， ex: 1.0； 仅当本地记录与系统不符时才提供
   lat_lon: 当前经纬度坐标, 格式: xxx.xxxxxx|yyy.yyyyyy
+  userinfo_version: 用户信息版本号，为空时会得到全部用户信息
 应答：
   status/message
   config = {
@@ -67,9 +73,15 @@
     update_url: 更新包地址
     course_list_cache_expire: 球场列表缓存时间，以秒为单位，默认3600
     server_time: 服务器端时间
+    sina_callback: 新浪认证使用的服务器回调地址，仅当不同于默认值时出现
+    sina_client_id: 本应用在新浪的注册ID，仅当不同于默认值时出现
+  }
+  user_info = {
+    version     : 信息版本号
+    name        : 名字 
+    default_tee : 默认发球台颜色
+    score_mode  : 记分模式
     sina_expires: 新浪认证的有效期
-    sina_callback: 新浪认证使用的服务器回调地址
-    sina_client_id: 本应用在新浪的注册ID
   }</pre>
   <form action="/api/sync_config" method="POST">
     token: <input name="token"/> os: <input name='os'/> version: <input name="version"/> lat_lon:<input name='lat_lon'/><br/>
@@ -89,7 +101,7 @@
 应答：
   status/message
   version: 响应中的球场列表版本号
-  hot[] = { :推荐球场列表
+  hot[] = { :推荐球场列表, 可以为空
     id: 球场ID
     name: 球场名称
     pic: 球场图片URL地址
@@ -128,19 +140,19 @@
     type: 类型
     lat_lon: 坐标
     favorite: 是否关注过
-    comments {: 评分
-      overall: 总平均
-      votes: 评分人数
-      view: 风景
-      cluture: 文化
-      hardness: 难度
-      candy: 球童
-      design: 设计
-      facility: 设施
-      recall: 回味
-      service: 服务
+    comments { : 评分
+      overall  : 总平均
+      votes    : 评分人数
+      view     : 风景
+      cluture  : 文化
+      hardness : 难度
+      candy    : 球童
+      design   : 设计
+      facility : 设施
+      recall   : 回味
+      service  : 服务
       maintenance: 维护
-      price: 价格
+      price    : 价格
     }
     comments_mine {: 我的评分, 没有表示尚未评分
       overall: 总平均
@@ -151,6 +163,11 @@
       holiday: 假日价格
       telephone: 订场电话号码
     }
+    combined_courses[] { :需要联合的其他球场列表，仅当9洞course才可能会出现
+      id:   球场ID
+      name: 球场名称
+    }
+    tee_boxes: 发球台的颜色组合（仅当非全部5个发球台都存在时才会出现）, black|gold|blue|white|red, 用|分开的颜色字符串
   }</pre>
   <form action="/api/course_info" method="GET">
     token: <input name="token"/> id:<input name='id'/> <br/>
@@ -159,7 +176,7 @@
 </li>
 
 <li>
-  <h3>fairway_list </h3>
+  <h3>fairway_list</h3>
   <pre>球道图列表
 方法：GET
 请求参数：
@@ -167,22 +184,32 @@
   id: 球场ID
 应答：
   status/message
-  holes[] {: 球道图列表，按照球洞号码顺序排列，请求球道图时球道ID作为fairway_map的ID参数
+  holes[] { : 球道图列表，按照球洞号码顺序排列，请求球道图时球道ID作为fairway_map的ID参数
     id: 球道ID
+    par:  标准杆数
+    yards { : 码表
+      black : 黑Tee到球洞距离
+      gold  : 金
+      blue  : 蓝
+      white : 白
+      red   : 红
+    }
+    dim: 图片尺寸， x|y  
     lat_lons { :图片四角经纬坐标，格式： xxx.xxxxxx|yyy.yyyyyy，如果没有表示球道图未经测量
-      left_lower: 左下角
+      left_lower : 左下角
       right_lower: 右下下角
-      left_upper: 左上角
+      left_upper : 左上角
       right_upper: 右上角
     }
-    dim: 图片尺寸， x|y
     pois { : 各个测量点在图上的相对左上角坐标，格式是 x|y
-      green_center: 果岭中心
-      tee_red: 红Tee
-      tee_white: 白Tee
-      tee_blue: 蓝Tee
-      tee_gold: 金Tee
-      tee_black: 黑Tee
+      green_center : 果岭中心
+      green_front  : 果岭前沿
+      green_back   : 果岭后沿
+      tee_red      : 红Tee
+      tee_white    : 白Tee
+      tee_blue     : 蓝Tee
+      tee_gold     : 金Tee
+      tee_black    : 黑Tee
     }
   } </pre>
   <form action="/api/fairway_list" method="GET">
@@ -533,7 +560,7 @@
 
 <li>
   <h3>save_scorecard</h3>
-  <pre>保存一个球洞的计分
+  <pre>保存一个计分卡
 方法：POST
 请求参数：
   token
@@ -603,6 +630,7 @@
   </form>
 </li>
 -->
+
 <!--
 <li>
   <h3> </h3>

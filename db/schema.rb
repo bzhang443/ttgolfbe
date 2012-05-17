@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120513113839) do
+ActiveRecord::Schema.define(:version => 20120516051306) do
 
   create_table "admins", :force => true do |t|
     t.string   "email",                                 :default => "", :null => false
@@ -184,12 +184,14 @@ ActiveRecord::Schema.define(:version => 20120513113839) do
     t.string   "url"
     t.datetime "created_at",                                          :null => false
     t.datetime "updated_at",                                          :null => false
-    t.string   "position_tee_red"
-    t.string   "position_tee_white"
-    t.string   "position_tee_blue"
-    t.string   "position_tee_gold"
-    t.string   "position_tee_black"
+    t.string   "poi_tee_red"
+    t.string   "poi_tee_white"
+    t.string   "poi_tee_blue"
+    t.string   "poi_tee_gold"
+    t.string   "poi_tee_black"
     t.string   "position_green_center"
+    t.string   "poi_green_front"
+    t.string   "poi_green_back"
   end
 
   create_table "prices", :force => true do |t|

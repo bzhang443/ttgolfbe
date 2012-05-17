@@ -92,3 +92,4 @@ $ rails generate scaffold ScoreCard \
 
 $ rails generate migration AddScoreModeToUsers score_mode:string
 
+$ rails generate migration AddGreenFrontAndBackPoiToMaps

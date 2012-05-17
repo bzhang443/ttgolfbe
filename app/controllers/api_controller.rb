@@ -24,13 +24,27 @@ class ApiController < ApplicationController
     atts[:version] = params[:version] unless params[:version].blank?
     @device.update_attributes(atts) unless atts.empty?
     
-    config = {:server_time => Time.now.to_i, 
-      :sina_callback=>SINA_CALLBACK,
-      :sina_client_id=>SINA_CLIENT_ID
+    ret = {:status => 0}
+    ret[:config] = {
+      #:sina_callback=>SINA_CALLBACK,
+      #:sina_client_id=>SINA_CLIENT_ID,
+      :server_time => Time.now.to_i
     }
-    config[:sina_expires] = @device.user.sina_expires if @device.user.sina_expires && (Time.now.localtime < @device.user.sina_expires)
+    uiv = params[:userinfo_version]
+    if uiv.blank? || uiv.to_i < @device.user.updated_at.to_i
+        userinfo = {:version =>@device.user.updated_at.to_i}
+        userinfo[:name] = @device.user.name if @device.user.name
+        userinfo[:default_tee] = @device.user.tee if @device.user.tee
+        userinfo[:score_mode] = @device.user.score_mode if @device.user.score_mode
+
+        if @device.user.sina_expires 
+          diff = @device.user.sina_expires.to_i - Time.now.localtime.to_i
+          userinfo[:sina_expires] = diff if diff > 0
+        end
+        ret[:userinfo] = userinfo
+    end
     
-    render json: {:status => 0, :config => config}
+    render json: ret
   end
 
   def course_list
@@ -83,6 +97,29 @@ class ApiController < ApplicationController
     end
     
     info[:prices] = [{:workdays=>600, :holidays=>1000, :telephone=>course.club.telephone}]
+    
+    if course.hole_count == 9 
+      brothers = []
+      course.club.courses.each { |e|
+        next if e.id == course.id
+        next unless e.hole_count == 9
+        next unless e.name
+        brothers << {:id=>e.id, :name=>e.name}
+      }
+      info[:combined_courses] = brothers if brothers.size > 0
+    end
+    
+    boxes = []
+    hole = course.holes[0]
+    boxes << 'black' if hole.yard_black && hole.yard_black > 0
+    boxes << 'gold'  if hole.yard_gold  && hole.yard_gold > 0
+    boxes << 'blue'  if hole.yard_blue  && hole.yard_blue > 0
+    boxes << 'white' if hole.yard_white && hole.yard_white > 0
+    boxes << 'red'   if hole.yard_red   && hole.yard_red > 0
+    unless boxes.size == 5
+      info[:tee_boxes] = boxes.join('|')
+    end
+    
     render json: {:status=>0, :course=>info}
   end
   
@@ -110,32 +147,30 @@ class ApiController < ApplicationController
       hole['yards'] = yards
       map = e.map
       if map
-        if map.lat_left_lower
-          hole[:corners] = {
-            :left_lower  => "#{map.lat_left_lower}|#{map.lon_left_lower}",
-            :right_lower => "#{map.lat_right_lower}|#{map.lon_right_lower}",
-            :left_upper  => "#{map.lat_left_higher}|#{map.lon_left_higher}",
-            :right_upper => "#{map.lat_right_higher}|#{map.lon_right_higher}"
-          }
-        end
-        if map.dim_x
-          hole[:dim] = "#{map.dim_x}|#{map.dim_y}"
-        end
-        if map.position_green_center
-          hole[:pois] = {
-            :green_center => map.position_green_center, 
-            :tee_red      => map.position_tee_red, 
-            :tee_white    => map.position_tee_white, 
-            :tee_blue     => map.position_tee_blue, 
-            :tee_gold     => map.position_tee_gold, 
-            :tee_black    => map.position_tee_black              
-          }
-        end
+        hole[:corners] = {
+          :left_lower  => "#{map.lat_left_lower}|#{map.lon_left_lower}",
+          :right_lower => "#{map.lat_right_lower}|#{map.lon_right_lower}",
+          :left_upper  => "#{map.lat_left_higher}|#{map.lon_left_higher}",
+          :right_upper => "#{map.lat_right_higher}|#{map.lon_right_higher}"
+        } if map.lat_left_lower
+      
+        hole[:dim] = "#{map.dim_x}|#{map.dim_y}" if map.dim_x
+        
+        hole[:pois] = {
+          :green_center => map.poi_green_center, 
+          :green_front  => map.poi_green_front,
+          :green_back   => map.poi_green_back,
+          :tee_red      => map.poi_tee_red, 
+          :tee_white    => map.poi_tee_white, 
+          :tee_blue     => map.poi_tee_blue, 
+          :tee_gold     => map.poi_tee_gold, 
+          :tee_black    => map.poi_tee_black              
+        } if map.position_green_center
       end
       holes << hole
     }  
     
-    @device.user.add_credit("下载球道图", CREDIT_DOWNLOAD_COURSE_MAP, :course_id=>course.id)
+    #@device.user.add_credit("下载球道图", CREDIT_DOWNLOAD_COURSE_MAP, :course_id=>course.id)
    
     render json: {:status=>0, :list=>holes}
   end
@@ -179,13 +214,15 @@ class ApiController < ApplicationController
     if comment
       comment.update_attributes(p)
     else
-      first = Comment.count(:conditions => ["course_id=?", course.id]) == 0
+#      first = Comment.count(:conditions => ["course_id=?", course.id]) == 0
       Comment.create({:course_id=>course.id, :user_id=>@device.user.id}.merge(p))
+=begin      
       if first
         @device.user.add_credit("第一个对球场评分", CREDIT_COMMENT_COURSE, :course_id=>course.id) 
       else
         @device.user.add_credit("球场评分", CREDIT_COMMENT_COURSE, :course_id=>course.id)
       end
+=end
     end
     
     render json: {:status=>0}

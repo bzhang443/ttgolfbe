@@ -8,6 +8,7 @@ end
 #	(76, 39.879890, 116.526908, 39.879838, 116.527920, 39.883897, 116.527259, 39.883844, 116.528271, 127, 622, 'http://zhy.wa3.cn:8080/GolfManage/cut_images/20120430172330913.jpg', '2012-03-28 11:08:38', '2012-03-28 11:08:38', '51|436', '55|471', '60|506', '68|536', '71|570', '66|42');
 
 
+
 # == Schema Information
 #
 # Table name: maps
@@ -26,11 +27,13 @@ end
 #  url                   :string(255)
 #  created_at            :datetime        not null
 #  updated_at            :datetime        not null
-#  position_tee_red      :string(255)
-#  position_tee_white    :string(255)
-#  position_tee_blue     :string(255)
-#  position_tee_gold     :string(255)
-#  position_tee_black    :string(255)
-#  position_green_center :string(255)
+#  poi_tee_red           :string(255)
+#  poi_tee_white         :string(255)
+#  poi_tee_blue          :string(255)
+#  poi_tee_gold          :string(255)
+#  poi_tee_black         :string(255)
+#  poi_green_center      :string(255)
+#  poi_green_front       :string(255)
+#  poi_green_back        :string(255)
 #
 
