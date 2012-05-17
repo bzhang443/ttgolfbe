@@ -6,7 +6,7 @@ class Comment < ActiveRecord::Base
   
 private
   def update_overall
-    self.overall = (self.view + self.hardness + self.design + self.maintenance + self.rational + self.candy + self.facility + self.price)/10
+    self.overall = (self.view*3 + self.hardness*3 + self.design + self.maintenance*2 + self.rational + self.candy*2 + self.facility*2 + self.price*2)/16.0
   end
 end
 
