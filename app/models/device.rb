@@ -18,6 +18,7 @@ class Device < ActiveRecord::Base
   def update_token
     token = Digest::SHA2.hexdigest("#{Time.now.utc}|#{did}|#{user_id}")
     self.token = token
+    save
   end
   
   def switch_user(user)

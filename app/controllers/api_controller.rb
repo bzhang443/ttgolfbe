@@ -97,7 +97,7 @@ class ApiController < ApplicationController
     end
     
     info[:prices] = [{:workdays=>600, :holidays=>1000, :telephone=>course.club.telephone}]
-    
+    info[:holes] = course.hole_count
     if course.hole_count == 9 
       brothers = []
       course.club.courses.each { |e|
@@ -165,7 +165,7 @@ class ApiController < ApplicationController
           :tee_blue     => map.poi_tee_blue, 
           :tee_gold     => map.poi_tee_gold, 
           :tee_black    => map.poi_tee_black              
-        } if map.position_green_center
+        } if map.poi_green_center
       end
       holes << hole
     }  

@@ -161,6 +161,7 @@
       holiday: 假日价格
       telephone: 订场电话号码
     }
+    holes: 球洞个数（9或者18）
     combined_courses[] { :需要联合的其他球场列表，仅当9洞course才可能会出现
       id:   球场ID
       name: 球场名称
@@ -234,11 +235,11 @@
 <li>
   <h3>comment_course </h3>
   <pre>球场评分接口
+  overall = (view*3 + hardness*3 + design + maintenance*2 + rational + candy*2 + facility*2 + price*2)/16
 方法：POST
 请求参数：
   token
   id: 球场ID
-  overall: 总平均
   view: 风景
   rational: 合理
   hardness: 难度
@@ -250,7 +251,7 @@
 应答：
   status/message </pre>
   <form action="/api/comment_course" method="POST">
-    token: <input name="token"/> id: <input name='id'/> overall: <input name='overall'/> <br/>
+    token: <input name="token"/> id: <input name='id'/> <br/>
     view: <input name='view'/> rational: <input name='rational'/> hardness <input name='hardness'/> <br/>
     candy <input name='candy'/> design: <input name='design'/> facility: <input name='facility'/> <br/>
     maintenance: <input name='maintenance'/> price: <input name='price'/><br/>
