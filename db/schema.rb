@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120516051306) do
+ActiveRecord::Schema.define(:version => 20120517024344) do
 
   create_table "admins", :force => true do |t|
     t.string   "email",                                 :default => "", :null => false
@@ -74,12 +74,10 @@ ActiveRecord::Schema.define(:version => 20120516051306) do
     t.decimal  "view",        :precision => 3, :scale => 1
     t.decimal  "hardness",    :precision => 3, :scale => 1
     t.decimal  "design",      :precision => 3, :scale => 1
-    t.decimal  "recall",      :precision => 3, :scale => 1
     t.decimal  "maintenance", :precision => 3, :scale => 1
-    t.decimal  "culture",     :precision => 3, :scale => 1
+    t.decimal  "rational",    :precision => 3, :scale => 1
     t.decimal  "candy",       :precision => 3, :scale => 1
     t.decimal  "facility",    :precision => 3, :scale => 1
-    t.decimal  "service",     :precision => 3, :scale => 1
     t.decimal  "price",       :precision => 3, :scale => 1
     t.string   "notes"
     t.datetime "created_at",                                :null => false
@@ -171,25 +169,25 @@ ActiveRecord::Schema.define(:version => 20120516051306) do
   add_index "images", ["course_id"], :name => "FK_image_course"
 
   create_table "maps", :force => true do |t|
-    t.decimal  "lat_left_lower",        :precision => 9, :scale => 6
-    t.decimal  "lon_left_lower",        :precision => 9, :scale => 6
-    t.decimal  "lat_right_lower",       :precision => 9, :scale => 6
-    t.decimal  "lon_right_lower",       :precision => 9, :scale => 6
-    t.decimal  "lat_left_higher",       :precision => 9, :scale => 6
-    t.decimal  "lon_left_higher",       :precision => 9, :scale => 6
-    t.decimal  "lat_right_higher",      :precision => 9, :scale => 6
-    t.decimal  "lon_right_higher",      :precision => 9, :scale => 6
+    t.decimal  "lat_left_lower",   :precision => 9, :scale => 6
+    t.decimal  "lon_left_lower",   :precision => 9, :scale => 6
+    t.decimal  "lat_right_lower",  :precision => 9, :scale => 6
+    t.decimal  "lon_right_lower",  :precision => 9, :scale => 6
+    t.decimal  "lat_left_higher",  :precision => 9, :scale => 6
+    t.decimal  "lon_left_higher",  :precision => 9, :scale => 6
+    t.decimal  "lat_right_higher", :precision => 9, :scale => 6
+    t.decimal  "lon_right_higher", :precision => 9, :scale => 6
     t.integer  "dim_x"
     t.integer  "dim_y"
     t.string   "url"
-    t.datetime "created_at",                                          :null => false
-    t.datetime "updated_at",                                          :null => false
+    t.datetime "created_at",                                     :null => false
+    t.datetime "updated_at",                                     :null => false
     t.string   "poi_tee_red"
     t.string   "poi_tee_white"
     t.string   "poi_tee_blue"
     t.string   "poi_tee_gold"
     t.string   "poi_tee_black"
-    t.string   "position_green_center"
+    t.string   "poi_green_center"
     t.string   "poi_green_front"
     t.string   "poi_green_back"
   end

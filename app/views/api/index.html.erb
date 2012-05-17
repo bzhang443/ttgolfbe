@@ -144,19 +144,17 @@
       overall  : 总平均
       votes    : 评分人数
       view     : 风景
-      cluture  : 文化
+      ratioina : 合理
       hardness : 难度
       candy    : 球童
       design   : 设计
       facility : 设施
-      recall   : 回味
-      service  : 服务
       maintenance: 维护
       price    : 价格
     }
     comments_mine {: 我的评分, 没有表示尚未评分
       overall: 总平均
-      view|cluture|hardness|candy|design|facility|recall|service|maintenance|price: 风景|文化|难度|球童|设计|设施|回味|服务|维护|价格
+      view|rational|hardness|candy|design|facility|maintenance|price: 风景|合理|难度|球童|设计|设施|维护|价格
     }
     prices[] { : 价格，第一个是官方
       workday: 平日价格
@@ -242,22 +240,19 @@
   id: 球场ID
   overall: 总平均
   view: 风景
-  culture: 文化
+  rational: 合理
   hardness: 难度
   candy: 球童
   design: 设计
   facility: 设施
-  recall: 回味
-  service: 服务
   maintenance: 维护
   price: 价格
 应答：
   status/message </pre>
   <form action="/api/comment_course" method="POST">
     token: <input name="token"/> id: <input name='id'/> overall: <input name='overall'/> <br/>
-    view: <input name='view'/> culture <input name='culture'/> hardness <input name='hardness'/> <br/>
+    view: <input name='view'/> rational: <input name='rational'/> hardness <input name='hardness'/> <br/>
     candy <input name='candy'/> design: <input name='design'/> facility: <input name='facility'/> <br/>
-    recall: <input name='recall'/> service: <input name='service'/> <br/>
     maintenance: <input name='maintenance'/> price: <input name='price'/><br/>
     <input type='submit' value="测试"/>
   </form>

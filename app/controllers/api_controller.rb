@@ -76,14 +76,14 @@ class ApiController < ApplicationController
     info[:favorite] = true if Favorite.find_by_course_id_and_user_id(course.id, @device.user.id)
     
     comments = Comment.connection.select_one("select count(*) as 'votes', avg(overall) as 'overall', 
-                 avg(view) as 'view', avg(culture) as 'culture', avg(hardness) as 'hardness', avg(candy) as 'candy', avg(design) as 'design', 
-                 avg(facility) as 'facility', avg(recall) as 'recall', avg(service) as 'service', avg(maintenance) as 'maintenance', avg(price) as 'price'
+                 avg(view) as 'view', avg(rational) as 'rational', avg(hardness) as 'hardness', avg(candy) as 'candy', avg(design) as 'design', 
+                 avg(facility) as 'facility', avg(maintenance) as 'maintenance', avg(price) as 'price'
                from comments
                where course_id=#{course.id}")
     if (comments['votes']>0)
       info[:comments] = {:overall=>comments['overall'].to_f, :votes=>comments['votes'], 
-        :view=>comments['view'].to_f, :culture=>comments['culture'].to_f, :hardness=>comments['hardness'].to_f, :candy=>comments['candy'].to_f, :design=>comments['design'].to_f, 
-        :facility=>comments['facility'].to_f, :recall=>comments['recall'].to_f, :service=>comments['service'].to_f, :maintenance=>comments['maintenance'].to_f, :price=>comments['price'].to_f
+        :view=>comments['view'].to_f, :rational=>comments['rational'].to_f, :hardness=>comments['hardness'].to_f, :candy=>comments['candy'].to_f, :design=>comments['design'].to_f, 
+        :facility=>comments['facility'].to_f, :maintenance=>comments['maintenance'].to_f, :price=>comments['price'].to_f
       } 
     else
       info[:comments] = {:overall=>0, :votes=>0}
@@ -91,8 +91,8 @@ class ApiController < ApplicationController
     comments = Comment.find_by_course_id_and_user_id(course.id, @device.user.id)
     if (comments)
       info[:comments_mine] = {
-        :overall=>comments.overall.to_f, :view=>comments.view.to_f, :culture=>comments.culture.to_f, :hardness=>comments.hardness.to_f, :candy=>comments.candy.to_f, 
-        :design=>comments.design.to_f, :facility=>comments.facility.to_f, :recall=>comments.recall.to_f, :service=>comments.service.to_f, :maintenance=>comments.maintenance.to_f, :price=>comments.price.to_f
+        :overall=>comments.overall.to_f, :view=>comments.view.to_f, :rational=>comments.rational.to_f, :hardness=>comments.hardness.to_f, :candy=>comments.candy.to_f, 
+        :design=>comments.design.to_f, :facility=>comments.facility.to_f, :maintenance=>comments.maintenance.to_f, :price=>comments.price.to_f
       }
     end
     
@@ -206,9 +206,8 @@ class ApiController < ApplicationController
     return render json: {:status=>1, :message=>'缺少参数'} if id.blank?
     course = Course.find(id)
     return render json: {:status=>14, :message=>'球场不存在'} unless course  
-    p = {:view=>params[:view],:culture=>params[:culture],:hardness=>params[:hardness],
-      :candy=>params[:candy],:design=>params[:design],:facility=>params[:facility],:recall=>params[:recall],
-      :service=>params[:service],:maintenance=>params[:maintenance],:price=>params[:price]}
+    p = {:view=>params[:view],:rational=>params[:rational],:hardness=>params[:hardness],
+      :candy=>params[:candy],:design=>params[:design],:facility=>params[:facility],:maintenance=>params[:maintenance],:price=>params[:price]}
 
     comment = Comment.find_by_user_id_and_course_id(@device.user.id, course.id)
     if comment

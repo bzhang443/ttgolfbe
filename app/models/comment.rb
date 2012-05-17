@@ -6,10 +6,10 @@ class Comment < ActiveRecord::Base
   
 private
   def update_overall
-    self.overall = (self.view + self.hardness + self.design + self.recall + self.maintenance + self.culture + self.candy + self.facility + 
-      self.service + self.price)/10
+    self.overall = (self.view + self.hardness + self.design + self.maintenance + self.rational + self.candy + self.facility + self.price)/10
   end
 end
+
 
 
 # == Schema Information
@@ -23,12 +23,10 @@ end
 #  view        :decimal(3, 1)
 #  hardness    :decimal(3, 1)
 #  design      :decimal(3, 1)
-#  recall      :decimal(3, 1)
 #  maintenance :decimal(3, 1)
-#  culture     :decimal(3, 1)
+#  rational    :decimal(3, 1)
 #  candy       :decimal(3, 1)
 #  facility    :decimal(3, 1)
-#  service     :decimal(3, 1)
 #  price       :decimal(3, 1)
 #  notes       :string(255)
 #  created_at  :datetime        not null
