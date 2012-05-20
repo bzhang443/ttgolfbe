@@ -53,7 +53,7 @@ class ApiController < ApplicationController
     hot = Course.find(:all, :conditions => ["courses.id in (?)", [538,1134,1139]]).collect { |e| 
       {:id=>e.id, :name=>e.name || e.club.name, :pic=>e.images ? e.images[0].url : ''}
     }
-    list = Course.find(:all, :conditions => ["courses.id in (?)", [1133,1165,104,538,1139,1184]]).collect { |e| 
+    list = Course.find(:all, :conditions => ["courses.id in (?)", [1133,97,45,1165,104,538,1139,1184]]).collect { |e| 
       {:id=>e.id, :name=>e.name || e.club.name, :logo=>e.club.logo_url, :lat_lon=>"#{e.club.latitude}|#{e.club.longitude}",
         :overall=>rand_rank, :price=>rand_rank, :hardness=>rand_rank, :view=>rand_rank, :cost=>rand_cost}
     }   
