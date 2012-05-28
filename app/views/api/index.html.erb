@@ -2,7 +2,12 @@
 <pre>
 除去fairway_map接口，所有返回结果是json形式，utf-8编码; fairway_map返回球道图的二进制流
 除去sign_up接口，所有请求都有token作为参数；
-所有应答都包括status，其中0=成功，>0 失败（message解释失败原因）
+所有应答都包括status，其中
+　0=成功，
+　>0 失败（message解释失败原因）
+　　　=1 缺少参数，比如缺少token参数，客户端应该退出
+　　　=2 token失效，客户端需要删除本地token，然后重新启动
+
 手机客户端数据库包含如下信息：
 - token: 通信会话令牌，标志手机在系统中成功注册过，其他所有接口都必须把token作为参数
 
@@ -63,7 +68,7 @@
   os：设备上运行的操作系统，比如 android 4.0.3/ios 4.3； 仅当本地记录与系统不符时才提供
   version: 当前客户端版本号， ex: 1.0； 仅当本地记录与系统不符时才提供
   lat_lon: 当前经纬度坐标, 格式: xxx.xxxxxx|yyy.yyyyyy
-  userinfo_version: 用户信息版本号，为空时会得到全部用户信息
+  userinfo_version: 用户信息版本号，=0会得到全部用户信息
 应答：
   status/message
   config = {
@@ -84,7 +89,7 @@
     sina_expires: 新浪认证的有效期
   }</pre>
   <form action="/api/sync_config" method="POST">
-    token: <input name="token"/> os: <input name='os'/> version: <input name="version"/> lat_lon:<input name='lat_lon'/><br/>
+    token: <input name="token"/> os: <input name='os'/> version: <input name="version"/> lat_lon:<input name='lat_lon'/>　userinfo_version:<input name="userinfo_version"/><br/>
     <input type='submit' value="测试"/>
   </form>
 </li>
@@ -373,7 +378,14 @@
   pass: 密码
 应答：
   status/message
-  token: 新的token</pre>
+  token: 新的token
+  user_info = { 　用户信息
+    version     : 信息版本号
+    name        : 名字 
+    default_tee : 默认发球台颜色
+    score_mode  : 记分模式
+    sina_expires: 新浪认证的有效期
+  }</pre>
   <form action="/api/switch_user" method="POST">
     token: <input name="token"/> name: <input name="name"/> pass: <input name="pass"/><br/>
     <input type='submit' value="测试"/>

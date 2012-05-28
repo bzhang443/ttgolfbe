@@ -57,6 +57,9 @@ $ rails generate migration AddShortNameToClubs short_name:string
 # Add OSS in
 $ rails generate controller Oss home
 
+# add devise in
+# https://github.com/plataformatec/devise
+
 $ rails generate migration RenameHolesToHoleCountInCourses
 
 #$ rails generate controller Client home

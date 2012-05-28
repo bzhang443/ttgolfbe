@@ -30,8 +30,9 @@ class ApiController < ApplicationController
       #:sina_client_id=>SINA_CLIENT_ID,
       :server_time => Time.now.to_i
     }
-    uiv = params[:userinfo_version]
-    if uiv.blank? || uiv.to_i < @device.user.updated_at.to_i
+    unless params[:userinfo_version].blank?
+      uiv = params[:userinfo_version].to_i
+      if uiv < @device.user.updated_at.to_i
         userinfo = {:version =>@device.user.updated_at.to_i}
         userinfo[:name] = @device.user.name if @device.user.name
         userinfo[:default_tee] = @device.user.tee if @device.user.tee
@@ -42,6 +43,7 @@ class ApiController < ApplicationController
           userinfo[:sina_expires] = diff if diff > 0
         end
         ret[:userinfo] = userinfo
+      end
     end
     
     render json: ret
@@ -50,13 +52,16 @@ class ApiController < ApplicationController
   def course_list
     return render json: {:status=>1, :message=>'缺少参数'} if params[:lat_lon].blank? && params[:area_id].blank?
     
-    hot = Course.find(:all, :conditions => ["courses.id in (?)", [538,1134,1139]]).collect { |e| 
-      {:id=>e.id, :name=>e.name || e.club.name, :pic=>e.images ? e.images[0].url : ''}
-    }
-    list = Course.find(:all, :conditions => ["courses.id in (?)", [1133,97,45,1165,104,538,1139,1184]]).collect { |e| 
-      {:id=>e.id, :name=>e.name || e.club.name, :logo=>e.club.logo_url, :lat_lon=>"#{e.club.latitude}|#{e.club.longitude}",
-        :overall=>rand_rank, :price=>rand_rank, :hardness=>rand_rank, :view=>rand_rank, :cost=>rand_cost}
-    }   
+    hot = Course.find(:all, :conditions => ["courses.id in (?)", [1133, 1454, 1585]])
+      .collect { |e| 
+        {:id=>e.id, :name=>e.vip ? e.name || e.club.name : e.club.name, :pic=>e.images ? e.images[0].url : ''}
+      }
+    list = Course.find(:all, :conditions => ["courses.id in (?)", [510, 516, 525, 804, 1133, 1164, 1454, 1585]])
+      .collect { |e| 
+        {:id=>e.id, :name=> e.vip ? e.name || e.club.name : e.club.name, 
+          :logo=>e.club.logo_url, :lat_lon=>"#{e.club.latitude}|#{e.club.longitude}",
+          :overall=>rand_rank, :price=>rand_rank, :hardness=>rand_rank, :view=>rand_rank, :cost=>rand_cost}
+      }   
     
     render json: {:status=>0, :version=>Time.now.to_i, :hot=>hot, :list=>list}  
   end
@@ -66,7 +71,7 @@ class ApiController < ApplicationController
     return render json: {:status=>1, :message=>'缺少参数'} if id.blank?
     course = Course.find(id)
     return render json: {:status=>14, :message=>'球场不存在'} unless course
-    info = {:id => course.id, :name => course.name || course.club.name}
+    info = {:id => course.id, :name => course.vip ? course.name || course.club.name : course.club.name }
     info[:pics] = course.images.collect { |i| i.url }
 
     info[:description] = course.description || course.club.description
@@ -337,7 +342,17 @@ class ApiController < ApplicationController
     
     @device.switch_user(user)
     
-    render json: {:status=>0, :token=>@device.token}
+    userinfo = {:version =>@device.user.updated_at.to_i}
+    userinfo[:name] = @device.user.name if @device.user.name
+    userinfo[:default_tee] = @device.user.tee if @device.user.tee
+    userinfo[:score_mode] = @device.user.score_mode if @device.user.score_mode
+
+    if @device.user.sina_expires 
+      diff = @device.user.sina_expires.to_i - Time.now.localtime.to_i
+      userinfo[:sina_expires] = diff if diff > 0
+    end
+
+    render json: {:status=>0, :token=>@device.token, :userinfo=>userinfo}
   end
 
   def reset_password
@@ -524,7 +539,7 @@ private
     token = params[:token]
     return render json: {:status=>1, :message=>'缺少参数'} if token.blank?
     @device = Device.find_by_token token
-    return render json: {:status=>2, :message=>'token不存在'} unless @device
+    return render json: {:status=>2, :message=>'token失效'} unless @device
   end  
   
   def rand_rank

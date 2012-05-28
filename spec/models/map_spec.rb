@@ -7,6 +7,7 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: maps
@@ -25,13 +26,13 @@ end
 #  url              :string(255)
 #  created_at       :datetime        not null
 #  updated_at       :datetime        not null
-#  poi_tee_red      :string(255)
-#  poi_tee_white    :string(255)
-#  poi_tee_blue     :string(255)
-#  poi_tee_gold     :string(255)
 #  poi_tee_black    :string(255)
-#  poi_green_center :string(255)
+#  poi_tee_gold     :string(255)
+#  poi_tee_blue     :string(255)
+#  poi_tee_white    :string(255)
+#  poi_tee_red      :string(255)
 #  poi_green_front  :string(255)
+#  poi_green_center :string(255)
 #  poi_green_back   :string(255)
 #
 

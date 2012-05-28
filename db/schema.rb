@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120517024344) do
+ActiveRecord::Schema.define(:version => 20120528081934) do
 
   create_table "admins", :force => true do |t|
     t.string   "email",                                 :default => "", :null => false
@@ -53,16 +53,15 @@ ActiveRecord::Schema.define(:version => 20120517024344) do
     t.string   "short_name"
     t.integer  "area_id"
     t.string   "address"
-    t.decimal  "latitude",     :precision => 9, :scale => 6
-    t.decimal  "longitude",    :precision => 9, :scale => 6
+    t.decimal  "latitude",    :precision => 9, :scale => 6
+    t.decimal  "longitude",   :precision => 9, :scale => 6
     t.text     "description"
     t.string   "logo_url"
     t.string   "telephone"
-    t.boolean  "active",                                     :default => true
-    t.datetime "created_at",                                                   :null => false
-    t.datetime "updated_at",                                                   :null => false
+    t.boolean  "active",                                    :default => true
+    t.datetime "created_at",                                                  :null => false
+    t.datetime "updated_at",                                                  :null => false
     t.text     "comments"
-    t.integer  "updated_flag",                               :default => 0
   end
 
   add_index "clubs", ["area_id"], :name => "FK_club_area"
@@ -95,10 +94,10 @@ ActiveRecord::Schema.define(:version => 20120517024344) do
     t.text     "description"
     t.integer  "hole_count"
     t.integer  "group_id"
-    t.datetime "created_at",                  :null => false
-    t.datetime "updated_at",                  :null => false
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
     t.string   "main_picture"
-    t.integer  "updated_flag", :default => 0
+    t.boolean  "vip"
   end
 
   add_index "courses", ["club_id"], :name => "FK_course_club"
@@ -168,6 +167,13 @@ ActiveRecord::Schema.define(:version => 20120517024344) do
   add_index "images", ["club_id"], :name => "FK_image_club"
   add_index "images", ["course_id"], :name => "FK_image_course"
 
+  create_table "logs", :force => true do |t|
+    t.string   "memo",       :limit => 1024
+    t.string   "type"
+    t.string   "userid"
+    t.datetime "createdate"
+  end
+
   create_table "maps", :force => true do |t|
     t.decimal  "lat_left_lower",   :precision => 9, :scale => 6
     t.decimal  "lon_left_lower",   :precision => 9, :scale => 6
@@ -182,13 +188,13 @@ ActiveRecord::Schema.define(:version => 20120517024344) do
     t.string   "url"
     t.datetime "created_at",                                     :null => false
     t.datetime "updated_at",                                     :null => false
-    t.string   "poi_tee_red"
-    t.string   "poi_tee_white"
-    t.string   "poi_tee_blue"
-    t.string   "poi_tee_gold"
     t.string   "poi_tee_black"
-    t.string   "poi_green_center"
+    t.string   "poi_tee_gold"
+    t.string   "poi_tee_blue"
+    t.string   "poi_tee_white"
+    t.string   "poi_tee_red"
     t.string   "poi_green_front"
+    t.string   "poi_green_center"
     t.string   "poi_green_back"
   end
 
@@ -339,6 +345,13 @@ ActiveRecord::Schema.define(:version => 20120517024344) do
     t.integer  "pty18"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "user_manage", :primary_key => "u_id", :force => true do |t|
+    t.string  "u_name",     :limit => 20, :null => false
+    t.string  "password",   :limit => 20, :null => false
+    t.date    "created_at"
+    t.integer "role"
   end
 
   create_table "users", :force => true do |t|

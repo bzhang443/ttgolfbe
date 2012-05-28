@@ -9,6 +9,7 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: courses
@@ -24,6 +25,6 @@ end
 #  created_at   :datetime        not null
 #  updated_at   :datetime        not null
 #  main_picture :string(255)
-#  updated_flag :integer(4)      default(0)
+#  vip          :boolean(1)
 #
 

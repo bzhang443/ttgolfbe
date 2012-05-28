@@ -16,7 +16,7 @@
 <% @list.each do |c| %>
   <tr>
     <td><%= alert_tag c.club.comments  %></td>
-    <td><%= link_to c.name||c.club.name, oss_course_info_path(:id=>c.id) %></td>
+    <td><%= link_to c.name ? c.club.name+'('+c.name+')' : c.club.name, oss_course_info_path(:id=>c.id) %></td>
     <td><%= c.club.short_name %></td>
     <td><%= c.hole_count %></td>
     <td><%= boolean_tag c.club.address %></td>
