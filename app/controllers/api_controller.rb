@@ -265,7 +265,7 @@ class ApiController < ApplicationController
   def my_favorites
     list = Favorite.find_all_by_user_id(@device.user_id)
       .collect { |e|
-        {:id=>e.course.id, :name=>e.course.name || e.course.club.name, :logo=>e.course.club.logo_url, :overall=>rand_rank, :cost=>rand_cost}
+        {:id=>e.course.id, :name=>e.vip ? e.name || e.club.name : e.club.name, :logo=>e.course.club.logo_url, :overall=>rand_rank, :cost=>rand_cost}
       }
       
     render json: {:status=>0, :list=>list}  
@@ -274,7 +274,7 @@ class ApiController < ApplicationController
   def my_comments
     list = Comment.find_all_by_user_id(@device.user_id)
       .collect { |e|
-        {:id=>e.course.id, :name=>e.course.name || e.course.club.name, :logo=>e.course.club.logo_url, :mine=>e.overall, :overall=>rand_rank}
+        {:id=>e.course.id, :name=>e.vip ? e.name || e.club.name : e.club.name, :logo=>e.course.club.logo_url, :mine=>e.overall, :overall=>rand_rank}
       }
       
     render json: {:status=>0, :list=>list}      
