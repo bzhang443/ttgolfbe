@@ -265,7 +265,7 @@ class ApiController < ApplicationController
   def my_favorites
     list = Favorite.find_all_by_user_id(@device.user_id)
       .collect { |e|
-        {:id=>e.course.id, :name=>e.vip ? e.name || e.club.name : e.club.name, :logo=>e.course.club.logo_url, :overall=>rand_rank, :cost=>rand_cost}
+        {:id=>e.course.id, :name=>e.course.vip ? e.course.name || e.course.club.name : e.course.club.name, :logo=>e.course.club.logo_url, :overall=>rand_rank, :cost=>rand_cost}
       }
       
     render json: {:status=>0, :list=>list}  
@@ -274,7 +274,7 @@ class ApiController < ApplicationController
   def my_comments
     list = Comment.find_all_by_user_id(@device.user_id)
       .collect { |e|
-        {:id=>e.course.id, :name=>e.vip ? e.name || e.club.name : e.club.name, :logo=>e.course.club.logo_url, :mine=>e.overall, :overall=>rand_rank}
+        {:id=>e.course.id, :name=>e.course.vip ? e.course.name || e.course.club.name : e.course.club.name, :logo=>e.course.club.logo_url, :mine=>e.overall, :overall=>rand_rank}
       }
       
     render json: {:status=>0, :list=>list}      
@@ -455,7 +455,7 @@ class ApiController < ApplicationController
   
   def my_scorecards
     list = ScoreCard.find(:all, :conditions=>['user_id=?', @device.user.id], :order=>'created_at desc').collect { |e|
-      {:id=>e.id, :date=>e.created_at.to_date.to_s(:db), :course_id=>e.course_id, :course_name=>e.course.name||e.course.club.name, :score=>e.score}
+      {:id=>e.id, :date=>e.created_at.to_date.to_s(:db), :course_id=>e.course_id, :course_name=>e.course.name||e.course.club.short_name||e.course.club.name, :score=>e.score}
     }
     render json: {:status=>0, :list=>list}  
   end
@@ -522,7 +522,7 @@ class ApiController < ApplicationController
       end
       unless params["penalty#{i}"].blank?
         p = params["penalty#{i}"].to_i
-        c.send("penalty#{i}=", p)
+        c.send("pty#{i}=", p)
       end
     }
     c.score = score
