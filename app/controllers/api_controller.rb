@@ -42,10 +42,19 @@ class ApiController < ApplicationController
           diff = @device.user.sina_expires.to_i - Time.now.localtime.to_i
           userinfo[:sina_expires] = diff if diff > 0
         end
-        ret[:userinfo] = userinfo
+        ret[:user_info] = userinfo
       end
     end
-    
+=begin
+    if @device.user.id==10
+      ret[:config][:force_quit]=true
+      ret[:message]='非法使用'
+    end
+    if @device.user.id==10
+      ret[:config][:latest_version]=2.0
+      ret[:config][:update_url]='http://www.apple.com'
+    end
+=end
     render json: ret
   end
 
@@ -71,7 +80,7 @@ class ApiController < ApplicationController
     return render json: {:status=>1, :message=>'缺少参数'} if id.blank?
     course = Course.find(id)
     return render json: {:status=>14, :message=>'球场不存在'} unless course
-    info = {:id => course.id, :name => course.vip ? course.name || course.club.name : course.club.name }
+    info = {:version=>course.updated_at.to_i, :id => course.id, :name => course.vip ? course.name || course.club.name : course.club.name }
     info[:pics] = course.images.collect { |i| i.url }
 
     info[:description] = course.description || course.club.description
@@ -151,7 +160,7 @@ class ApiController < ApplicationController
       yards['black'] = e.yard_black unless e.yard_black.blank?
       hole['yards'] = yards
       map = e.map
-      if map
+      if map && map.poi_green_center
         hole[:corners] = {
           :left_lower  => "#{map.lat_left_lower}|#{map.lon_left_lower}",
           :right_lower => "#{map.lat_right_lower}|#{map.lon_right_lower}",
@@ -171,6 +180,8 @@ class ApiController < ApplicationController
           :tee_gold     => map.poi_tee_gold, 
           :tee_black    => map.poi_tee_black              
         } if map.poi_green_center
+      else
+        hole[:has_map] = false
       end
       holes << hole
     }  

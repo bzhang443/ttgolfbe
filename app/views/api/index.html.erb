@@ -135,9 +135,11 @@
 请求参数：
   token
   id: 球场ID
+  version: 本地数据版本号，为空表示本地没有缓存
 应答：
   status/message
   course= {
+    version: 球场信息版本，用于球场图片(pics)和球道图（fairway_list）缓存处理，如果版本号码大于本地，则缓存的图片和球道图要刷新
     name: 名称
     pics[]: 图片URL地址数组
     description: 介绍
@@ -174,7 +176,7 @@
     tee_boxes: 发球台的颜色组合（仅当非全部5个发球台都存在时才会出现）, black|gold|blue|white|red, 用|分开的颜色字符串
   }</pre>
   <form action="/api/course_info" method="GET">
-    token: <input name="token"/> id:<input name='id'/> <br/>
+    token: <input name="token"/> id:<input name='id'/> version: <input name='version'/><br/>
     <input type='submit' value="测试"/>
   </form>
 </li>
@@ -198,6 +200,7 @@
       white : 白
       red   : 红
     }
+    has_map: 是否有球道图。如果没有则没有下面的dim,lat_lons和pois
     dim: 图片尺寸， x|y  
     lat_lons { :图片四角经纬坐标，格式： xxx.xxxxxx|yyy.yyyyyy，如果没有表示球道图未经测量
       left_lower : 左下角
