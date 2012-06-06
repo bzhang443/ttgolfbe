@@ -618,6 +618,26 @@
   </form>
 </li>
 
+<li>
+  <h3>add_feedback </h3>
+  <pre>用户意见反馈接口
+方法：POST
+请求参数：
+  token
+　content: 意见文字内容
+　email:　联系邮箱（可选）
+  phone_number: 联系电话（可选）
+　lat_lon: 提交意见时刻的经纬度坐标
+应答：
+  status/message</pre>
+  <form action="/api/add_feedback" method="POST">
+    token: <input name="token"/> <br/>
+    content: <textarea name='content'></textarea> <br/>
+    email: <input name='email'/> phone_number: <input name='phone_number'/> lat_lon: <input name='lat_lon'/><br/>
+    <input type='submit' value="测试"/>
+  </form>
+</li>
+
 <!--
 <li>
   <h3><strike>credit_history </strike></h3>

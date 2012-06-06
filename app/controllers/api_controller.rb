@@ -545,6 +545,19 @@ class ApiController < ApplicationController
     end
   end
   
+  def add_feedback
+    return render json: {:status=>1, :message=>'缺少参数'} if params[:content].blank? || params[:lat_lon].blank?
+    atts = {:user_id=>@device.user.id, :content=>params[:content], :lat_lon=>params[:lat_lon], :source=>'mobile', :status=>'new'}
+    atts[:email] = params[:email] unless params[:email].blank?
+    atts[:phone_number] = params[:phone_number] unless params[:phone_number].blank?
+    feedback = Feedback.new(atts)
+    if feedback.save
+      render json: {:status=>0}
+    else
+      render json: {:status=>20, :message=>'保存失败,请重试'}
+    end
+  end
+  
 private
   def check_token
     token = params[:token]

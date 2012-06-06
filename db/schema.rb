@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120528081934) do
+ActiveRecord::Schema.define(:version => 20120606031822) do
 
   create_table "admins", :force => true do |t|
     t.string   "email",                                 :default => "", :null => false
@@ -137,6 +137,18 @@ ActiveRecord::Schema.define(:version => 20120528081934) do
 
   add_index "favorites", ["course_id"], :name => "FK_favorite_course"
   add_index "favorites", ["user_id"], :name => "FK_favorite_user"
+
+  create_table "feedbacks", :force => true do |t|
+    t.integer  "user_id"
+    t.string   "content"
+    t.string   "email"
+    t.string   "phone_number"
+    t.string   "lat_lon"
+    t.string   "source"
+    t.string   "status"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
 
   create_table "holes", :force => true do |t|
     t.integer  "course_id"
