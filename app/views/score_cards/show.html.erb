@@ -20,6 +20,7 @@
 
 <table>
   <tr>
+    <th>Number</th>
     <th>Hole_ID</th>
     <th>Score</th>
     <th>Putts</th>
@@ -30,6 +31,7 @@
   </tr>
   <% (1..18).each do |i| %>
   <tr>
+    <td><%= i %></td>
     <td><%= @score_card.send "hole#{i}_id" %></td>
     <td><%= @score_card.send "score#{i}" %></td>
     <td><%= @score_card.send "putts#{i}" %></td>

@@ -2,7 +2,7 @@ class ScoreCardsController < ApplicationController
   # GET /score_cards
   # GET /score_cards.json
   def index
-    @score_cards = ScoreCard.all
+    @score_cards = ScoreCard.find(:all, :order=>'id desc')
 
     respond_to do |format|
       format.html # index.html.erb

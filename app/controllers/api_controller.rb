@@ -65,7 +65,7 @@ class ApiController < ApplicationController
       .collect { |e| 
         {:id=>e.id, :name=>e.vip ? e.name || e.club.name : e.club.name, :pic=>e.images ? e.images[0].url : ''}
       }
-    list = Course.find(:all, :conditions => ["courses.id in (?)", [510, 516, 525, 804, 1133, 1164, 1454, 1585]])
+    list = Course.find(:all, :conditions => ["courses.id in (?)", [510, 516, 525, 1133, 1164, 1454, 1585]])
       .collect { |e| 
         {:id=>e.id, :name=> e.vip ? e.name || e.club.name : e.club.name, 
           :logo=>e.club.logo_url, :lat_lon=>"#{e.club.latitude}|#{e.club.longitude}",
@@ -466,7 +466,8 @@ class ApiController < ApplicationController
   
   def my_scorecards
     list = ScoreCard.find(:all, :conditions=>['user_id=?', @device.user.id], :order=>'created_at desc').collect { |e|
-      {:id=>e.id, :date=>e.created_at.to_date.to_s(:db), :course_id=>e.course_id, :course_name=>e.course.name||e.course.club.short_name||e.course.club.name, :score=>e.score}
+      {:id=>e.id, :date=>e.created_at.to_date.to_s(:db), :course_id=>e.course_id, 
+        :course_name=>e.course.vip ? e.course.name||e.course.club.short_name : e.course.club.name, :score=>e.score}
     }
     render json: {:status=>0, :list=>list}  
   end
@@ -479,7 +480,7 @@ class ApiController < ApplicationController
     (1..18).each { |e|
       hole = card.send("hole#{e}")
       next unless hole
-      item = {}
+      item = {:number=>e}
       item[:hole] = hole.id
       item[:par] = hole.par
       item[:score] = card.send("score#{e}")
@@ -495,8 +496,8 @@ class ApiController < ApplicationController
       items.push item
     }
     
-    render json: {:status=>0, :date=>card.created_at.to_date.to_s(:db), 
-      :course_id=>card.course_id, :course_name=>card.course.name||card.course.club.name, 
+    render json: {:status=>0, :date=>card.created_at.to_date.to_s(:db), :course_id=>card.course_id, 
+      :course_name=>card.course.vip ? card.course.name||card.course.club.name : card.course.club.name, 
       :tee_box=>card.tee_box, :items=>items }
     
   end
