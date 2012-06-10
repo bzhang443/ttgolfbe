@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120606031822) do
+ActiveRecord::Schema.define(:version => 20120610060519) do
 
   create_table "admins", :force => true do |t|
     t.string   "email",                                 :default => "", :null => false
@@ -372,14 +372,18 @@ ActiveRecord::Schema.define(:version => 20120606031822) do
     t.string   "password"
     t.string   "salt"
     t.string   "sina_token"
-    t.boolean  "active",       :default => true
-    t.datetime "created_at",                     :null => false
-    t.datetime "updated_at",                     :null => false
+    t.boolean  "active",              :default => true
     t.datetime "sina_expires"
     t.string   "sina_uid"
-    t.integer  "credit",       :default => 0
+    t.integer  "credit",              :default => 0
     t.string   "tee"
     t.string   "score_mode"
+    t.datetime "created_at",                            :null => false
+    t.datetime "updated_at",                            :null => false
+    t.string   "avatar_file_name"
+    t.string   "avatar_content_type"
+    t.integer  "avatar_file_size"
+    t.datetime "avatar_updated_at"
   end
 
 end

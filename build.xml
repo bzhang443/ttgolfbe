@@ -8,7 +8,7 @@
 	</target>
 	<target name='deploy' depends='init'>
 		<zip basedir="." compress="true" destfile="ttgolf-${date.stamp}.zip">
-			<exclude name="config/database.yml" />
+			<exclude name="config/**" />
 			<exclude name="Gemfile" />
 			<exclude name="Gemfile.lock" />
 			<exclude name="build.xml" />

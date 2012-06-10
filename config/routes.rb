@@ -35,6 +35,7 @@ Ttgolfbe::Application.routes.draw do
   get 'api/scorecard_info'
   post 'api/save_scorecard'
   post 'api/add_feedback'
+  post 'api/upload_photo'
   
   get "callback/sina"
   

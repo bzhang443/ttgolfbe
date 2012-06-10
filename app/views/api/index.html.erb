@@ -639,6 +639,23 @@
   </form>
 </li>
 
+<li>
+  <h3>upload_photo </h3>
+  <pre>上传用户头像
+方法：POST
+请求参数：
+  token
+  category: avatar | scorecard | course | ...   (头像|记分卡|球场)
+　photo
+应答：
+  status/message</pre>
+  <form action="/api/upload_photo" enctype="multipart/form-data" method="POST">
+    token: <input name="token"/> category: <%= select_tag 'category', options_for_select(photo_categories) %> <br/>
+    photo: <input name="photo" type="file"/><br/>
+    <input type='submit' value="测试"/>
+  </form>
+</li>
+
 <!--
 <li>
   <h3><strike>credit_history </strike></h3>

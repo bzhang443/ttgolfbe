@@ -111,27 +111,30 @@ class ApiController < ApplicationController
     end
     
     info[:prices] = [{:workdays=>600, :holidays=>1000, :telephone=>course.club.telephone}]
-    info[:holes] = course.hole_count
-    if course.hole_count == 9 
-      brothers = []
-      course.club.courses.each { |e|
-        next if e.id == course.id
-        next unless e.hole_count == 9
-        next unless e.name
-        brothers << {:id=>e.id, :name=>e.name}
-      }
-      info[:combined_courses] = brothers if brothers.size > 0
-    end
     
-    boxes = []
-    hole = course.holes[0]
-    boxes << 'black' if hole.yard_black && hole.yard_black > 0
-    boxes << 'gold'  if hole.yard_gold  && hole.yard_gold > 0
-    boxes << 'blue'  if hole.yard_blue  && hole.yard_blue > 0
-    boxes << 'white' if hole.yard_white && hole.yard_white > 0
-    boxes << 'red'   if hole.yard_red   && hole.yard_red > 0
-    unless boxes.size == 5
-      info[:tee_boxes] = boxes.join('|')
+    if course.hole_count && course.hole_count>0
+      info[:holes] = course.hole_count
+      if course.hole_count == 9 
+        brothers = []
+        course.club.courses.each { |e|
+          next if e.id == course.id
+          next unless e.hole_count == 9
+          next unless e.name
+          brothers << {:id=>e.id, :name=>e.name}
+        }
+        info[:combined_courses] = brothers if brothers.size > 0
+      end
+
+      boxes = []
+      hole = course.holes[0]
+      boxes << 'black' if hole.yard_black && hole.yard_black > 0
+      boxes << 'gold'  if hole.yard_gold  && hole.yard_gold > 0
+      boxes << 'blue'  if hole.yard_blue  && hole.yard_blue > 0
+      boxes << 'white' if hole.yard_white && hole.yard_white > 0
+      boxes << 'red'   if hole.yard_red   && hole.yard_red > 0
+      unless boxes.size == 5
+        info[:tee_boxes] = boxes.join('|')
+      end
     end
     
     render json: {:status=>0, :course=>info}
@@ -557,6 +560,15 @@ class ApiController < ApplicationController
     else
       render json: {:status=>20, :message=>'保存失败,请重试'}
     end
+  end
+  
+  def upload_photo
+    return render json: {:status=>1, :message=>'缺少参数'} if params[:category].blank? || params[:photo].blank?
+    return render json: {:status=>30, :message=>'不支持的图片操作'} unless params[:category].eql?('avatar')
+    user = @device.user
+    user.avatar = params[:photo]
+    user.save!
+    render json: {:status=>0, :photo=>user.avatar.url}
   end
   
 private
