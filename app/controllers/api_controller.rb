@@ -484,7 +484,7 @@ class ApiController < ApplicationController
     (1..18).each { |e|
       hole = card.send("hole#{e}")
       next unless hole
-      item = {:number=>e}
+      item = {:mark => e}
       item[:hole] = hole.id
       item[:par] = hole.par
       item[:score] = card.send("score#{e}")
