@@ -151,17 +151,15 @@
       overall  : 总平均
       votes    : 评分人数
       view     : 风景
-      ratioina : 合理
       hardness : 难度
-      candy    : 球童
+      service  : 服务
       design   : 设计
       facility : 设施
       maintenance: 维护
-      price    : 价格
     }
     comments_mine {: 我的评分, 没有表示尚未评分
       overall: 总平均
-      view|rational|hardness|candy|design|facility|maintenance|price: 风景|合理|难度|球童|设计|设施|维护|价格
+      view|hardness|service|design|facility|maintenance: 风景|难度|服务|设计|设施|维护
     }
     prices[] { : 价格，第一个是官方
       workday: 平日价格
@@ -243,26 +241,24 @@
 <li>
   <h3>comment_course </h3>
   <pre>球场评分接口
-  overall = (view*3 + hardness*3 + design + maintenance*2 + rational + candy*2 + facility*2 + price*2)/16
+  overall = (view*3 + hardness*3 + design + maintenance*2 + service*2 + facility*2)/1４
 方法：POST
 请求参数：
   token
   id: 球场ID
   view: 风景
-  rational: 合理
   hardness: 难度
-  candy: 球童
+  service: 服务
   design: 设计
   facility: 设施
   maintenance: 维护
-  price: 价格
 应答：
   status/message </pre>
   <form action="/api/comment_course" method="POST">
     token: <input name="token"/> id: <input name='id'/> <br/>
-    view: <input name='view'/> rational: <input name='rational'/> hardness <input name='hardness'/> <br/>
-    candy <input name='candy'/> design: <input name='design'/> facility: <input name='facility'/> <br/>
-    maintenance: <input name='maintenance'/> price: <input name='price'/><br/>
+    view: <input name='view'/>  hardness <input name='hardness'/> <br/>
+    service: <input name='service'/> design: <input name='design'/> facility: <input name='facility'/> <br/>
+    maintenance: <input name='maintenance'/> <br/>
     <input type='submit' value="测试"/>
   </form>
 </li>

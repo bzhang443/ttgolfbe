@@ -90,23 +90,23 @@ class ApiController < ApplicationController
     info[:favorite] = true if Favorite.find_by_course_id_and_user_id(course.id, @device.user.id)
     
     comments = Comment.connection.select_one("select count(*) as 'votes', avg(overall) as 'overall', 
-                 avg(view) as 'view', avg(rational) as 'rational', avg(hardness) as 'hardness', avg(candy) as 'candy', avg(design) as 'design', 
-                 avg(facility) as 'facility', avg(maintenance) as 'maintenance', avg(price) as 'price'
+                 avg(view) as 'view',  avg(hardness) as 'hardness', avg(service) as 'service', avg(design) as 'design', 
+                 avg(facility) as 'facility', avg(maintenance) as 'maintenance'
                from comments
                where course_id=#{course.id}")
     if (comments['votes']>0)
       info[:comments] = {:overall=>comments['overall'].to_f, :votes=>comments['votes'], 
-        :view=>comments['view'].to_f, :rational=>comments['rational'].to_f, :hardness=>comments['hardness'].to_f, :candy=>comments['candy'].to_f, :design=>comments['design'].to_f, 
-        :facility=>comments['facility'].to_f, :maintenance=>comments['maintenance'].to_f, :price=>comments['price'].to_f
+        :view=>comments['view'].to_f,     :hardness=>comments['hardness'].to_f, :service=>comments['service'].to_f, 
+        :design=>comments['design'].to_f, :facility=>comments['facility'].to_f, :maintenance=>comments['maintenance'].to_f
       } 
     else
       info[:comments] = {:overall=>0, :votes=>0}
     end
     comments = Comment.find_by_course_id_and_user_id(course.id, @device.user.id)
     if (comments)
-      info[:comments_mine] = {
-        :overall=>comments.overall.to_f, :view=>comments.view.to_f, :rational=>comments.rational.to_f, :hardness=>comments.hardness.to_f, :candy=>comments.candy.to_f, 
-        :design=>comments.design.to_f, :facility=>comments.facility.to_f, :maintenance=>comments.maintenance.to_f, :price=>comments.price.to_f
+      info[:comments_mine] = { :overall=>comments.overall.to_f, 
+        :view=>comments.view.to_f,     :hardness=>comments.hardness.to_f, :service=>comments.service.to_f, 
+        :design=>comments.design.to_f, :facility=>comments.facility.to_f, :maintenance=>comments.maintenance.to_f
       }
     end
     
@@ -226,8 +226,8 @@ class ApiController < ApplicationController
     return render json: {:status=>1, :message=>'缺少参数'} if id.blank?
     course = Course.find(id)
     return render json: {:status=>14, :message=>'球场不存在'} unless course  
-    p = {:view=>params[:view],:rational=>params[:rational],:hardness=>params[:hardness],
-      :candy=>params[:candy],:design=>params[:design],:facility=>params[:facility],:maintenance=>params[:maintenance],:price=>params[:price]}
+    p = {:view=>params[:view],:hardness=>params[:hardness],
+      :service=>params[:service],:design=>params[:design],:facility=>params[:facility],:maintenance=>params[:maintenance]}
 
     comment = Comment.find_by_user_id_and_course_id(@device.user.id, course.id)
     if comment
@@ -471,7 +471,7 @@ class ApiController < ApplicationController
   def my_scorecards
     list = ScoreCard.find(:all, :conditions=>['user_id=?', @device.user.id], :order=>'created_at desc').collect { |e|
       {:id=>e.id, :date=>e.created_at.to_date.to_s(:db), :course_id=>e.course_id, 
-        :course_name=>e.course.vip ? e.course.name||e.course.club.short_name : e.course.club.name, :score=>e.score}
+        :course_name=>e.course.vip ? e.course.name||e.course.club.short_name : e.course.club.short_name, :score=>e.score}
     }
     render json: {:status=>0, :list=>list}  
   end

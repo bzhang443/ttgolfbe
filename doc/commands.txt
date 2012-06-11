@@ -104,3 +104,5 @@ $ rails generate scaffold Feedback user_id:integer content:string email:string p
 $ gem install paperclip
 
 $ rails generate paperclip user avatar
+
+$ rails generate migration AdjustFactorsToComments
