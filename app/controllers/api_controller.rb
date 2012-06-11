@@ -164,6 +164,7 @@ class ApiController < ApplicationController
       hole['yards'] = yards
       map = e.map
       if map && map.poi_green_center
+        hole[:has_map] = true
         hole[:corners] = {
           :left_lower  => "#{map.lat_left_lower}|#{map.lon_left_lower}",
           :right_lower => "#{map.lat_right_lower}|#{map.lon_right_lower}",
