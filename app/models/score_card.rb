@@ -24,6 +24,8 @@ class ScoreCard < ActiveRecord::Base
   
 end
 
+
+
 # == Schema Information
 #
 # Table name: score_cards
@@ -163,5 +165,6 @@ end
 #  pty18      :integer(4)
 #  created_at :datetime        not null
 #  updated_at :datetime        not null
+#  openness   :string(255)     default("open")
 #
 

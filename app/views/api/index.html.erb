@@ -572,6 +572,7 @@
 方法：POST
 请求参数：
   token
+  open: 公开
   course_id: 球场ID
   start_hole: 开球洞号码（1或者10, 仅当course右18洞使用）
   course2_id: （可选）第二球场ID
@@ -587,7 +588,8 @@
 应答：
   status/message </pre>
   <form action="/api/save_scorecard" method="POST">
-    token: <input name="token"/> course_id:<input name='course_id'/> tee_box: <%= tee_box_tag(:tee_box) %> <br/>
+    token: <input name="token"/> open: <%= select_tag 'open', options_for_select(openness) %> <br/>
+    course_id:<input name='course_id'/> tee_box: <%= tee_box_tag(:tee_box) %> <br/>
     start_hole: <%= select_tag 'start_hole', options_for_select(start_hole) %> course2_id:<input name='course2_id'/> 
 <table>
   <tr>

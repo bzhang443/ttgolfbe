@@ -16,4 +16,9 @@ module ScoreCardsHelper
   def start_hole
     [1, 10]
   end
+  
+  def openness
+    [['公开','public'], ['私密','private']]
+    #[['公开','public'], ['私密','private'], ['朋友','friend']]
+  end
 end

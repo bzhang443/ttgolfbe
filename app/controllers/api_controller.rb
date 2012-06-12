@@ -512,6 +512,7 @@ class ApiController < ApplicationController
     return render json: {:status=>14, :message=>'球场不存在'} unless course
     
     c = ScoreCard.new
+    c.openness = 'private' if params[:open]=='private'
     c.user = @device.user
     c.course_id = course.id
     c.tee_box = params[:tee_box]
