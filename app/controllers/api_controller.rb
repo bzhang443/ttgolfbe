@@ -69,7 +69,7 @@ class ApiController < ApplicationController
       .collect { |e| 
         {:id=>e.id, :name=> e.vip ? e.name || e.club.name : e.club.name, 
           :logo=>e.club.logo_url, :lat_lon=>"#{e.club.latitude}|#{e.club.longitude}",
-          :overall=>rand_rank, :price=>rand_rank, :hardness=>rand_rank, :view=>rand_rank, :cost=>rand_cost}
+          :overall=>rand_rank, :service=>rand_rank, :hardness=>rand_rank, :view=>rand_rank, :cost=>rand_cost}
       }   
     
     render json: {:status=>0, :version=>Time.now.to_i, :hot=>hot, :list=>list}  
@@ -83,9 +83,7 @@ class ApiController < ApplicationController
     info = {:version=>course.updated_at.to_i, :id => course.id, :name => course.vip ? course.name || course.club.name : course.club.name }
     info[:pics] = course.images.collect { |i| i.url }
 
-    #info[:description] = course.description || course.club.description
     info[:designer] = course.designer ||'自主设计'
-    #info[:type] = course.course_type || '山地'
     info[:lat_lon] = "#{course.club.latitude}|#{course.club.longitude}"
     info[:favorite] = true if Favorite.find_by_course_id_and_user_id(course.id, @device.user.id)
     
