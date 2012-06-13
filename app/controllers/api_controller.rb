@@ -95,9 +95,9 @@ class ApiController < ApplicationController
                from comments
                where course_id=#{course.id}")
     if (comments['votes']>0)
-      info[:comments] = {:overall=>comments['overall'].to_f, :votes=>comments['votes'], 
-        :view=>comments['view'].to_f,     :hardness=>comments['hardness'].to_f, :service=>comments['service'].to_f, 
-        :design=>comments['design'].to_f, :facility=>comments['facility'].to_f, :maintenance=>comments['maintenance'].to_f
+      info[:comments] = {:overall=>comments['overall'].to_f.round(1), :votes=>comments['votes'], 
+        :view=>comments['view'].to_f.round(1),     :hardness=>comments['hardness'].to_f.round(1), :service=>comments['service'].to_f.round(1), 
+        :design=>comments['design'].to_f.round(1), :facility=>comments['facility'].to_f.round(1), :maintenance=>comments['maintenance'].to_f.round(1)
       } 
     else
       info[:comments] = {:overall=>0, :votes=>0}
