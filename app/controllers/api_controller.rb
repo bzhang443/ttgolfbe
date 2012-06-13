@@ -83,9 +83,9 @@ class ApiController < ApplicationController
     info = {:version=>course.updated_at.to_i, :id => course.id, :name => course.vip ? course.name || course.club.name : course.club.name }
     info[:pics] = course.images.collect { |i| i.url }
 
-    info[:description] = course.description || course.club.description
-    info[:designer] = course.designer ||'David M.Dale'
-    info[:type] = course.course_type || '山地'
+    #info[:description] = course.description || course.club.description
+    info[:designer] = course.designer ||'自主设计'
+    #info[:type] = course.course_type || '山地'
     info[:lat_lon] = "#{course.club.latitude}|#{course.club.longitude}"
     info[:favorite] = true if Favorite.find_by_course_id_and_user_id(course.id, @device.user.id)
     
@@ -112,7 +112,7 @@ class ApiController < ApplicationController
     
     info[:prices] = [{:workdays=>600, :holidays=>1000, :telephone=>course.club.telephone}]
     
-    if course.hole_count && course.hole_count>0
+    if course.hole_count && course.hole_count>0 && course.holes.size>0
       info[:holes] = course.hole_count
       if course.hole_count == 9 
         brothers = []
