@@ -16,8 +16,8 @@ development:
   pool: 5
   username: r2g
   password: Life's Good
-#  host: 192.168.1.12
-  socket: /tmp/mysql.sock
+  host: 192.168.1.12
+#  socket: /tmp/mysql.sock
 
 dev-remote:
   adapter: mysql2

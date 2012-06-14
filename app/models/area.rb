@@ -1,5 +1,6 @@
 class Area < ActiveRecord::Base
   belongs_to :upper, :foreign_key=>'upper_area', :class_name=>'Area'
+  has_many :subs, :foreign_key=>'upper_area', :class_name=>'Area'
 end
 
 # == Schema Information

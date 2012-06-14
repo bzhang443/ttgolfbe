@@ -26,6 +26,7 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: score_cards
@@ -163,8 +164,8 @@ end
 #  fairway18  :string(255)
 #  sand18     :integer(4)
 #  pty18      :integer(4)
+#  openness   :string(255)     default("public")
 #  created_at :datetime        not null
 #  updated_at :datetime        not null
-#  openness   :string(255)     default("open")
 #
 

@@ -65,13 +65,26 @@ class ApiController < ApplicationController
       .collect { |e| 
         {:id=>e.id, :name=>e.vip ? e.name || e.club.name : e.club.name, :pic=>e.images ? e.images[0].url : ''}
       }
-    list = Course.find(:all, :conditions => ["courses.id in (?)", [510, 516, 525, 1133, 1164, 1454, 1585]])
-      .collect { |e| 
-        {:id=>e.id, :name=> e.vip ? e.name || e.club.name : e.club.name, 
+    area = Area.find(params[:area_id] || 27)
+
+    if area.upper!=area && area.subs.length>0
+      areas = area.subs.collect{|e| e.id}
+      areas << area.id
+    else
+      areas = [area.id]
+    end
+    courses = Course.find(:all, :include => :club, 
+      :conditions => ["clubs.area_id in (?)", areas])
+    clubs = []
+    list = []
+    courses.each { |e|
+      unless clubs.include?(e.club)
+        list << {:id=>e.id, :name=> e.vip ? e.name || e.club.name : e.club.name, 
           :logo=>e.club.logo_url, :lat_lon=>"#{e.club.latitude}|#{e.club.longitude}",
           :overall=>rand_rank, :service=>rand_rank, :hardness=>rand_rank, :view=>rand_rank, :cost=>rand_cost}
-      }   
-    
+        clubs << e.club
+      end
+    }
     render json: {:status=>0, :version=>Time.now.to_i, :hot=>hot, :list=>list}  
   end
   
@@ -108,7 +121,10 @@ class ApiController < ApplicationController
       }
     end
     
-    info[:prices] = [{:workdays=>600, :holidays=>1000, :telephone=>course.club.telephone}]
+    info[:prices] = Price.find(:all, :conditions=>['course_id=?', id]).collect {|e|
+      {:workdays=>e.workday, :holidays=>e.holiday, :telephone=>e.agent.telephone }
+    }
+    #info[:prices] = [{:workdays=>600, :holidays=>1000, :telephone=>course.club.telephone}]
     
     if course.hole_count && course.hole_count>0 && course.holes.size>0
       info[:holes] = course.hole_count
@@ -294,11 +310,32 @@ class ApiController < ApplicationController
   end
   
   def area_list
+=begin
     list = [
       {:id=>27, :name=>'北京', :courses=> 67}, 
       {:id=>17, :name=>'广东', :courses=> 70, :subs=>[{:id=>50, :name=>'珠海', :courses=> 8}, {:id=>51, :name=>'佛山', :courses=> 12}, {:id=>66, :name=>'广州', :courses=> 20},  {:id=>254, :name=>'深圳', :courses=> 9},  {:id=>135, :name=>'东莞', :courses=> 5}]},
       {:id=>4, :name=>'上海', :courses=> 32}
       ]
+=end
+    list = []
+    areas = {}
+    Club.connection.select("select area_id, count(*) as 'cnt'from clubs group by area_id").each { |e|
+      area = Area.find(e['area_id'])
+      if area.level==0 
+        if area.upper==area
+          list << {:id=>area.id, :name=>area.name, :courses=>e['cnt']}
+        else
+          areas[area] = {:id=>area.id, :name=>area.name, :courses=>e['cnt']}
+        end
+      else
+        upper = area.upper
+        areas[upper] = {:id=>upper.id, :name=>upper.name, :courses=>0, :subs=>[]} unless areas[upper]
+        areas[upper][:subs] = [] unless areas[upper][:subs]
+        areas[upper][:subs] << {:id=>area.id, :name=>area.name, :courses=>e['cnt']}
+        areas[upper][:courses] += e['cnt']
+      end
+    }
+    list.concat(areas.values)
     render json: {:status=>0, :list=>list}
   end
   

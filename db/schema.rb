@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120612011044) do
+ActiveRecord::Schema.define(:version => 20120614074343) do
 
   create_table "admins", :force => true do |t|
     t.string   "email",                                 :default => "", :null => false
@@ -210,11 +210,11 @@ ActiveRecord::Schema.define(:version => 20120612011044) do
 
   create_table "prices", :force => true do |t|
     t.integer  "course_id"
-    t.string   "time_slot"
-    t.decimal  "price",      :precision => 9, :scale => 2
+    t.decimal  "holiday",    :precision => 9, :scale => 2
     t.integer  "agent_id"
     t.datetime "created_at",                               :null => false
     t.datetime "updated_at",                               :null => false
+    t.decimal  "workday",    :precision => 9, :scale => 2
   end
 
   add_index "prices", ["agent_id"], :name => "FK_price_agent"
@@ -353,9 +353,9 @@ ActiveRecord::Schema.define(:version => 20120612011044) do
     t.string   "fairway18"
     t.integer  "sand18"
     t.integer  "pty18"
-    t.datetime "created_at",                     :null => false
-    t.datetime "updated_at",                     :null => false
-    t.string   "openness",   :default => "open"
+    t.string   "openness",   :default => "public"
+    t.datetime "created_at",                       :null => false
+    t.datetime "updated_at",                       :null => false
   end
 
   create_table "user_manage", :primary_key => "u_id", :force => true do |t|
