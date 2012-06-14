@@ -547,7 +547,7 @@ class ApiController < ApplicationController
     
     render json: {:status=>0, :date=>card.created_at.to_date.to_s(:db), :course_id=>card.course_id, 
       :course_name=>card.course.vip ? card.course.name||card.course.club.name : card.course.club.name, 
-      :tee_box=>card.tee_box, :items=>items }
+      :tee_box=>card.tee_box, :start_hole=>card.start_hole, :items=>items }
     
   end
   
