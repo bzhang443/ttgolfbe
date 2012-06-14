@@ -79,9 +79,14 @@ class ApiController < ApplicationController
     list = []
     courses.each { |e|
       unless clubs.include?(e.club)
+        comment = Comment.connection.select_one(
+              "select avg(overall) as 'overall', avg(view) as 'view',  avg(hardness) as 'hardness', avg(service) as 'service'
+               from comments
+               where course_id=#{e.id}")        
         list << {:id=>e.id, :name=> e.vip ? e.name || e.club.name : e.club.name, 
           :logo=>e.club.logo_url, :lat_lon=>"#{e.club.latitude}|#{e.club.longitude}",
-          :overall=>rand_rank, :service=>rand_rank, :hardness=>rand_rank, :view=>rand_rank, :cost=>rand_cost}
+          :overall=>comment['overall']||0, :service=>comment['service']||0, 
+          :hardness=>comment['hardness']||0, :view=>comment['view']||0}
         clubs << e.club
       end
     }
