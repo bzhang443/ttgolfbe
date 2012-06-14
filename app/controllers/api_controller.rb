@@ -122,7 +122,7 @@ class ApiController < ApplicationController
     end
     
     info[:prices] = Price.find(:all, :conditions=>['course_id=?', id]).collect {|e|
-      {:workdays=>e.workday, :holidays=>e.holiday, :telephone=>e.agent.telephone }
+      {:workdays=>e.workday||0, :holidays=>e.holiday||0, :telephone=>e.agent.telephone }
     }
     #info[:prices] = [{:workdays=>600, :holidays=>1000, :telephone=>course.club.telephone}]
     
@@ -309,6 +309,7 @@ class ApiController < ApplicationController
     render json: {:status=>0, :list=>list}      
   end
   
+  @@area_list = nil
   def area_list
 =begin
     list = [
@@ -317,25 +318,29 @@ class ApiController < ApplicationController
       {:id=>4, :name=>'上海', :courses=> 32}
       ]
 =end
-    list = []
-    areas = {}
-    Club.connection.select("select area_id, count(*) as 'cnt'from clubs group by area_id").each { |e|
-      area = Area.find(e['area_id'])
-      if area.level==0 
-        if area.upper==area
-          list << {:id=>area.id, :name=>area.name, :courses=>e['cnt']}
+    if @@area_list
+      list = @@area_list
+    else
+      list = []
+      areas = {}
+      Club.connection.select("select area_id, count(*) as 'cnt'from clubs group by area_id").each { |e|
+        area = Area.find(e['area_id'])
+        if area.level==0 
+          if area.upper==area
+            list << {:id=>area.id, :name=>area.name, :courses=>e['cnt']}
+          else
+            areas[area] = {:id=>area.id, :name=>area.name, :courses=>e['cnt']}
+          end
         else
-          areas[area] = {:id=>area.id, :name=>area.name, :courses=>e['cnt']}
+          upper = area.upper
+          areas[upper] = {:id=>upper.id, :name=>upper.name, :courses=>0, :subs=>[]} unless areas[upper]
+          areas[upper][:subs] = [] unless areas[upper][:subs]
+          areas[upper][:subs] << {:id=>area.id, :name=>area.name, :courses=>e['cnt']}
+          areas[upper][:courses] += e['cnt']
         end
-      else
-        upper = area.upper
-        areas[upper] = {:id=>upper.id, :name=>upper.name, :courses=>0, :subs=>[]} unless areas[upper]
-        areas[upper][:subs] = [] unless areas[upper][:subs]
-        areas[upper][:subs] << {:id=>area.id, :name=>area.name, :courses=>e['cnt']}
-        areas[upper][:courses] += e['cnt']
-      end
-    }
-    list.concat(areas.values)
+      }
+      @@area_list = list.concat(areas.values)
+    end
     render json: {:status=>0, :list=>list}
   end
   
