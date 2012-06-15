@@ -16,6 +16,8 @@
 			<exclude name=".buildpath" />
                         <exclude name=".sass-cache/**"/>
                         <exclude name="README" />
+			<exclude name="vendor/cache/**" />
+			<exclude name="public/system/**" />
 			<exclude name="doc/**" />
 			<exclude name="test/**" />
 			<exclude name="log/**" />

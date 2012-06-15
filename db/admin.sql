@@ -71,3 +71,5 @@ left join courses r on r.club_id=c.id
 where r.id is null
 ;
 
+
+delete from [holes|prices|couses|clubs] where id=43; -- 北京朝阳广济堂

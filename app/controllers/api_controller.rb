@@ -82,11 +82,13 @@ class ApiController < ApplicationController
         comment = Comment.connection.select_one(
               "select avg(overall) as 'overall', avg(view) as 'view',  avg(hardness) as 'hardness', avg(service) as 'service'
                from comments
-               where course_id=#{e.id}")        
+               where course_id=#{e.id}")
+        price = Price.connection.select_one ("select avg(workday) as 'price' from prices where course_id=#{e.id}")
         list << {:id=>e.id, :name=> e.vip ? e.name || e.club.name : e.club.name, 
           :logo=>e.club.logo_url, :lat_lon=>"#{e.club.latitude}|#{e.club.longitude}",
           :overall=>comment['overall']||0, :service=>comment['service']||0, 
-          :hardness=>comment['hardness']||0, :view=>comment['view']||0}
+          :hardness=>comment['hardness']||0, :view=>comment['view']||0,
+          :cost=>price['price'].to_f.round(0) }
         clubs << e.club
       end
     }
