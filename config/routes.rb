@@ -8,6 +8,7 @@ Ttgolfbe::Application.routes.draw do
   get 'oss/area_list'
   get 'oss/course_list' 
   get 'oss/course_info'
+  get 'oss/all_logos'
   
   match 'api' => 'api#index'
   post "api/sign_up"

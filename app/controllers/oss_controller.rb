@@ -38,4 +38,8 @@ class OssController < ApplicationController
   def course_info
     @course = Course.find(params[:id])
   end
+  
+  def all_logos
+    @list = Club.all
+  end
 end

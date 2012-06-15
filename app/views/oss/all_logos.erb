@@ -1,0 +1,5 @@
+<h1>所有图标</h1>
+
+<% @list.each do |e| %>
+<%= link_to image_tag(e.logo_url || '/images/false.png'), club_path(e)  %>
+<% end %>
