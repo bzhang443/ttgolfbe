@@ -51,8 +51,8 @@
   version: 当前客户端版本号， ex: 1.0
   source: 客户端安装来源
 应答：
-  token
-  user_name: 如果用户设置过</pre>
+  status/message
+  token</pre>
   <form action="/api/sign_up" method="POST">
     did: <input name="did"/> model: <input name="model"/> os: <input name='os'/> version: <input name="version"/> source: <input name="source"/> <br/>
     <input type='submit' value="测试"/>
@@ -162,6 +162,7 @@
     prices[] { : 价格，第一个是官方
       workday: 平日价格
       holiday: 假日价格
+      agent_name: 中介名称，为空表示官方价格
       telephone: 订场电话号码
     }
     holes: 球洞个数（9或者18）

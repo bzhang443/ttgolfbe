@@ -355,7 +355,6 @@ class ApiController < ApplicationController
     
     device = Device.find_or_create(did, model, os, version, source)
     ret = {:status => 0, :token => device.token}
-    ret[:user_name] = device.user.name if device.user.name
     
     render json: ret
   end
