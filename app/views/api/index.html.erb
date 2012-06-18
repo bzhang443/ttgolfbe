@@ -628,12 +628,14 @@
 　email:　联系邮箱（可选）
   phone_number: 联系电话（可选）
 　lat_lon: 提交意见时刻的经纬度坐标
+  hole_id: 球洞ID(可选)
 应答：
   status/message</pre>
   <form action="/api/add_feedback" method="POST">
     token: <input name="token"/> <br/>
     content: <textarea name='content'></textarea> <br/>
-    email: <input name='email'/> phone_number: <input name='phone_number'/> lat_lon: <input name='lat_lon'/><br/>
+    email: <input name='email'/> phone_number: <input name='phone_number'/> lat_lon: <input name='lat_lon'/>
+    hole_id: <input name="hole_id"/><br/>
     <input type='submit' value="测试"/>
   </form>
 </li>

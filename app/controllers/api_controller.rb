@@ -594,6 +594,7 @@ class ApiController < ApplicationController
     atts = {:user_id=>@device.user.id, :content=>params[:content], :lat_lon=>params[:lat_lon], :source=>'mobile', :status=>'new'}
     atts[:email] = params[:email] unless params[:email].blank?
     atts[:phone_number] = params[:phone_number] unless params[:phone_number].blank?
+    atts[:hole_id] = params[:hole_id] unless params[:hole_id].blank?
     feedback = Feedback.new(atts)
     if feedback.save
       render json: {:status=>0}

@@ -1,6 +1,7 @@
 class Feedback < ActiveRecord::Base
 end
 
+
 # == Schema Information
 #
 # Table name: feedbacks
@@ -15,5 +16,6 @@ end
 #  status       :string(255)
 #  created_at   :datetime        not null
 #  updated_at   :datetime        not null
+#  hole_id      :integer(4)
 #
 

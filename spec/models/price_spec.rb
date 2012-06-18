@@ -5,6 +5,8 @@ describe Price do
 end
 
 
+
+
 # == Schema Information
 #
 # Table name: prices

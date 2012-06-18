@@ -27,6 +27,8 @@ end
 
 
 
+
+
 # == Schema Information
 #
 # Table name: score_cards
