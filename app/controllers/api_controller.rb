@@ -6,7 +6,8 @@ require 'uri'
 
 class ApiController < ApplicationController
   before_filter :check_token, :except => [:index, :sign_up]
-  
+  KM1 = 0.01
+    
   def index
     x = Device.first
     @token = x ? x.token : ''
@@ -316,18 +317,16 @@ class ApiController < ApplicationController
     render json: {:status=>0, :list=>list}      
   end
   
-  @@area_list = nil
-  def area_list
 =begin
     list = [
       {:id=>27, :name=>'北京', :courses=> 67}, 
       {:id=>17, :name=>'广东', :courses=> 70, :subs=>[{:id=>50, :name=>'珠海', :courses=> 8}, {:id=>51, :name=>'佛山', :courses=> 12}, {:id=>66, :name=>'广州', :courses=> 20},  {:id=>254, :name=>'深圳', :courses=> 9},  {:id=>135, :name=>'东莞', :courses=> 5}]},
       {:id=>4, :name=>'上海', :courses=> 32}
       ]
-=end
-    if @@area_list
-      list = @@area_list
-    else
+=end  
+  @@area_list = nil
+  def area_list
+    unless @@area_list
       list = []
       areas = {}
       Club.connection.select("select area_id, count(*) as 'cnt'from clubs group by area_id").each { |e|
@@ -348,6 +347,15 @@ class ApiController < ApplicationController
       }
       @@area_list = list.concat(areas.values)
     end
+    unless params[:lat_lon].blank?
+      centx, centy = params[:lat_lon].split('|')
+      r = 50 * KM1
+      courses = Club.count(:conditions=>['latitude between ? and ? and longitude between ? and ?', centx-r, centx+r, centy-r, centy+r])   
+      list = [:id=>0, :name=>'附近', :courses=>courses].concat(@@area_list)
+    else
+      list = @@area_list
+    end
+    
     render json: {:status=>0, :list=>list}
   end
   
@@ -454,7 +462,6 @@ class ApiController < ApplicationController
     render json: {:status=>0, :list=>list}     
   end
   
-  KM1 = 0.01
   def map_search
     return render json: {:status=>1, :message=>'缺少参数'} if params[:center].blank? || params[:radius].blank?
     center = params[:center].split('|')
@@ -478,21 +485,6 @@ class ApiController < ApplicationController
       }
     end
     render json: {:status=>0, :list=>list} 
-  end
-  
-  def hot_list
-    lat_lon = params[:lat_lon]
-    return render json: {:status=>1, :message=>'缺少参数'} if lat_lon.blank?
-    x, y = lat_lon.split('|')
-    logger.debug("hot_list got request from (#{x},#{y})")
-    
-    list = Course.find(:all, 
-        :conditions => ["courses.id in (?)", [1,2,3]]
-    ).collect { |e| 
-      {:id=>e.id, :name=>e.name || e.club.name, :pic=>e.images ? e.images[0].url : ''}
-    }
-    
-    render json: {:status=>0, :list=>list}   
   end
   
   def sina_share

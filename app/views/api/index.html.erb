@@ -327,11 +327,12 @@
 方法：GET
 请求参数：
   token
+  lat_lon: 当前经纬度坐标
 应答：
   status/message
   list[] = {
     id: 地区ID
-    name: 地区名称
+    name: 地区名称, ID=0时为’附近‘
     courses: 球场数量
     subs[] = { :下级地区列表 
       id: 地区ID

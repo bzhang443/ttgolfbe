@@ -19,6 +19,7 @@
 			<exclude name="vendor/cache/**" />
 			<exclude name="public/system/**" />
 			<exclude name="doc/**" />
+			<exclude name="spec/**" />
 			<exclude name="test/**" />
 			<exclude name="log/**" />
 			<exclude name="nbproject/**" />
