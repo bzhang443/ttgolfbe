@@ -62,7 +62,7 @@ class ApiController < ApplicationController
   def course_list
     return render json: {:status=>1, :message=>'缺少参数'} if params[:lat_lon].blank? && params[:area_id].blank?
     
-    hot = Course.find(:all, :conditions => ["courses.id in (?)", [1133, 1454, 1585]])
+    hot = Course.scoped(:conditions => ["courses.id in (?)", [1133, 1454, 1585]]).all
       .collect { |e| 
         {:id=>e.id, :name=>e.vip ? e.name || e.club.name : e.club.name, :pic=>e.images ? e.images[0].url : ''}
       }
@@ -74,8 +74,8 @@ class ApiController < ApplicationController
     else
       areas = [area.id]
     end
-    courses = Course.find(:all, :include => :club, 
-      :conditions => ["clubs.area_id in (?)", areas])
+    courses = Course.scoped(:include => :club,
+      :conditions => ["clubs.area_id in (?)", areas]).all
     clubs = []
     list = []
     courses.each { |e|
@@ -113,7 +113,7 @@ class ApiController < ApplicationController
                  avg(facility) as 'facility', avg(maintenance) as 'maintenance'
                from comments
                where course_id=#{course.id}")
-    if (comments['votes']>0)
+    if comments['votes']>0
       info[:comments] = {:overall=>comments['overall'].to_f.round(1), :votes=>comments['votes'], 
         :view=>comments['view'].to_f.round(1),     :hardness=>comments['hardness'].to_f.round(1), :service=>comments['service'].to_f.round(1), 
         :design=>comments['design'].to_f.round(1), :facility=>comments['facility'].to_f.round(1), :maintenance=>comments['maintenance'].to_f.round(1)
@@ -122,14 +122,14 @@ class ApiController < ApplicationController
       info[:comments] = {:overall=>0, :votes=>0}
     end
     comments = Comment.find_by_course_id_and_user_id(course.id, @device.user.id)
-    if (comments)
+    if comments
       info[:comments_mine] = { :overall=>comments.overall.to_f, 
         :view=>comments.view.to_f,     :hardness=>comments.hardness.to_f, :service=>comments.service.to_f, 
         :design=>comments.design.to_f, :facility=>comments.facility.to_f, :maintenance=>comments.maintenance.to_f
       }
     end
     
-    info[:prices] = Price.find(:all, :conditions=>['course_id=?', id]).collect {|e|
+    info[:prices] = Price.scoped(:conditions=>['course_id=?', id]).all.collect {|e|
       {:workdays=>e.workday||0, :holidays=>e.holiday||0, :telephone=>e.agent.telephone }
     }
     #info[:prices] = [{:workdays=>600, :holidays=>1000, :telephone=>course.club.telephone}]
@@ -171,11 +171,10 @@ class ApiController < ApplicationController
     # return render json: {:status=>15, :message=>'积分不足'} unless @device.user.credit+CREDIT_DOWNLOAD_COURSE_MAP >= 0
     
     holes = []
-    Hole.find(:all,
-      :include => 'map',
+    Hole.scoped(:include => 'map',
       :conditions => ['course_id = ?', id],
       :order => 'number'
-    ).each { |e|
+    ).all.each { |e|
       hole = {:id => e.id, :number => e.number, :par=> e.par}
       yards = {}
       yards['red'] = e.yard_red unless e.yard_red.blank?
@@ -347,13 +346,13 @@ class ApiController < ApplicationController
       }
       @@area_list = list.concat(areas.values)
     end
-    unless params[:lat_lon].blank?
+    if params[:lat_lon].blank?
+      list = @@area_list
+    else
       centx, centy = params[:lat_lon].split('|')
       r = 50 * KM1
       courses = Club.count(:conditions=>['latitude between ? and ? and longitude between ? and ?', centx-r, centx+r, centy-r, centy+r])   
       list = [:id=>0, :name=>'附近', :courses=>courses].concat(@@area_list)
-    else
-      list = @@area_list
     end
     
     render json: {:status=>0, :list=>list}
@@ -469,18 +468,18 @@ class ApiController < ApplicationController
     centy = center[1].to_f
     radius = params[:radius].to_i
     r = radius * KM1
-    list = Club.find(:all, 
+    list = Club.scoped(
       :conditions=>['latitude between ? and ? and longitude between ? and ?', centx-r, centx+r, centy-r, centy+r],
       :limit=>16
-    ).collect{ |e|
+    ).all.collect{ |e|
       {:id=>e.id, :name=>e.short_name, :lat_lon=>"#{e.latitude}|#{e.longitude}"}
     }
     if list.size<1 && radius<100
       r = 100 * KM1
-      list = Club.find(:all, 
+      list = Club.scoped(
         :conditions=>['latitude between ? and ? and longitude between ? and ?', centx-r, centx+r, centy-r, centy+r],
         :limit=>16
-      ).collect{ |e|
+      ).all.collect{ |e|
         {:id=>e.id, :name=>e.short_name, :lat_lon=>"#{e.latitude}|#{e.longitude}" }
       }
     end
@@ -507,7 +506,7 @@ class ApiController < ApplicationController
   end
   
   def my_scorecards
-    list = ScoreCard.find(:all, :conditions=>['user_id=?', @device.user.id], :order=>'created_at desc').collect { |e|
+    list = ScoreCard.scoped(:conditions=>['user_id=?', @device.user.id], :order=>'created_at desc').all.collect { |e|
       {:id=>e.id, :date=>e.created_at.to_date.to_s(:db), :course_id=>e.course_id, 
         :course_name=>e.course.vip ? e.course.name||e.course.club.short_name : e.course.club.short_name, :score=>e.score}
     }
@@ -615,9 +614,9 @@ class ApiController < ApplicationController
 private
   def check_token
     token = params[:token]
-    return render json: {:status=>1, :message=>'缺少参数'} if token.blank?
+    render json: {:status=>1, :message=>'缺少参数'} if token.blank?
     @device = Device.find_by_token token
-    return render json: {:status=>2, :message=>'token失效'} unless @device
+    render json: {:status=>2, :message=>'token失效'} unless @device
   end  
   
   def rand_rank

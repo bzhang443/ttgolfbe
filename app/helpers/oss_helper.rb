@@ -20,7 +20,7 @@ module OssHelper
   end
   
   def area_chain(area)
-    if (area.upper)
+    if area.upper
       area.upper.name + '/' + area.name
     else
       area.name

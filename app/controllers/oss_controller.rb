@@ -6,7 +6,7 @@ class OssController < ApplicationController
   
   def area_list
     @list = {}
-    counts = Club.count(:all, :group=>'area_id')
+    counts = Club.count(:id, :group=>'area_id')
     counts.each_pair { |k, v| 
       c = Area.find(k)
       if c.level == 0
@@ -27,10 +27,10 @@ class OssController < ApplicationController
     @list = []
     area = params[:area]
     unless area.blank?
-      @list = Course.find(:all, 
+      @list = Course.scoped(
         :joins => "join clubs on courses.club_id = clubs.id join areas on clubs.area_id=areas.id",
         :conditions => ["clubs.area_id=? or areas.upper_area=?", area, area]
-      )
+      ).all
       @area = Area.find(area)
     end
   end
